@@ -1,0 +1,9 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "fake-wy4",
+  "appid": "touristappid",
+  "setting": {
+    "es6": false,
+    "minified": false
+  }
+}
