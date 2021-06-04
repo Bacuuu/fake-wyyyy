@@ -1,8 +1,20 @@
 import { Component } from 'react'
 import { View, Text } from '@tarojs/components'
+import { connect } from 'react-redux'
+import { add, reset } from '../../actions/user'
 import './index.scss'
 
-export default class Index extends Component {
+@connect(({ user }) => ({
+  user
+}), (dispatch) => ({
+  add () {
+    dispatch(add())
+  },
+  reset () {
+    dispatch(reset())
+  },
+}))
+class Index extends Component {
 
   componentWillMount () { }
 
@@ -22,3 +34,4 @@ export default class Index extends Component {
     )
   }
 }
+export default Index
