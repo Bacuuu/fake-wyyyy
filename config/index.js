@@ -1,3 +1,4 @@
+import path from 'path'
 const config = {
   projectName: 'fake-wy4',
   date: '2021-5-31',
@@ -11,6 +12,9 @@ const config = {
   outputRoot: 'dist',
   plugins: [],
   defineConstants: {
+  },
+  alias: {
+    '@/': path.resolve(__dirname, '..', 'src')
   },
   copy: {
     patterns: [
