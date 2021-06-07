@@ -1,10 +1,10 @@
-import { ADD, RESET } from "../constants/user";
+import { UPDATE, RESET } from "../constants/user";
 const INITIAL_STATE = {
   userInfo: {}
 }
 export default function user (state = INITIAL_STATE, action) {
   switch (action.type) {
-    case ADD:
+    case UPDATE:
       return {
         userInfo: action.payload
       }

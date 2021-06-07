@@ -1,11 +1,14 @@
 import {
-  ADD,
+  UPDATE,
   RESET
-} from '../constants/user'
-
-export const add = () => {
+} from '@/constants/user'
+import { loginByPhone } from '@/api/user'
+import Taro from '@tarojs/taro'
+import { IResponseType } from '@/types/common'
+export const update = (params) => {
   return {
-    type: ADD
+    type: UPDATE,
+    payload: params
   }
 }
 export const reset = () => {
@@ -14,11 +17,31 @@ export const reset = () => {
   }
 }
 
+export const login = ({ phone, password }: {phone: number, password: number}) => {
+  return async dispatch => {
+    Taro.showLoading()
+    const res:IResponseType = await loginByPhone({
+      phone,
+      password
+    })
+    Taro.hideLoading()
+    dispatch(update(res.data))
+  }
+}
+
+// export const fetchUserInfo = () => {
+//   return async dispatch => {
+//     Taro.showLoading()
+//     const res:IResponseType = await http.get('/search?keywords=badguy')
+//     Taro.hideLoading()
+//     dispatch(update(res.data))
+//   }
+// }
 // 异步的 action
 export function asyncAdd () {
   return dispatch => {
     setTimeout(() => {
-      dispatch(add())
+      dispatch(update(123))
     }, 2000)
   }
 }
