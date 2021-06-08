@@ -1,17 +1,29 @@
+import { IResponseType } from '@/types/common'
 import Taro from '@tarojs/taro'
 
-type IType = (url: string, data?: object, otherParams?: object) => Promise<object>
+type IType = (url: string, data?: object, otherParams?: object) => Promise<IResponseType>
 type MethodType = (method: any) => IType
+
 function mergeParams (params) {
   const defaultParams = {
     dataType: 'json',
     header:{
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    // cors_mode: process.env.NODE_ENV === 'development' ? '' : 'no-cors'
+    mode: process.env.NODE_ENV === 'development' ? 'cors' : 'no-cors'
   }
   Object.assign(params, defaultParams)
 }
+function requestInterceptor (chain) {
+  const { requestParams } = chain
+  console.log(chain)
+  return chain.proceed(requestParams).then(r => {
+    console.log(r)
+    return r
+  }).catch(err => console.log(err))
+}
+Taro.addInterceptor(requestInterceptor)
+
 const genMethod:MethodType = function (method) {
   return (url, data = {}, otherParams = {}) => {
     let _url = `http://localhost:3000${url}`
