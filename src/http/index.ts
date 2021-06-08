@@ -1,6 +1,5 @@
 import { IResponseType } from '@/types/common'
 import Taro from '@tarojs/taro'
-
 type IType = (url: string, data?: object, otherParams?: object) => Promise<IResponseType>
 type MethodType = (method: any) => IType
 
@@ -14,14 +13,30 @@ function mergeParams (params) {
   }
   Object.assign(params, defaultParams)
 }
+
+function judgeStatusCode (statusCode) {
+  if (statusCode !== 201) {
+    Taro.atMessage({
+      message: '',
+      type: 'error'
+    })
+    return
+  }
+}
+
+function responseInterceptor(response) {
+  const { statusCode } = response
+  judgeStatusCode(statusCode)
+  return response
+}
+
 function requestInterceptor (chain) {
   const { requestParams } = chain
-  console.log(chain)
-  return chain.proceed(requestParams).then(r => {
-    console.log(r)
-    return r
-  }).catch(err => console.log(err))
+  return chain.proceed(requestParams)
+    .then(responseInterceptor)
+    .catch(err => console.log(err))
 }
+
 Taro.addInterceptor(requestInterceptor)
 
 const genMethod:MethodType = function (method) {
