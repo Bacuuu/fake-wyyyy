@@ -4,7 +4,6 @@ import {
 } from '@/constants/user'
 import { loginByPhone } from '@/api/user'
 import Taro from '@tarojs/taro'
-import { IResponseType } from '@/types/common'
 export const update = (params) => {
   return {
     type: UPDATE,
@@ -20,7 +19,7 @@ export const reset = () => {
 export const login = ({ phone, password }: {phone: number, password: number}) => {
   return async dispatch => {
     Taro.showLoading()
-    const res:IResponseType = await loginByPhone({
+    const res = await loginByPhone({
       phone,
       password
     })
