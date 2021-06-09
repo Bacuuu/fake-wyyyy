@@ -2,7 +2,7 @@ import { IResponseType } from '@/types/common'
 import Taro from '@tarojs/taro'
 type IType = (url: string, data?: object, otherParams?: object) => Promise<IResponseType>
 type MethodType = (method: any) => IType
-
+type SwitchType = 'on' | 'off'
 function mergeParams (params) {
   const defaultParams = {
     dataType: 'json',
@@ -14,27 +14,55 @@ function mergeParams (params) {
   Object.assign(params, defaultParams)
 }
 
-function judgeStatusCode (statusCode) {
-  if (statusCode !== 201) {
+function judgeStatusCode (status, errMsg) {
+  if (status !== 200) {
     Taro.atMessage({
-      message: '',
+      message: errMsg || '调用服务错误',
       type: 'error'
     })
-    return
+    throw Error('服务状态错误')
+  }
+}
+const changeLoading = (function () {
+  const timer: any = null;
+  return function (sw: SwitchType) {
+    timer && clearTimeout(timer)
+    if (sw === 'on') {
+      Taro.showLoading()
+    } else if(sw === 'off') {
+      setTimeout(() => {
+        Taro.hideLoading()
+      }, 200);
+    }
+  }
+})()
+function responseInterceptor(response) {
+  const { statusCode, errMsg } = response
+  changeLoading('off')
+  judgeStatusCode(statusCode, errMsg)
+  return {
+    ...response,
+    iStatus: true
   }
 }
 
-function responseInterceptor(response) {
-  const { statusCode } = response
-  judgeStatusCode(statusCode)
-  return response
+function responseErrInterceptor(response) {
+  const { statusText } = response
+  Taro.atMessage({
+    type: 'error',
+    message: statusText || '调用服务错误'
+  })
+  return {
+    ...response,
+    iStatus: false
+  }
 }
-
 function requestInterceptor (chain) {
   const { requestParams } = chain
+  changeLoading('on')
   return chain.proceed(requestParams)
     .then(responseInterceptor)
-    .catch(err => console.log(err))
+    .catch(responseErrInterceptor)
 }
 
 Taro.addInterceptor(requestInterceptor)

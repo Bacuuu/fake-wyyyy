@@ -4,6 +4,7 @@ import {
 } from '@/constants/user'
 import { loginByPhone } from '@/api/user'
 import Taro from '@tarojs/taro'
+
 export const update = (params) => {
   return {
     type: UPDATE,
@@ -19,12 +20,12 @@ export const reset = () => {
 export const login = ({ phone, password }: {phone: number, password: number}) => {
   return async dispatch => {
     Taro.showLoading()
-    const res = await loginByPhone({
+    const res:any = await loginByPhone({
       phone,
       password
     })
     Taro.hideLoading()
-    dispatch(update(res.data))
+    res.iStatus && dispatch(update(res.data))
   }
 }
 
