@@ -4,7 +4,7 @@
   "description": "fake wyyyy.",
   "appid": "wx445b127e7044ed10",
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": false,
     "enhance": false,
     "postcss": false,
