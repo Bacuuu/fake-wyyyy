@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { View, Text } from '@tarojs/components'
 import { useDispatch, useSelector } from 'react-redux'
-import { login } from '../../actions/user'
+import { login, loginStatus } from '../../actions/user'
 import { IStoreType } from '@/types/store'
 import './index.scss'
 
@@ -15,13 +15,14 @@ function Index (props: IProps) {
   // console.log(redux.userInfo)
   function add123() {
     dispatch(login({
-      phone: 15528022331,
-      password: 123323
+      phone: 15528022339,
+      password: '123333'
     }))
-    console.log(redux.userInfo)
+    // console.log(redux.userInfo)
   }
   function add345() {
-    console.log(redux)
+    dispatch(loginStatus())
+    // console.log(redux)
   }
   return (
     <View className='index'>
