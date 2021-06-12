@@ -111,7 +111,7 @@ function requestInterceptor (chain) {
  */
 const responseSuccessInterceptor = function (response) {
   // 这里取到的cookies就是setCookie的val，数组、多个cookie
-  const { statusCode, errMsg, cookies }:
+  const { statusCode, errMsg, cookies = [] }:
   {statusCode: number, errMsg: string, cookies: string[]} = response
   const defaultCookie = Taro.getStorageSync('cookie')
   // if (cookies) {
