@@ -137,6 +137,7 @@ function responseErrInterceptor(response) {
     type: 'error',
     message: statusText || '调用服务错误'
   })
+  changeLoading('off')
   return {
     ...response,
     iStatus: false
