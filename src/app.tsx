@@ -1,30 +1,19 @@
-import { Component } from 'react'
-import './app.scss'
+
 import { Provider } from 'react-redux'
 import configStore from './store'
 import { AtMessage } from 'taro-ui'
 import 'taro-ui/dist/style/index.scss'
 import '@/assets/iconfont.css'
+import './app.scss'
 const store = configStore()
-class App extends Component {
-
-  componentDidMount () {}
-
-  componentDidShow () {}
-
-  componentDidHide () {}
-
-  componentDidCatchError () {}
-
+function App (props: any) {
   // this.props.children 是将要会渲染的页面
-  render () {
-    return (
-      <Provider store={store}>
-        <AtMessage />
-        {this.props.children}
-      </Provider>
-    )
-  }
+  return (
+    <Provider store={store}>
+      <AtMessage />
+      {props.children}
+    </Provider>
+  )
 }
 
 export default App
