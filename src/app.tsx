@@ -2,7 +2,8 @@
 import { Provider } from 'react-redux'
 import configStore from './store'
 import { AtMessage } from 'taro-ui'
-import 'taro-ui/dist/style/index.scss'
+// import 'taro-ui/dist/style/index.scss'
+import '@/assets/css/taro-ui.css'
 import '@/assets/iconfont.css'
 import './app.scss'
 const store = configStore()
