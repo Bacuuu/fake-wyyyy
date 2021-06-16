@@ -3,7 +3,8 @@ export default {
     'pages/index/index',
     'pages/home/home',
     'pages/us/us',
-    'pages/me/me'
+    'pages/me/me',
+    'pages/me/login'
   ],
   window: {
     backgroundTextStyle: 'light',

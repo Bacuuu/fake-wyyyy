@@ -3,7 +3,7 @@ type IStoreType = {
 }
 
 type IStoreUserType = {
-  userInfo: object
+  userInfo: object | null
 }
 export {
   IStoreType,

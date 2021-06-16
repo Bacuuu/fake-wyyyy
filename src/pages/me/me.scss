@@ -1,0 +1,17 @@
+.to-login {
+  padding: 0 80px;
+  .avatar {
+    width: 100%;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    image {
+      width: 200px;
+      height: 200px;
+    }
+  }
+  .at-button {
+    margin-top: 20px;
+  }
+}

@@ -1,6 +1,6 @@
 import { UPDATE, RESET } from "../constants/user";
 const INITIAL_STATE = {
-  userInfo: {}
+  userInfo: null
 }
 export default function user (state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -11,7 +11,7 @@ export default function user (state = INITIAL_STATE, action) {
       break;
     case RESET:
       return {
-        userInfo: {}
+        userInfo: null
       }
       break;
     default:
