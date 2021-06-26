@@ -4,7 +4,8 @@ export default {
     'pages/home/home',
     'pages/us/us',
     'pages/me/me',
-    'pages/me/login'
+    'pages/me/login',
+    'pages/me/loginbyphone'
   ],
   window: {
     backgroundTextStyle: 'light',
