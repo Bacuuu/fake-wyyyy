@@ -2,8 +2,9 @@ import path from 'path'
 const config = {
   projectName: 'fake-wy4',
   date: '2021-5-31',
-  designWidth: 640,
+  designWidth: 320,
   deviceRatio: {
+    320: 2.34,
     640: 2.34 / 2,
     750: 1,
     828: 1.81 / 2
