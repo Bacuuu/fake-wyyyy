@@ -2,12 +2,18 @@ import { View, Image } from '@tarojs/components'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { IStoreType } from '@/types/store'
+import Taro from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
 import avatar from '@/assets/images/login_avatar.png'
 import './me.scss'
 
 type IProps = {
   user?: Object
+}
+function loginByPhone () {
+  Taro.navigateTo({
+    url: '/pages/me/loginbyphone'
+  })
 }
 function Login (props: IProps) {
   const user = useSelector((state:IStoreType) => state.user)
@@ -16,7 +22,7 @@ function Login (props: IProps) {
     
   }, [])
   return (
-    <View className='me-wrap'>
+    <View className='login-wrap'>
       {
         hasLogin 
           ? (
@@ -29,7 +35,7 @@ function Login (props: IProps) {
               <View className="avatar">
                 <Image src={avatar}></Image>
               </View>
-              <AtButton type="primary">登陆</AtButton>
+              <AtButton type="primary" onClick={loginByPhone}>登陆</AtButton>
               <AtButton>注册</AtButton>
             </View>
           )

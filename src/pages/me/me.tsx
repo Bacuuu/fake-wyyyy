@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { IStoreType } from '@/types/store'
 import { AtButton } from 'taro-ui'
-import avatar from '@/assets/images/login_avatar.png'
 import './me.scss'
 
 type IProps = {
@@ -16,11 +15,13 @@ function Me (props: IProps) {
   useEffect(() => {
     if (!hasLogin) {
       console.log('aha')
-      Taro.navigateTo({
-        url: '/pages/me/login'
-      })
     }
   }, [])
+  function toLogin () {
+    Taro.navigateTo({
+      url: '/pages/me/login'
+    })
+  }
   return (
     <View className='me-wrap'>
       {
@@ -32,11 +33,7 @@ function Me (props: IProps) {
           )
           : (
             <View className="to-login">
-              <View className="avatar">
-                <Image src={avatar}></Image>
-              </View>
-              <AtButton type="primary">登陆</AtButton>
-              <AtButton>注册</AtButton>
+              <AtButton onClick={toLogin}>去登陆</AtButton>
             </View>
           )
       }

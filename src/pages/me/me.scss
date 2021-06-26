@@ -1,17 +1,57 @@
-.to-login {
-  padding: 0 80px;
-  .avatar {
-    width: 100%;
-    height: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    image {
-      width: 200px;
+.login-wrap {
+  .to-login {
+    padding: 0 30px;
+    .avatar {
+      width: 100%;
       height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      image {
+        width: 70px;
+        height: 70px;
+      }
+    }
+    .at-button {
+      margin-top: 20px;
     }
   }
-  .at-button {
-    margin-top: 20px;
+}
+
+.lbf-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 5%;
+  .lbf-input {
+    width: 100%;
+    height: 40px;
+    border: 1px solid #e4e4e4;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    .at-icon {
+      margin: 0 10px;
+    }
+    .at-input {
+      width: calc(90% - 40px)
+    }
+    & + .lbf-input {
+      margin-top: 10px;
+    }
+  }
+  .lbf-btns {
+    width: 100%;
+    height: 60px;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    color: rgba(102, 102, 102, 1);
+    font-size: 12px;
+    .at-button {
+      width: 100%;
+    }
   }
 }
