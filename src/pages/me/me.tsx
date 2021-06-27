@@ -11,12 +11,10 @@ type IProps = {
 }
 function Me (props: IProps) {
   const user = useSelector((state:IStoreType) => state.user)
-  let [hasLogin] = useState(user.userInfo !== null)
+  let [hasLogin, setHasLogin] = useState(user.userInfo !== null)
   useEffect(() => {
-    if (!hasLogin) {
-      console.log('aha')
-    }
-  }, [])
+    setHasLogin(user.userInfo !== null)
+  }, [user])
   function toLogin () {
     Taro.navigateTo({
       url: '/pages/me/login'
