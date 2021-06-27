@@ -1,7 +1,7 @@
 import { IResponseType } from '@/types/common'
 import Taro from '@tarojs/taro'
 import { requestInterceptor } from './interceptor'
-type IType = (url: string, data?: object, otherParams?: object) => Promise<IResponseType>
+type IType = (url: string, data?: object, otherParams?: object) => Promise<any>
 type MethodType = (method: any) => IType
 
 function mergeParams (params) {

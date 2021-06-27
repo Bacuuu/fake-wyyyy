@@ -121,7 +121,7 @@ const responseSuccessInterceptor = function (response) {
   changeLoading('off')
   judgeStatusCode(statusCode, errMsg)
   return {
-    ...response,
+    ...response.data,
     iStatus: true
   }
 }
@@ -139,7 +139,7 @@ function responseErrInterceptor(response) {
   })
   changeLoading('off')
   return {
-    ...response,
+    ...response.data,
     iStatus: false
   }
 }
