@@ -1,30 +1,60 @@
+import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { IStoreType } from '@/types/store'
-import { AtInput, AtIcon, AtButton } from 'taro-ui'
+import { AtInput, AtIcon, AtButton, AtMessage } from 'taro-ui'
+import { login } from '../../actions/user'
 import './me.scss'
 
 type IProps = {
   user?: Object
 }
-function inputChange (e, type) {
-  console.log(e, type)
-}
 function LoginByPhone (props: IProps) {
   const user = useSelector((state:IStoreType) => state.user)
   let [hasLogin] = useState(user.userInfo !== null)
+  const [account, setAccount] = useState('')
+  const [pwd, setPwd] = useState('')
+  const dispatch = useDispatch()
+  const userInfo = useSelector((state: IStoreType) => state.user)
   useEffect(() => {
     
   }, [])
-  return (
+
+
+function inputChange (e, type) {
+  if (type === 'account') {
+    console.log(e)
+    setAccount(e)
+  } else {
+    setPwd(e)
+  }
+}
+async function handleLogin () {
+  try {
+    await dispatch(login({
+      phone: account,
+      password: pwd
+    }))
+    setTimeout(() => {
+      Taro.switchTab({
+        url: '/pages/me/me'
+      })
+    }, 300);
+  } catch (err) {
+  }
+}
+
+return (
     <View className='lbf-wrap'>
       <View className="lbf-input">
         <AtIcon value='iphone-x' size='20' color='#999'></AtIcon>
         <AtInput
           name="account"
+          type="phone"
           border={false}
           placeholder="手机号"
+          value={account}
           onChange={e => inputChange(e, 'account')}
         />
       </View>
@@ -32,15 +62,18 @@ function LoginByPhone (props: IProps) {
         <AtIcon value="lock" size='20' color='#999'></AtIcon>
         <AtInput
           name="pwd"
+          type="password"
           border={false}
           placeholder="输入登录密码"
+          value={pwd}
           onChange={e => inputChange(e, 'pwd')}
         />
       </View>
       <View className="lbf-btns">
-        <AtButton type="primary" >登陆</AtButton>
+        <AtButton type="primary" onClick={handleLogin}>登录</AtButton>
         <Text>重设密码</Text>
       </View>
+      <AtMessage></AtMessage>
     </View>
     )
 }
