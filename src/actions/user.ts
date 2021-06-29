@@ -46,19 +46,16 @@ export const login = ({ phone, password }: {phone: number | string, password: st
       level: null,
       musicinfo: null
     }
-    Promise.all(promiseList)
-      .then(r => {
-        if (r.some(i => i.code !== 200)) {
-          Taro.atMessage({
-            message: '获取部分用户信息失败',
-            type: 'warning'
-          })
-        }
-        console.log(r)
-        userInfo.account = filterBeforeMergeResponse(r[0])
-        userInfo.level = filterBeforeMergeResponse(r[1])
-        userInfo.musicinfo = filterBeforeMergeResponse(r[2])
+    const r = await Promise.all(promiseList)
+    if (r.some(i => i.code !== 200)) {
+      Taro.atMessage({
+        message: '获取部分用户信息失败',
+        type: 'warning'
       })
+    }
+    userInfo.account = filterBeforeMergeResponse(r[0])
+    userInfo.level = filterBeforeMergeResponse(r[1]).data || {}
+    userInfo.musicinfo = filterBeforeMergeResponse(r[2])
     res.iStatus && dispatch(update(userInfo))
   }
 }
