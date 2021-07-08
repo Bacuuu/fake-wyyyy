@@ -1,3 +1,31 @@
+.me-wrap {
+  .has-login {
+    .user-info {
+      width: 100%;
+      height: 150px;
+      padding: 15px;
+      &__top {
+        width: 100%;
+        height: 94px;
+        display: flex;
+        align-items: center;
+        .avatar {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          margin-right: 10px;
+        }
+        .basic-info {
+          width: 160px;
+        }
+        .ding {
+          border: none
+        }
+      }
+    }
+  }
+}
+
 .login-wrap {
   .to-login {
     padding: 0 30px;
@@ -22,7 +50,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 5%;
+  padding: 30px 5% 0 5%;
   .lbf-input {
     width: 100%;
     height: 40px;
