@@ -1,7 +1,6 @@
 .me-wrap {
   .has-login {
     .user-info {
-      width: 100%;
       height: 150px;
       padding: 15px;
       &__top {
@@ -16,12 +15,41 @@
           margin-right: 10px;
         }
         .basic-info {
-          width: 160px;
+          width: 120px;
         }
         .ding {
+          width: 70px;
+          height: 30px;
           border: none
         }
       }
+      &__bottom {
+        height: 40px;
+        display: flex;
+        justify-content: space-between;
+        .bottom-item {
+          width: 25%;
+          color: rgba(153, 153, 153, 1);
+          font-size: 11px;
+          line-height: 150%;
+          text-align: center;
+          &.tome {
+            line-height: 40px;
+          }
+          &__val {
+            color: rgba(80, 80, 80, 1);
+            font-size: 13px;
+            text-align: center;
+          }
+          text {
+            display: block
+          }
+        }
+      }
+    }
+    .logout {
+      width: 90%;
+      margin: 10px auto;
     }
   }
 }
