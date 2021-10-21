@@ -95,7 +95,8 @@ function mergeCookie (defaultcookie:string, setCookie:string):string {
 function requestInterceptor (chain) {
   const { requestParams } = chain
   console.log(Taro.getStorageSync('cookie'))
-  requestParams.header.Cookie = Taro.getStorageSync('cookie')
+  // requestParams.header.cookie = Taro.getStorageSync('cookie')
+  requestParams.data.cookie = Taro.getStorageSync('cookie')
   // requestParams.header.Cookie = 'ahaddddd'
   changeLoading('on')
   return chain.proceed(requestParams)
