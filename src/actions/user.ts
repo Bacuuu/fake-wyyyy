@@ -14,6 +14,7 @@ export const update = (params) => {
   }
 }
 export const reset = () => {
+  console.log('123')
   return {
     type: RESET
   }
@@ -38,11 +39,11 @@ export const login = ({ phone, password }: {phone: number | string, password: st
       type: 'success'
     })
     const promiseList = [
-    getUserAccount(),
     getUserLevel(),
     getUserMusicInfo()]
     const userInfo = {
       account: null,
+      profile: null,
       level: null,
       musicinfo: null
     }
@@ -53,9 +54,10 @@ export const login = ({ phone, password }: {phone: number | string, password: st
         type: 'warning'
       })
     }
-    userInfo.account = filterBeforeMergeResponse(r[0])
-    userInfo.level = filterBeforeMergeResponse(r[1]).data || {}
-    userInfo.musicinfo = filterBeforeMergeResponse(r[2])
+    userInfo.profile = res.profile
+    userInfo.account = res.account
+    userInfo.level = filterBeforeMergeResponse(r[0]).data || {}
+    userInfo.musicinfo = filterBeforeMergeResponse(r[1])
     res.iStatus && dispatch(update(userInfo))
   }
 }

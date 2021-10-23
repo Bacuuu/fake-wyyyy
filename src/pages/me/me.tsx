@@ -1,9 +1,10 @@
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
-import { useEffect, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { IStoreType } from '@/types/store'
 import { AtButton, AtTag, AtList, AtListItem } from 'taro-ui'
+import * as userAction from '@/actions/user'
 import './me.scss'
 
 type IProps = {
@@ -11,10 +12,10 @@ type IProps = {
 }
 function Me (props: IProps) {
   const user = useSelector((state:IStoreType) => state.user)
+  const dispatch = useDispatch()
   let [hasLogin, setHasLogin] = useState(user.userInfo !== null)
   useEffect(() => {
     setHasLogin(user.userInfo !== null)
-    console.log(menuList())
   }, [user])
 
   function menuList () {
@@ -69,37 +70,37 @@ function Me (props: IProps) {
   return (
     <View className='me-wrap'>
       {
-        !hasLogin 
+        hasLogin 
           ? (
             <View className="has-login">
               <View className="user-info">
                 <View className="user-info__top">
-                  <Image className="avatar" src={user?.userInfo?.account?.profile?.avatarUrl} />
+                  <Image className="avatar" src={user?.userInfo?.profile?.avatarUrl} />
                   <View className="basic-info">
-                    <View>{user?.userInfo?.account?.profile?.nickname}</View>
+                    <View>{user?.userInfo?.profile?.nickname}</View>
                     <AtTag>Lv.{user?.userInfo?.level?.level}</AtTag>
                   </View>
-                  <AtButton type="primary" circle={false} className="ding">签到</AtButton>
+                  <AtButton type="primary" circle={false} className="ding" onClick={() => {console.log(user)}}>签到</AtButton>
                   {/* <AtButton onClick={getuser}>123</AtButton> */}
                 </View>
                 <View className="user-info__bottom">
                   <View className="bottom-item">
                     <Text>动态</Text>
-                    <Text className="bottom-item__val">1</Text>
+                    <Text className="bottom-item__val">{user?.userInfo?.profile.eventCount}</Text>
                   </View>
                   <View className="bottom-item">
                     <Text>关注</Text>
-                    <Text className="bottom-item__val">2</Text>
+                    <Text className="bottom-item__val">{user?.userInfo?.profile.follows}</Text>
                   </View>
                   <View className="bottom-item">
                     <Text>粉丝</Text>
-                    <Text className="bottom-item__val">3</Text>
+                    <Text className="bottom-item__val">{user?.userInfo?.profile.followeds}</Text>
                   </View>
                   <View className="bottom-item tome">我的资料</View>
                 </View>
               </View>
               {menuList()}
-              <AtButton type="primary" className="logout">退出登录</AtButton>
+              <AtButton type="primary" className="logout" onClick={() => dispatch(userAction.reset())}>退出登录</AtButton>
             </View>
           )
           : (
