@@ -11,12 +11,9 @@ type IProps = {
   user?: Object
 }
 function LoginByPhone (props: IProps) {
-  const user = useSelector((state:IStoreType) => state.user)
-  let [hasLogin] = useState(user.userInfo !== null)
   const [account, setAccount] = useState('')
   const [pwd, setPwd] = useState('')
   const dispatch = useDispatch()
-  const userInfo = useSelector((state: IStoreType) => state.user)
   useEffect(() => {
     
   }, [])
@@ -24,7 +21,6 @@ function LoginByPhone (props: IProps) {
 
 function inputChange (e, type) {
   if (type === 'account') {
-    console.log(e)
     setAccount(e)
   } else {
     setPwd(e)
