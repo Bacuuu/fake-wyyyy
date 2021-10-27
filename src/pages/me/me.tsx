@@ -3,8 +3,9 @@ import { View, Image, Text } from '@tarojs/components'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IStoreType } from '@/types/store'
-import { AtButton, AtTag, AtList, AtListItem } from 'taro-ui'
+import { AtButton, AtTag, AtList, AtListItem, AtMessage } from 'taro-ui'
 import * as userAction from '@/actions/user'
+import * as api from '@/api/user'
 import './me.scss'
 
 type IProps = {
@@ -67,6 +68,25 @@ function Me (props: IProps) {
       url: '/pages/me/login'
     })
   }
+
+  function signin () {
+    // console.log(api.dailySignin())
+    api.dailySignin()
+      .then(r => {
+        if (r.code === 200) {
+          Taro.atMessage({
+            type: 'success',
+            message: '签到成功'
+          })
+        } else {
+          Taro.atMessage({
+            type: 'error',
+            message: '签到失败'
+          })
+        }
+      })
+  }
+
   return (
     <View className='me-wrap'>
       {
@@ -80,7 +100,7 @@ function Me (props: IProps) {
                     <View>{user?.userInfo?.profile?.nickname}</View>
                     <AtTag>Lv.{user?.userInfo?.level?.level}</AtTag>
                   </View>
-                  <AtButton type="primary" circle={false} className="ding" onClick={() => {console.log(user)}}>签到</AtButton>
+                  <AtButton type="primary" circle={false} className="ding" onClick={() => signin()}>签到</AtButton>
                   {/* <AtButton onClick={getuser}>123</AtButton> */}
                 </View>
                 <View className="user-info__bottom">
@@ -109,6 +129,7 @@ function Me (props: IProps) {
             </View>
           )
       }
+      <AtMessage></AtMessage>
     </View>
     )
 }

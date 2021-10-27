@@ -22,3 +22,8 @@ export const getUserLevel = () => {
 export const getLoginStatus = () => {
   return http.post('/login/status')
 }
+
+// 签到
+export const dailySignin = () => {
+  return http.post('/daily_signin')
+}
