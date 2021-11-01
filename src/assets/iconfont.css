@@ -1,6 +1,10 @@
 @font-face {
   font-family: "iconfont"; /* Project id  */
-  src: url('iconfont.ttf?t=1623478843007') format('truetype');
+  src: url('iconfont.ttf') format('truetype');
+}
+@font-face {
+  font-family: "iconfont"; /* Project id  */
+  src: url('iconfont2.ttf') format('truetype');
 }
 
 .iconfont {
@@ -131,3 +135,10 @@
   content: "\e6ab";
 }
 
+.icon-musiclist:before {
+  content: "\e69c";
+}
+
+.icon-voice:before {
+  content: "\e6a1";
+}
