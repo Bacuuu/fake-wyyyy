@@ -70,7 +70,6 @@ function Me (props: IProps) {
   }
 
   function signin () {
-    // console.log(api.dailySignin())
     api.dailySignin()
       .then(r => {
         if (r.code === 200) {
@@ -85,6 +84,14 @@ function Me (props: IProps) {
           })
         }
       })
+  }
+
+  async function logout () {
+    const r:any = await dispatch(userAction.logout())
+    if (r.code === 200) Taro.atMessage({
+      type: 'success',
+      message: '登出成功'
+    })
   }
 
   return (
@@ -120,7 +127,7 @@ function Me (props: IProps) {
                 </View>
               </View>
               {menuList()}
-              <AtButton type="primary" className="logout" onClick={() => dispatch(userAction.reset())}>退出登录</AtButton>
+              <AtButton type="primary" className="logout" onClick={() => logout()}>退出登录</AtButton>
             </View>
           )
           : (

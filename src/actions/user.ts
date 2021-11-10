@@ -4,7 +4,7 @@ import {
 } from '@/constants/user'
 import Taro from '@tarojs/taro'
 import { AtMessage } from 'taro-ui'
-import { loginByPhone, getUserAccount, getUserLevel, getUserMusicInfo, getLoginStatus } from '@/api/user'
+import { loginByPhone, getUserLevel, getUserMusicInfo, getLoginStatus, logout as logoutApi } from '@/api/user'
 import { filterBeforeMergeResponse } from '@/util'
 
 export const update = (params) => {
@@ -14,7 +14,6 @@ export const update = (params) => {
   }
 }
 export const reset = () => {
-  console.log('123')
   return {
     type: RESET
   }
@@ -59,6 +58,14 @@ export const login = ({ phone, password }: {phone: number | string, password: st
     userInfo.level = filterBeforeMergeResponse(r[0]).data || {}
     userInfo.musicinfo = filterBeforeMergeResponse(r[1])
     res.iStatus && dispatch(update(userInfo))
+  }
+}
+
+export const logout = function () {
+  return async dispatch => {
+    const res = await logoutApi()
+    if (res.code === 200) dispatch(reset())
+    return res
   }
 }
 
