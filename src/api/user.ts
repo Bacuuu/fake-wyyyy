@@ -1,6 +1,13 @@
 import http from '@/http'
+
+// 登录
 export const loginByPhone = (params) => {
   return http.post('/login/cellphone', params)
+}
+
+// 登出
+export const logout = () => {
+  return http.post('/logout')
 }
 
 // 用户账号信息
