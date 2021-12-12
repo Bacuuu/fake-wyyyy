@@ -1,5 +1,6 @@
-import { View, Text } from '@tarojs/components'
-import { AtInput, AtIcon } from 'taro-ui'
+import { View } from '@tarojs/components'
+import { AtInput } from 'taro-ui'
+import swiper from './swiper'
 import './index.scss'
 
 type IProps = {
@@ -21,6 +22,7 @@ function Index (props: IProps) {
           placeholderClass="header-input-placeholder"></AtInput>
         <View className="iconfont icon-musiclist"></View>
       </View>
+      {swiper()}
     </View>
     )
 }

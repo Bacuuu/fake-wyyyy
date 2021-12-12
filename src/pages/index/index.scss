@@ -20,3 +20,21 @@
   text-align: center;
   color: #505050;
 }
+.c-swiper {
+  height: 125px;
+  .swiper-item {
+    width: 100%;
+    height: 100%;
+    .item-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    .item-title {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      color: white;
+    }
+  }
+}
