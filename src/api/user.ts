@@ -34,3 +34,6 @@ export const getLoginStatus = () => {
 export const dailySignin = () => {
   return http.post('/daily_signin')
 }
+
+// 推荐歌单（登录）
+export const getUserRecommendSongs:any = (params ?:Object) => http.post('/recommend/resource', params)
