@@ -37,29 +37,36 @@ function Index (props: IProps) {
       </View>
       <AtTabs className="tabs" current={tabIdx} tabList={tabList} onClick={setTabIdx}>
         <AtTabsPane current={tabIdx} index={0} >
-          {swiper()}
-          <View className="menu">
-            <View className="menu-item">
-              <View className="menu-item_icon">
-                <AtIcon value='sound' size='20' color='#888' />
+          <View className="tab-content">
+            {swiper()}
+            <View className="menu">
+              <View className="menu-item">
+                <View className="menu-item_icon">
+                  <AtIcon value='sound' size='20' color='#888' />
+                </View>
+                <Text>私人FM</Text>
               </View>
-              <Text>私人FM</Text>
-            </View>
-            <View className="menu-item">
-              <View className="menu-item_icon">
-                <AtIcon value='menu' size='20' color='#888' />
+              <View className="menu-item">
+                <View className="menu-item_icon">
+                  <AtIcon value='menu' size='20' color='#888' />
+                </View>
+                每日歌曲推荐
               </View>
-              每日歌曲推荐
-            </View>
-            <View className="menu-item">
-              <View className="menu-item_icon">
-                <AtIcon value='analytics' size='20' color='#888' />
+              <View className="menu-item">
+                <View className="menu-item_icon">
+                  <AtIcon value='analytics' size='20' color='#888' />
+                </View>
+                云音乐热歌榜
               </View>
-              云音乐热歌榜
             </View>
+            {recommendSheet()}
+            {recommendNewSongs()}
           </View>
-          {recommendSheet()}
-          {recommendNewSongs()}
+        </AtTabsPane>
+        <AtTabsPane current={tabIdx} index={1}>
+          <View className="tab-content">
+            <Text>精品歌单123</Text>
+          </View>
         </AtTabsPane>
       </AtTabs>
     </View>
