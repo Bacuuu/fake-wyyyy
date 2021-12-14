@@ -36,4 +36,4 @@ export const dailySignin = () => {
 }
 
 // 推荐歌单（登录）
-export const getUserRecommendSongs:any = (params ?:Object) => http.post('/recommend/resource', params)
+export const getUserRecommendSheet:any = (params ?:Object) => http.post('/recommend/resource', params)

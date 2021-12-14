@@ -4,4 +4,8 @@ import http from '@/http'
 export const getIndexpageInfo:any = (params ?:Object) => http.post('/homepage/block/page', params)
 
 // 推荐歌单
-export const getRecommendSongs:any = (params ?:Object) => http.post('/personalized', params)
+export const getRecommendSheet:any = (params ?:Object) => http.post('/personalized', params)
+
+// 推荐新音乐
+export const getRecommentNewSongs:any = (params ?:Object) => http.post('/personalized/newsong', params)
+

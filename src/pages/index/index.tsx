@@ -1,7 +1,8 @@
 import { View, Text } from '@tarojs/components'
 import { AtInput, AtTabs, AtTabsPane, AtIcon } from 'taro-ui'
 import swiper from './swiper'
-import recommendSongs from './recommendSongs'
+import recommendSheet from './recommendSheet'
+import recommendNewSongs from './recommendNewSongs'
 import './index.scss'
 import { useState } from 'react'
 
@@ -34,7 +35,7 @@ function Index (props: IProps) {
           placeholderClass="header-input-placeholder"></AtInput>
         <View className="iconfont icon-musiclist"></View>
       </View>
-      <AtTabs current={tabIdx} tabList={tabList} onClick={setTabIdx}>
+      <AtTabs className="tabs" current={tabIdx} tabList={tabList} onClick={setTabIdx}>
         <AtTabsPane current={tabIdx} index={0} >
           {swiper()}
           <View className="menu">
@@ -57,7 +58,8 @@ function Index (props: IProps) {
               云音乐热歌榜
             </View>
           </View>
-          {recommendSongs()}
+          {recommendSheet()}
+          {recommendNewSongs()}
         </AtTabsPane>
       </AtTabs>
     </View>
