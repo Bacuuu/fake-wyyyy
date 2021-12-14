@@ -3,6 +3,7 @@ import { AtInput, AtTabs, AtTabsPane, AtIcon } from 'taro-ui'
 import swiper from './swiper'
 import recommendSheet from './recommendSheet'
 import recommendNewSongs from './recommendNewSongs'
+import sheetTab from './sheetTab'
 import './index.scss'
 import { useState } from 'react'
 
@@ -65,7 +66,8 @@ function Index (props: IProps) {
         </AtTabsPane>
         <AtTabsPane current={tabIdx} index={1}>
           <View className="tab-content">
-            <Text>精品歌单123</Text>
+            <Text>全部歌单</Text>
+            {sheetTab()}
           </View>
         </AtTabsPane>
       </AtTabs>
