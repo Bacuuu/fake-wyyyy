@@ -1,4 +1,4 @@
-import { View, Text } from '@tarojs/components'
+import { View, Text, ScrollView } from '@tarojs/components'
 import { AtInput, AtTabs, AtTabsPane, AtIcon } from 'taro-ui'
 import swiper from './swiper'
 import recommendSheet from './recommendSheet'
@@ -38,7 +38,7 @@ function Index (props: IProps) {
       </View>
       <AtTabs className="tabs" current={tabIdx} tabList={tabList} onClick={setTabIdx}>
         <AtTabsPane current={tabIdx} index={0} >
-          <View className="tab-content">
+          <ScrollView scrollY className="tab-content">
             {swiper()}
             <View className="menu">
               <View className="menu-item">
@@ -62,13 +62,10 @@ function Index (props: IProps) {
             </View>
             {recommendSheet()}
             {recommendNewSongs()}
-          </View>
+          </ScrollView>
         </AtTabsPane>
         <AtTabsPane current={tabIdx} index={1}>
-          <View className="tab-content">
-            <Text>全部歌单</Text>
-            {sheetTab()}
-          </View>
+          {sheetTab()}
         </AtTabsPane>
       </AtTabs>
     </View>
