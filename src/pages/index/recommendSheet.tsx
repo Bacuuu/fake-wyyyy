@@ -9,21 +9,22 @@ import { numberFormatByZh } from "@/util"
 const recommendSheet = function () {
   const user = useSelector((state:IStoreType) => state.user)
   const [songSheet, setSongSheet] = useState([])
-  let req:any = {}
+  const [req, setReq] = useState(new Function())
 
   useDidShow(() => {
     let _req = user.userInfo ? getUserRecommendSheet : getRecommendSheet
-    // 如果没有改变
+    // 如果改变
     if (req !== _req) {
-      req = _req
-      req({ limit: 6 }).then(r => {
+      // 这里好坑，这里想设置新值为函数，但是作为回调函数去运行了，返回了promise
+      setReq(() => _req)
+      _req({ limit: 6 }).then(r => {
         setSongSheet(r.result || r.recommend.slice(0, 6))
       })
     }
   })
 
   const jumper = function () {
-
+    
   }
 
   return (
