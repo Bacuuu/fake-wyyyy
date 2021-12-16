@@ -88,16 +88,13 @@ function mergeCookie (defaultcookie:string, setCookie:string):string {
 }
 
 /**
- * 响应拦截器
+ * 请求拦截器
  * @param chain 请求对象数据
  * @returns 处理后的请求
  */
 function requestInterceptor (chain) {
   const { requestParams } = chain
-  console.log(Taro.getStorageSync('cookie'))
-  // requestParams.header.cookie = Taro.getStorageSync('cookie')
   requestParams.data.cookie = Taro.getStorageSync('cookie')
-  // requestParams.header.Cookie = 'ahaddddd'
   changeLoading('on')
   return chain.proceed(requestParams)
     .then(responseSuccessInterceptor)
@@ -118,7 +115,6 @@ const responseSuccessInterceptor = function (response) {
   // if (cookies) {
   Taro.setStorageSync('cookie', mergeCookie(defaultCookie, cookies.join('')))
   // }
-  // response.header['Set-Cookie'] = 'a=323;'
   changeLoading('off')
   judgeStatusCode(statusCode, errMsg)
   return {
