@@ -1,6 +1,7 @@
 export default {
   pages: [
     'pages/index/index',
+    'pages/sheet/sheetList',
     'pages/home/home',
     'pages/us/us',
     'pages/me/me',
