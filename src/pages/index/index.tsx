@@ -1,9 +1,9 @@
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtInput, AtTabs, AtTabsPane, AtIcon } from 'taro-ui'
-import swiper from './swiper'
-import recommendSheet from './recommendSheet'
-import recommendNewSongs from './recommendNewSongs'
-import sheetTab from './sheetTab'
+import swiper from '../../components/index/swiper'
+import recommendSheet from '../../components/index/recommendSheet'
+import recommendNewSongs from '../../components/index/recommendNewSongs'
+import sheetTab from '../../components/sheet/sheetTab'
 import './index.scss'
 import { useState } from 'react'
 
