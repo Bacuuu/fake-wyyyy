@@ -23,12 +23,12 @@ const mytabs = function ({children, tabs, className}) {
     }
   }
   return (
-    <View className={`tabs-wrap ${className}`}>
-      <View className="tabs-header no-scroll">
+    <View className={`mytabs-wrap ${className}`}>
+      <View className="mytabs-header no-scroll">
         {
           tabs.map((i, index) => {
             return (
-              <View className={`tabs-header_item ${activeTab === index ? 'is-active' : ''}`} style={`width:${100 / tabs.length}%`} onClick={() =>tabClick(index)}>
+              <View className={`mytabs-header_item ${activeTab === index ? 'is-active' : ''}`} style={`width:${100 / tabs.length}%`} onClick={() =>tabClick(index)}>
                 {i}
               </View>
             )
@@ -37,7 +37,7 @@ const mytabs = function ({children, tabs, className}) {
       </View>
       {tabInner.map(i => {
         return (
-          <View className={`tabs-content ${i.props.index === activeTab ? 'is-active' : '' }`}>
+          <View className={`mytabs-content ${i.props.index === activeTab ? 'is-active' : '' }`}>
             {i}
           </View>
         )
