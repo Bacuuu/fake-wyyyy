@@ -1,0 +1,46 @@
+.tab-wrap {
+  width: 100%;
+}
+.tabs-header {
+  position: relative;
+  width: 100%;
+  display: flex;
+  height: 28px;
+  overflow-x: auto;
+  &_item {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 0;
+      height: 1PX;
+      background: #e93b3d;
+      transition: all .3s ease;
+    }
+    &.is-active {
+      color: #e93b3d;
+      &::before {
+        width: 100%;
+      }
+    }
+    
+  }
+}
+.tabs-content {
+  display: none;
+  &.is-active {
+    display: inline-block;
+    transition: all .5s ease;
+  }
+  &.on-left {
+    
+  }
+  &.on-right {
+
+  }
+}
