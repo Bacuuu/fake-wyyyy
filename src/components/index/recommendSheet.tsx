@@ -38,7 +38,6 @@ const recommendSheet = function () {
                 <View className="block-item_img" style={`background-image: url(${i.picUrl})`}>
                   <Text className="block-item_hot">{numberFormatByZh(i.playcount || i.playCount, [5])}</Text>
                 </View>
-                {/* <Image  mode="aspectFit" ></Image> */}
                 <Text className="block-item_title">{i.name}</Text>
               </View>
             )

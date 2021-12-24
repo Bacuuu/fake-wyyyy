@@ -5,7 +5,8 @@ import { usePageScroll } from "@tarojs/taro"
 import { useEffect, useState } from "react"
 import { useLazyLoad } from "@/hooks"
 import { numberFormatByZh } from '@/util'
-import { AtIcon } from "taro-ui"
+import { AtIcon, AtFloatLayout, AtTag } from "taro-ui"
+import './sheetTab.scss'
 const sheetTab = function () {
   const [sheet, setSheet] = useState([])
   const [tags, setTags] = useState([])
@@ -57,6 +58,17 @@ const sheetTab = function () {
         })
       }
       </View>
+      <AtFloatLayout isOpened={isShowActionSheet} onClose={() => setShowActionSheet(false)}>
+        <View className="float-tags">
+          {tags.map(i => {
+            return (
+              <View className="float-tags__item">
+                <AtTag>{i}</AtTag>
+              </View>
+            )
+          })}
+        </View>
+      </AtFloatLayout>
     </ScrollView>
   )
 }
