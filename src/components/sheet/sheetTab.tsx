@@ -1,36 +1,79 @@
 import Taro from '@tarojs/taro'
 import { getGreatSheet, getSheetTag } from "@/api/music"
 import { ScrollView, View, Text } from "@tarojs/components"
-import { usePageScroll } from "@tarojs/taro"
 import { useEffect, useState } from "react"
 import { useLazyLoad } from "@/hooks"
 import { numberFormatByZh } from '@/util'
 import { AtIcon, AtFloatLayout, AtTag } from "taro-ui"
 import './sheetTab.scss'
 const sheetTab = function () {
-  const [sheet, setSheet] = useState([])
+  const [sheet, setSheet] = useState([] as Array<Object>)
   const [tags, setTags] = useState([])
+  const [checkedTags, setCheckedTags] = useState([] as Array<string>)
   const [isShowActionSheet, setShowActionSheet] = useState(false)
-  usePageScroll((e) => {
-    console.log(e)
-  })
+  const [updateTime, setUpdateTime] = useState('')
+  // 可以正常加载 1 | 加载中 2 | 无加载内容 3
+  const [loadStatus, setLoadStatus] = useState(1)
+
+  function fetchSheetList(append = true) {
+    if (loadStatus !== 1) {
+      return
+    }
+    setLoadStatus(2)
+    getGreatSheet({
+        limit: '20',
+        cat: checkedTags.join(','),
+        before: updateTime
+      })
+      .then(r => {
+        if (r.playlists.length < 20) {
+          setLoadStatus(3)
+        }
+        if (append) {
+          setSheet(list => [...list, ...r.playlists])
+        } else {
+          setSheet(r.playlists)
+        }
+        setUpdateTime(r.playlists.slice(-1)[0].updateTime)
+      })
+      .finally(() => {
+        setLoadStatus(val => {
+          return val === 3 ? val : 1
+        })
+      })
+  }
+
   useEffect(() => {
     getSheetTag()
       .then(r => {
         setTags(r.tags.map(i => i.name))
       })
-    getGreatSheet({ limit: '20' })
-      .then(r => {
-        setSheet(r.playlists)
-      })
   }, [])
+  useEffect(() => {
+    setLoadStatus(1)
+    setUpdateTime('')
+    fetchSheetList(false)
+  }, [checkedTags])
   let onScroll = useLazyLoad(() => {
-    console.log('nice')
+    // 滚动底部200px的回调事件
+    fetchSheetList()
   }, 200, '.tab-content')
   const clickSheetItem = function () {
     Taro.navigateTo({
       url: '/pages/sheet/sheetList'
     })
+  }
+  const clickTagItem = function (e:{active: boolean, name: string}) {
+    if (e.active) {
+      const index = checkedTags.indexOf(e.name)
+      setCheckedTags(tag => {
+        const _tag = tag.slice()
+        _tag.splice(index, 1)
+        return _tag
+      })
+    } else {
+      setCheckedTags(tag => [...tag, e.name])
+    }
   }
   const showActionSheet = function () {
     setShowActionSheet(true)
@@ -63,7 +106,7 @@ const sheetTab = function () {
           {tags.map(i => {
             return (
               <View className="float-tags__item">
-                <AtTag>{i}</AtTag>
+                <AtTag name={i} active={checkedTags.includes(i)} onClick={clickTagItem}>{i}</AtTag>
               </View>
             )
           })}
