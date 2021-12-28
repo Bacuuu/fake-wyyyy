@@ -1,8 +1,8 @@
 import Taro from '@tarojs/taro'
 import { useReady } from "@tarojs/taro"
 import { useState } from 'react'
-
-export const useLazyLoad = function (cb:Function, toBottom?:number, el?:string) {
+import { throttle } from 'lodash'
+export const useLazyLoad = function (cb:Function, toBottom = 200, el?:string, time = 300) {
   const [height, setHeight] = useState(0)
   useReady(() => {
     const query = Taro.createSelectorQuery()
@@ -14,11 +14,11 @@ export const useLazyLoad = function (cb:Function, toBottom?:number, el?:string) 
       setHeight(res[0].height)
     })
   })
-  const onScroll = function (e) {
+  const onScroll = throttle(function (e) {
     const { scrollTop, scrollHeight } = e.detail
-    if (scrollTop + height > scrollHeight - (toBottom || 200)) {
+    if (scrollTop + height > scrollHeight - toBottom) {
       cb()
     }
-  }
+  }, time)
   return onScroll
 }
