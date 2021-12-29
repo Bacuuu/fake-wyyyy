@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import { getGreatSheet, getSheetTag } from "@/api/music"
 import { ScrollView, View, Text } from "@tarojs/components"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useLazyLoad } from "@/hooks"
 import { numberFormatByZh } from '@/util'
 import { AtIcon, AtFloatLayout, AtTag } from "taro-ui"
@@ -11,35 +11,35 @@ const sheetTab = function () {
   const [tags, setTags] = useState([])
   const [checkedTags, setCheckedTags] = useState([] as Array<string>)
   const [isShowActionSheet, setShowActionSheet] = useState(false)
-  const [updateTime, setUpdateTime] = useState('')
+  const updateTime = useRef('')
   // 可以正常加载 1 | 加载中 2 | 无加载内容 3
-  const [loadStatus, setLoadStatus] = useState(1)
+  const loadStatus = useRef(1)
 
   function fetchSheetList(append = true) {
-    if (loadStatus !== 1) {
+    if (loadStatus.current !== 1) {
       return
     }
-    setLoadStatus(2)
+    loadStatus.current = 2
     getGreatSheet({
         limit: '20',
         cat: checkedTags.join(','),
-        before: updateTime
+        before: updateTime.current
       })
       .then(r => {
         if (r.playlists.length < 20) {
-          setLoadStatus(3)
+          loadStatus.current = 3
         }
         if (append) {
           setSheet(list => [...list, ...r.playlists])
         } else {
           setSheet(r.playlists)
         }
-        setUpdateTime(r.playlists.slice(-1)[0].updateTime)
+        updateTime.current = r.playlists.length ? r.playlists.slice(-1)[0].updateTime : ''
       })
       .finally(() => {
-        setLoadStatus(val => {
-          return val === 3 ? val : 1
-        })
+        if (loadStatus.current !== 3) {
+          loadStatus.current = 1
+        }
       })
   }
 
@@ -50,8 +50,8 @@ const sheetTab = function () {
       })
   }, [])
   useEffect(() => {
-    setLoadStatus(1)
-    setUpdateTime('')
+    loadStatus.current = 1
+    updateTime.current = ''
     fetchSheetList(false)
   }, [checkedTags])
   let onScroll = useLazyLoad(() => {
