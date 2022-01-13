@@ -7,7 +7,7 @@
 ## taro request修改request的content-type，携带query参数
 + 方法：
   + 在header参数中设置，dataType是设置返回的数据格式
-  + 携带query参数，在url后进行拼接👂
+  + 携带query参数，在url后进行拼接
 ```typescript
 {
   header: {
