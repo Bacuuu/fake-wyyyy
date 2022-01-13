@@ -8,3 +8,6 @@ export const getGreatSheet = (params?: {cat?: String, limit?:String, before?: St
 
 // 获取歌单tags
 export const getSheetTag = () => http.post('/playlist/highquality/tags')
+
+// 歌单详情
+export const getSheetDetail = (params: {id: string, s?: number}) => http.post('/playlist/detail', params)

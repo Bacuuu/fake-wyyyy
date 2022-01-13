@@ -58,9 +58,9 @@ const sheetTab = function () {
     // 滚动底部200px的回调事件
     fetchSheetList()
   }, 200, '.tab-content')
-  const clickSheetItem = function () {
+  const clickSheetItem = function (id) {
     Taro.navigateTo({
-      url: '/pages/sheet/sheetList'
+      url: '/pages/sheet/sheetList?id=' + id,
     })
   }
   const clickTagItem = function (e:{active: boolean, name: string}) {
@@ -90,7 +90,7 @@ const sheetTab = function () {
       {
         sheet.map((i:any) => {
           return (
-            <View className="sheet-item" onClick={clickSheetItem}>
+            <View className="sheet-item" onClick={() => clickSheetItem(i.id)}>
               <View className="sheet-item_bg" style={`background-image: url(${i.coverImgUrl})`}>
                 <Text className="sheet-item_hot"><AtIcon value='play' size='14' color='#FFF'></AtIcon>{numberFormatByZh(i.playCount)}</Text>
                 <Text className="sheet-item_tags">{i.tags.slice(0, 3).join(' | ')}</Text>
