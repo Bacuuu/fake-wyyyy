@@ -11,3 +11,6 @@ export const getSheetTag = () => http.post('/playlist/highquality/tags')
 
 // 歌单详情
 export const getSheetDetail = (params: {id: string, s?: number}) => http.post('/playlist/detail', params)
+
+// 根据歌单id获取歌曲
+export const getSongsBySheetId = (params: {id: string}) => http.post('/playlist/track/all', params)
