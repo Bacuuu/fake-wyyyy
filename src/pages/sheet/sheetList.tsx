@@ -1,7 +1,9 @@
 import { View, Image, Text } from "@tarojs/components"
 import { useEffect, useState } from "react"
-import { getSheetDetail } from "@/api/music"
+import { getSheetDetail, getSongsBySheetId } from "@/api/music"
 import { useRouter } from "@tarojs/taro"
+import { numberFormatByZh } from '@/util'
+import { SongsList } from '@/components/common/SongsList'
 import './sheetList.scss'
 interface Irouter {
   params: {
@@ -14,32 +16,48 @@ const sheetList = function () {
   const [baseInfo, setBaseInfo] = useState({
     name: '',
     coverImgUrl: '',
-    commentCount: 0,
     description: '',
     createTime: '',
+    subscribedCount: 0,
+    shareCount: 0,
+    commentCount: 0,
     creator: {
       nickname: '',
       avatarUrl: ''
     }
   })
+  const [songs, setSongs] = useState([])
   useEffect(() => {
-    console.log(router.params.id)
     getSheetDetail({
       id: router.params.id
     }).then(r => {
-      const { name, coverImgUrl, description } = r.playlist
+      const { name, coverImgUrl, description, subscribedCount, shareCount, commentCount } = r.playlist
       const { nickname, avatarUrl } = r.playlist.creator
       setBaseInfo({
         name,
         coverImgUrl,
         description,
-        commentCount: 0,
+        subscribedCount,
+        shareCount,
+        commentCount,
         createTime: '',
         creator: {
           nickname,
           avatarUrl
         }
       })
+    })
+    getSongsBySheetId({
+      id: router.params.id
+    }).then(r => {
+      setSongs(r.songs.map(i => {
+        return {
+          name: i.name,
+          creator: i.ar[0].name,
+          from: i.al.name,
+          id: i.id
+        }
+      }))
     })
   }, [])
   return (
@@ -60,17 +78,20 @@ const sheetList = function () {
         <View className="operation">
           <View className="operation-item">
             <Image src={require('@/assets/images/shoucang.png')}></Image>
+            <Text>{numberFormatByZh(baseInfo.subscribedCount)}</Text>
           </View>
           <View className="operation-item">
             <Image src={require('@/assets/images/pinglun.png')}></Image>
+            <Text>{numberFormatByZh(baseInfo.commentCount)}</Text>
           </View>
           <View className="operation-item">
             <Image src={require('@/assets/images/fenxiang.png')}></Image>
-          </View>
-          <View className="operation-item">
-            <Image src={require('@/assets/images/xiazai.png')}></Image>
+            <Text>{numberFormatByZh(baseInfo.shareCount)}</Text>
           </View>
         </View>
+      </View>
+      <View className="sheetlist-songlist">
+        <SongsList list={songs}></SongsList>
       </View>
     </View>
   )
