@@ -5,14 +5,16 @@ import { throttle } from 'lodash'
 export const useLazyLoad = function (cb:Function, toBottom = 200, el?:string, time = 300) {
   const [height, setHeight] = useState(0)
   useReady(() => {
-    const query = Taro.createSelectorQuery()
-    const _el = el || '#loading-content'
-    query.select(_el)
-    .boundingClientRect()
-    .exec(res => {
-      if (!res[0]) throw new Error("未找到元素"+ _el);
-      setHeight(res[0].height)
-    })
+    setTimeout(() => {
+      const query = Taro.createSelectorQuery()
+      const _el = el || '#loading-content'
+      query.select(_el)
+      .boundingClientRect()
+      .exec(res => {
+        if (!res[0]) throw new Error("未找到元素"+ _el);
+        setHeight(res[0].height)
+      })
+    }, 0);
   })
   const onScroll = throttle(function (e) {
     const { scrollTop, scrollHeight } = e.detail
