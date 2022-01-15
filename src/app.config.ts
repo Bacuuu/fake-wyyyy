@@ -6,7 +6,8 @@ export default {
     'pages/us/us',
     'pages/me/me',
     'pages/me/login',
-    'pages/me/loginbyphone'
+    'pages/me/loginbyphone',
+    'pages/musicplay/musicPlay'
   ],
   window: {
     backgroundTextStyle: 'light',
