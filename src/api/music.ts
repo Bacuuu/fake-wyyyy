@@ -14,3 +14,6 @@ export const getSheetDetail = (params: {id: string, s?: number}) => http.post('/
 
 // 根据歌单id获取歌曲
 export const getSongsBySheetId = (params: {id: string}) => http.post('/playlist/track/all', params)
+
+// 收藏/取消收藏歌单
+export const collectSheet = (params: {t: 1 | 2,id: string}) => http.post('/playlist/subscribe', params)

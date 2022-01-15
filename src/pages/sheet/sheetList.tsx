@@ -1,6 +1,6 @@
 import { View, Image, Text } from "@tarojs/components"
 import { useEffect, useState } from "react"
-import { getSheetDetail, getSongsBySheetId } from "@/api/music"
+import { getSheetDetail, getSongsBySheetId, collectSheet } from "@/api/music"
 import { useRouter } from "@tarojs/taro"
 import { numberFormatByZh } from '@/util'
 import { SongsList } from '@/components/common/SongsList'
@@ -13,6 +13,24 @@ interface Irouter {
 }
 const sheetList = function () {
   const router:Irouter = useRouter()
+  const collect = function () {
+    const c = collected
+    collectSheet({
+      id: router.params.id,
+      t: c ? 2 : 1
+    }).then(r => {
+      if (r.code === 200) {
+        setCollected(e => !e)
+        setBaseInfo(e => {
+          return {
+            ...e,
+            subscribedCount: e.subscribedCount + (c ? -1 : 1)
+          }
+        })
+      }
+    })
+  }
+  const [collected, setCollected] = useState(false)
   const [baseInfo, setBaseInfo] = useState({
     name: '',
     coverImgUrl: '',
@@ -31,8 +49,9 @@ const sheetList = function () {
     getSheetDetail({
       id: router.params.id
     }).then(r => {
-      const { name, coverImgUrl, description, subscribedCount, shareCount, commentCount } = r.playlist
+      const { name, coverImgUrl, description, subscribedCount, shareCount, commentCount, subscribed } = r.playlist
       const { nickname, avatarUrl } = r.playlist.creator
+      setCollected(subscribed)
       setBaseInfo({
         name,
         coverImgUrl,
@@ -76,8 +95,8 @@ const sheetList = function () {
           </View>
         </View>
         <View className="operation">
-          <View className="operation-item">
-            <Image src={require('@/assets/images/shoucang.png')}></Image>
+          <View className="operation-item" onClick={collect}>
+            <Image src={collected ? require('@/assets/images/shoucang-red.png') : require('@/assets/images/shoucang.png')}></Image>
             <Text>{numberFormatByZh(baseInfo.subscribedCount)}</Text>
           </View>
           <View className="operation-item">
