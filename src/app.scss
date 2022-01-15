@@ -9,3 +9,9 @@
 .no-scroll::-webkit-scrollbar {
   display: none;
 }
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
