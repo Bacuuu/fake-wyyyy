@@ -3,5 +3,50 @@
 }
 .list-item {
   width: 100%;
-  height: 30px;
+  height: 46px;
+  display: flex;
+  .index {
+    width: 10%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .item-right {
+    width: 90%;
+    height: 100%;
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    .info {
+      width: 84%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      .name {
+        width: 100%;
+        height: 26px;
+        line-height: 26px;
+        font-size: 13px;
+      }
+      .from {
+        width: 100%;
+        height: 13px;
+        line-height: 13px;
+        font-size: 10px;
+        color: rgb(153, 153, 153);
+      }
+    }
+    .operation {
+      width: 16%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .mv {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
 }
