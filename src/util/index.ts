@@ -1,3 +1,5 @@
+import Taro from '@tarojs/taro'
+// 拦截器中 响应参数合并过滤
 export function filterBeforeMergeResponse (res) {
   if(res.code !== 200) {
     return {}
@@ -7,6 +9,7 @@ export function filterBeforeMergeResponse (res) {
   return res
 }
 
+// 数字标准化为中文换算
 export function numberFormatByZh (num, flag:number[] = []) {
   if (num < 10 ** (flag[0] || 4)) {
     return num.toFixed().toString()
@@ -15,4 +18,12 @@ export function numberFormatByZh (num, flag:number[] = []) {
   } else {
     return (num / 10 ** 8).toFixed(2) + '亿'
   }
+}
+
+// 提示功能暂未开发
+export function featureDelayMsg () {
+  Taro.atMessage({
+    message: '功能暂未开发',
+    type: 'info'
+  })
 }
