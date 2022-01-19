@@ -1,6 +1,6 @@
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtInput, AtTabs, AtTabsPane, AtIcon  } from 'taro-ui'
-import { MyTabs, MyTabItem } from '@/components/common/Mytabs'
+import Tab from '@/components/common/Mytabs'
 import Swiper from '../../components/index/swiper'
 import RecommendSheet from '../../components/index/recommendSheet'
 import RecommendNewSongs from '../../components/index/recommendNewSongs'
@@ -29,8 +29,8 @@ function Index (props: IProps) {
           placeholderClass="header-input-placeholder"></AtInput>
         <View className="iconfont icon-musiclist"></View>
       </View>
-      <MyTabs className="tabs" tabs={tabList}>
-        <MyTabItem index={0}>
+      <Tab.MyTabs className="tabs" tabs={tabList}>
+        <Tab.MyTabItem index={0}>
           <ScrollView scrollY className="tab-content">
             <Swiper></Swiper>
             <View className="menu">
@@ -56,11 +56,11 @@ function Index (props: IProps) {
             <RecommendSheet />
             <RecommendNewSongs />
           </ScrollView>
-        </MyTabItem>
-        <MyTabItem index={1}>
+        </Tab.MyTabItem>
+        <Tab.MyTabItem index={1}>
           <SheetTab></SheetTab>
-        </MyTabItem>
-      </MyTabs>
+        </Tab.MyTabItem>
+      </Tab.MyTabs>
     </View>
   )
 }
