@@ -21,7 +21,8 @@ export function numberFormatByZh (num, flag:number[] = []) {
 }
 
 // 提示功能暂未开发
-export function featureDelayMsg () {
+export function featureDelayMsg (e) {
+  e.stopPropagation()
   Taro.atMessage({
     message: '功能暂未开发',
     type: 'info'
