@@ -28,3 +28,10 @@ export function featureDelayMsg (e) {
     type: 'info'
   })
 }
+export const Jumper = {
+  playSong: function (id) {
+    Taro.navigateTo({
+      url: '/pages/musicplay/musicPlay' + '?songId=' + id
+    })
+  }
+}
