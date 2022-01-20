@@ -8,8 +8,7 @@ import './sheetList.scss'
 interface Irouter {
   params: {
     id: string
-  },
-  path: string
+  }
 }
 const sheetList = function () {
   const router:Irouter = useRouter()
