@@ -3,6 +3,15 @@ import http from '@/http'
 // 播放url
 export const getPlayUrl = (params:{ id:String, br ?:String }) => http.post('/song/url', params)
 
+// 获取无损url，使非 VIP 账号获取这些歌曲的无损音频
+export const getPerfectPlayUrl = (params:{ id:String, br ?:String }) => http.post('/song/download/url', params)
+
+// 获取歌词
+export const getLyric = (params: {id: String}) => http.post('/lyric', params)
+
+// 获取歌曲详情
+export const getSongDetail = (params: {ids: String}) => http.post('/song/detail', params)
+
 // 获取推荐歌单
 export const getGreatSheet = (params?: {cat?: String, limit?:String, before?: String}) => http.post('/top/playlist/highquality', params)
 
