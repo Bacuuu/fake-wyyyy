@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react"
 import { useLazyLoad } from "@/hooks"
 import { numberFormatByZh } from '@/util'
 import { AtIcon, AtFloatLayout, AtTag } from "taro-ui"
+import { Jumper } from '@/util'
 import './sheetTab.scss'
 const sheetTab = function () {
   const [sheet, setSheet] = useState([] as Array<Object>)
@@ -59,9 +60,7 @@ const sheetTab = function () {
     fetchSheetList()
   }, 200, '.tab-content')
   const clickSheetItem = function (id) {
-    Taro.navigateTo({
-      url: '/pages/sheet/sheetList?id=' + id,
-    })
+    Jumper.toSheet(id)
   }
   const clickTagItem = function (e:{active: boolean, name: string}) {
     if (e.active) {

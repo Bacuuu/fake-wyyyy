@@ -28,10 +28,18 @@ export function featureDelayMsg (e) {
     type: 'info'
   })
 }
+
 export const Jumper = {
+  // 跳转到歌曲播放页面
   playSong: function (id) {
     Taro.navigateTo({
       url: '/pages/musicplay/musicPlay' + '?songId=' + id
+    })
+  },
+  // 跳转到歌单
+  toSheet: function (id) {
+    Taro.navigateTo({
+      url: '/pages/sheet/sheetList?id=' + id,
     })
   }
 }
