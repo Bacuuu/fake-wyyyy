@@ -1,6 +1,6 @@
 import { View, Image } from "@tarojs/components"
 import { useEffect, useState } from "react"
-import { getSongDetail, getLyric, getPlayUrl } from '@/api/music'
+import { getSongDetail, getLyric } from '@/api/music'
 import Taro, { useRouter } from "@tarojs/taro"
 import { AtMessage } from "taro-ui"
 import { featureDelayMsg } from '@/util'
@@ -35,9 +35,6 @@ const musicPlay =  function () {
         })
       })
     getLyric({id: router.params.songId})
-    getPlayUrl({
-      id: router.params.songId
-    })
   }, [])
   return (
     <View className="play-wrap">
@@ -55,7 +52,7 @@ const musicPlay =  function () {
         </View>
       </View>
       <View className="play-menu">
-        <PlayMenu></PlayMenu>
+        <PlayMenu songId={songInfo.id}></PlayMenu>
       </View>
       <AtMessage />
     </View>
