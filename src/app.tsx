@@ -6,6 +6,9 @@ import { AtMessage } from 'taro-ui'
 import '@/assets/css/taro-ui.css'
 import '@/assets/iconfont.css'
 import './app.scss'
+import dayjs from 'dayjs'
+import Duration from 'dayjs/plugin/Duration'
+dayjs.extend(Duration)
 const store = configStore()
 function App (props: any) {
   // this.props.children 是将要会渲染的页面
