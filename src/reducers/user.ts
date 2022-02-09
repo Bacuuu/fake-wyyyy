@@ -8,14 +8,11 @@ export default function user (state = INITIAL_STATE, action) {
       return {
         userInfo: action.payload
       }
-      break;
     case RESET:
       return {
         userInfo: null
       }
-      break;
     default:
       return state
-      break;
   }
 }
