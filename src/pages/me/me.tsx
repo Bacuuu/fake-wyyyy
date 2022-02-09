@@ -15,9 +15,19 @@ function Me (props: IProps) {
   const user = useSelector((state:IStoreType) => state.user)
   const dispatch = useDispatch()
   let [hasLogin, setHasLogin] = useState(user.userInfo !== null)
+  let [hasCheckin, setHasCheckin] = useState(false)
   useEffect(() => {
     setHasLogin(user.userInfo !== null)
   }, [user])
+
+  useEffect(() => {
+    if (hasLogin) {
+      api.getUserCheckinStatus()
+        .then(r => {
+          setHasCheckin(r.data.today.todaySignedIn)
+        })
+    }
+  }, [hasLogin])
 
   function menuList () {
     const menu = [{
@@ -107,7 +117,7 @@ function Me (props: IProps) {
                     <View>{user?.userInfo?.profile?.nickname}</View>
                     <AtTag>Lv.{user?.userInfo?.level?.level}</AtTag>
                   </View>
-                  <AtButton type="primary" circle={false} className="ding" onClick={() => signin()}>签到</AtButton>
+                  <AtButton type='primary' circle={false} className="ding" disabled={hasCheckin} onClick={() => signin()}>{hasCheckin ? '已签到' : '签到'}</AtButton>
                   {/* <AtButton onClick={getuser}>123</AtButton> */}
                 </View>
                 <View className="user-info__bottom">

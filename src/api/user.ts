@@ -15,6 +15,11 @@ export const getUserAccount = () => {
   return http.post('/user/account')
 }
 
+// 获取用户是否签到
+export const getUserCheckinStatus = () => {
+  return http.post('/signin/progress')
+}
+
 // 获取用户信息 , 歌单，收藏，mv, dj 数量
 export const getUserMusicInfo = () => {
   return http.post('/user/subcount')
