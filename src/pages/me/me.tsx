@@ -83,6 +83,7 @@ function Me (props: IProps) {
     api.dailySignin()
       .then(r => {
         if (r.code === 200) {
+          setHasCheckin(true)
           Taro.atMessage({
             type: 'success',
             message: '签到成功'
