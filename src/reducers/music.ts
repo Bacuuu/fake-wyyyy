@@ -1,4 +1,4 @@
-import { PLAY, PAUSE, ADD, CLEAN, TOGGLE, UPDATE_PLAYING_SONG } from "../constants/music";
+import { PLAY, PAUSE, ADD, CLEAN, UPDATE_PLAYING_SONG, UNSHIFT } from "../constants/music";
 import { IStoreMusicType } from "@/types/store";
 const INITIAL_STATE:IStoreMusicType = {
   // 音乐列表状态管理
@@ -68,6 +68,14 @@ export default function music (state = INITIAL_STATE, action) {
         musicList: {
           ...state.musicList,
           list: [...state.musicList.list, action.payload]
+        }
+      })
+    // 向头部添加歌曲
+    case UNSHIFT:
+      return Object.assign({}, state, {
+        musicList: {
+          ...state.musicList,
+          list: [action.payload, ...state.musicList.list]
         }
       })
     // 清空播放列表

@@ -3,7 +3,7 @@ import { View, Text, Image } from '@tarojs/components'
 import { AtSlider } from 'taro-ui'
 import './index.scss'
 import { useEffect, useState } from 'react'
-import { playNewSong, seek, pause, play } from '@/actions/music'
+import { playNewSong, seek, pause, play, unshiftToList } from '@/actions/music'
 import { useSelector, useDispatch } from 'react-redux'
 import { IStoreType } from '@/types/store'
 import { throttle } from 'lodash'
@@ -14,7 +14,13 @@ const playMenu = function (props) {
   // 根据歌曲id初始化播放
   useEffect(() => {
     if (!props.songId) return
-    dispatch(playNewSong(props.songId))
+    const ids = music.musicList.list.map(i => i.id)
+    let flag = false
+    // 不存在
+    if (ids.indexOf(props.songId) === -1) {
+      flag = true
+    }
+    dispatch(playNewSong(props.songId, flag))
   }, [props.songId])
   // 初始化播放时间，放入redux中进行管理，但是对于播放进度状态并非实时更新
   // 对于正常的播放来说，组件内使用定时器独自进行更新
@@ -34,6 +40,13 @@ const playMenu = function (props) {
     audioManage.onTimeUpdate(throttle(() => {
       setProgressVal(audioManage.currentTime)
     }, 1000))
+    audioManage.onEnded(() => {
+      // todo 这里当前播放歌曲会被移除
+      const idx = music.musicList.list.findIndex(i => i.id === music.musicInfo.id)
+      console.log(music.musicList.list)
+      const { id } = music.musicList.list[idx + 1]
+      dispatch(playNewSong(id))
+    })
   }, [])
   return (
     <View className="playmenu-wrap">

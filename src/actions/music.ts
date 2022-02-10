@@ -1,11 +1,10 @@
 import { getLyric, getPlayUrl, getSongDetail } from '@/api/music'
-import { PLAY, PAUSE, UPDATE_PLAYING_SONG } from '@/constants/music'
+import { PLAY, PAUSE, UPDATE_PLAYING_SONG, ADD, UNSHIFT } from '@/constants/music'
+import { IMusic } from '@/types/store'
 import { millMinutes2Hms } from '@/util'
 import Taro from '@tarojs/taro'
 const audioManage = Taro.getBackgroundAudioManager()
-// audioManage.onTimeUpdate(throttle(() => {
-//   console.log(audioManage.currentTime)
-// }, 1000))
+
 
 // 播放
 export const play = () => {
@@ -33,20 +32,6 @@ export const pause = () => {
   }
 }
 
-// 播放
-const miniPlay = () => {
-  return {
-    type: PLAY
-  }
-}
-
-//暂停
-const miniPause = () => {
-  return {
-    type: PAUSE
-  }
-}
-
 // 控制进度
 export const seek = (params: {dt: number}) => {
   const { dt } = params
@@ -61,7 +46,8 @@ export const seek = (params: {dt: number}) => {
   }
 }
 
-export const playNewSong = id => {
+// 根据id播放新的歌曲
+export const playNewSong = (id:string, flag?:boolean) => {
   return async dispatch => {
     const detail = await getSongDetail({
       ids: id
@@ -79,6 +65,11 @@ export const playNewSong = id => {
       coverImgUrl: al.picUrl,
       title: al.name
     })
+    // 插入歌曲队列
+    flag && dispatch(unshiftToList({
+      id,
+      name: al.name
+    }))
     dispatch(updatePlayingSong({
       id,
       name: al.name,
@@ -92,9 +83,39 @@ export const playNewSong = id => {
   }
 }
 
-export const updatePlayingSong = params => {
+// 添加歌曲到播放列表
+export const addToList = (params:IMusic) => {
+  return {
+    type: ADD,
+    payload: params
+  }
+}
+
+// 头部添加到播放列表
+export const unshiftToList = (params:IMusic) => {
+  return {
+    type: UNSHIFT,
+    payload: params
+  }
+}
+
+const updatePlayingSong = params => {
   return {
     type: UPDATE_PLAYING_SONG,
     payload: params
+  }
+}
+
+// 播放
+const miniPlay = () => {
+  return {
+    type: PLAY
+  }
+}
+
+// 暂停
+const miniPause = () => {
+  return {
+    type: PAUSE
   }
 }

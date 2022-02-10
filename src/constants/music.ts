@@ -8,3 +8,5 @@ export const ADD = 'ADD'
 export const CLEAN = 'CLEAN'
 // 更新播放歌曲
 export const UPDATE_PLAYING_SONG = 'UPDATE_PLAYING_SONG'
+// 向前添加歌曲
+export const UNSHIFT = 'UNSHIFT'

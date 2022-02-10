@@ -13,7 +13,8 @@ type IStoreUserType = {
 }
 
 interface IMusic {
-  id: ''
+  id: string,
+  name: string
 }
 
 type IStoreMusicType = {
@@ -37,6 +38,7 @@ type IStoreMusicType = {
 }
 
 export {
+  IMusic,
   IStoreType,
   IStoreUserType,
   IStoreMusicType
