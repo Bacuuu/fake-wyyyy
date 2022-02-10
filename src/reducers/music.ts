@@ -25,8 +25,12 @@ const INITIAL_STATE:IStoreMusicType = {
     authName: '',
     // 歌曲总时长
     songLength: '00:00',
+    // 时长 ms
+    dt: 0,
     // 当前播放时长
     playedTime: '00:00',
+    // 播放的时长
+    playedDt: 0,
     // 歌词
     lyric: ''
   }
@@ -37,14 +41,8 @@ export default function music (state = INITIAL_STATE, action) {
     case UPDATE_PLAYING_SONG:
       return Object.assign({}, state, {
         musicInfo: {
+          ...state.musicInfo,
           playState: true,
-          id: '',
-          name: '',
-          picUrl: '',
-          authName: '',
-          songLength: '00:00',
-          playedTime: '00:00',
-          lyric: '',
           ...action.payload
         }
       })
@@ -52,6 +50,7 @@ export default function music (state = INITIAL_STATE, action) {
     case PLAY:
       return Object.assign({}, state, {
         musicInfo: {
+          ...state.musicInfo,
           playState: true
         }
       })
@@ -59,23 +58,15 @@ export default function music (state = INITIAL_STATE, action) {
     case PAUSE:
       return Object.assign({}, state, {
         musicInfo: {
+          ...state.musicInfo,
           playState: false
-        }
-      })
-    // 切换歌曲
-    case TOGGLE:
-      return Object.assign({}, state, {
-        musicInfo: {
-          playState: true,
-          id: action.payload.id,
-          songLength: action.payload.length,
-          playedTime: '00:00',
         }
       })
     // 添加歌曲
     case ADD:
       return Object.assign({}, state, {
         musicList: {
+          ...state.musicList,
           list: [...state.musicList.list, action.payload]
         }
       })
@@ -83,6 +74,7 @@ export default function music (state = INITIAL_STATE, action) {
     case CLEAN: 
       return Object.assign({}, state, {
         musicList: {
+          ...state.musicList,
           list: []
         }
       })

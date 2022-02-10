@@ -29,7 +29,9 @@ type IStoreMusicType = {
     picUrl: string,
     authName: string,
     songLength: string,
+    dt: number,
     playedTime: string,
+    playedDt: number,
     lyric: string
   }
 }

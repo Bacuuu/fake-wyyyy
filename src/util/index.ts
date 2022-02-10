@@ -32,7 +32,8 @@ export function padZero (s:string | number) {
 
 // 毫秒转化为 hh:mm:ss
 export function millMinutes2Hms (time) {
-  const dura = dayjs.duration(time)
+  const _time = parseInt(time)
+  const dura = dayjs.duration(_time)
   return time >= 1000 * 60 * 60
     ? `${padZero(dura.hours())}:${padZero(dura.minutes())}:${padZero(dura.seconds())}`
     : `${padZero(dura.minutes())}:${padZero(dura.seconds())}`

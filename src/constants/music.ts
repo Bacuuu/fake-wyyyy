@@ -2,8 +2,6 @@
 export const PLAY = 'PLAY'
 // 暂停
 export const PAUSE = 'PAUSE'
-// 切换歌曲
-export const TOGGLE = 'TOGGLE'
 // 添加歌曲
 export const ADD = 'ADD'
 // 清空歌曲
