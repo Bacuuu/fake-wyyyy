@@ -36,7 +36,7 @@ export const pause = () => {
 export const seek = (params: {dt: number}) => {
   const { dt } = params
   audioManage.seek(dt)
-  audioManage.play()
+  audioManage.paused && audioManage.play()
   return {
     type: UPDATE_PLAYING_SONG,
     payload: {

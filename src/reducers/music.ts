@@ -43,6 +43,8 @@ export default function music (state = INITIAL_STATE, action) {
         musicInfo: {
           ...state.musicInfo,
           playState: true,
+          playedDt: 0,
+          playedTime: '00:00',
           ...action.payload
         }
       })

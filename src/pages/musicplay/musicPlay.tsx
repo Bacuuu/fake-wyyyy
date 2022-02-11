@@ -6,6 +6,8 @@ import { AtMessage } from "taro-ui"
 import { featureDelayMsg } from '@/util'
 import PlayMenu from '@/components/common/PlayMenu'
 import './musicPlay.scss'
+import { useSelector } from "react-redux"
+import { IStoreType } from "@/types/store"
 const musicPlay =  function () {
   interface Irouter {
     params: {
@@ -13,34 +15,24 @@ const musicPlay =  function () {
     }
   }
   const router:Irouter = useRouter()
-  const [songInfo, setSongInfo] = useState({
-    id: '',
-    name: '',
-    picUrl: '',
-    authName: ''
-  })
+  // const [songInfo, setSongInfo] = useState({
+  //   id: '',
+  //   name: '',
+  //   picUrl: '',
+  //   authName: ''
+  // })
 
+  const music = useSelector((state:IStoreType) => state.music)
   useEffect(() => {
-    getSongDetail({ids: router.params.songId})
-      .then(r => {
-        const { al, ar } = r.songs[0]
-        setSongInfo({
-          id: router.params.songId,
-          name: al.name,
-          picUrl: al.picUrl,
-          authName: ar[0].name
-        })
-        Taro.setNavigationBarTitle({
-          title: al.name
-        })
-      })
-    getLyric({id: router.params.songId})
-  }, [])
+    Taro.setNavigationBarTitle({
+      title: music.musicInfo.name
+    })
+  }, [music.musicInfo.name])
   return (
     <View className="play-wrap">
       <View className="play-board">
         <View className="board dish">
-          <Image className="song-dish" src={songInfo.picUrl} mode="aspectFit"></Image>
+          <Image className="song-dish" src={music.musicInfo.picUrl} mode="aspectFit"></Image>
           <View className="operation">
             <Image src={require('@/assets/images/shoucang2.png')} onClick={featureDelayMsg}></Image>
             <Image src={require('@/assets/images/pinglun2.png')} onClick={featureDelayMsg}></Image>
@@ -52,7 +44,7 @@ const musicPlay =  function () {
         </View>
       </View>
       <View className="play-menu">
-        <PlayMenu songId={songInfo.id}></PlayMenu>
+        <PlayMenu songId={router.params.songId}></PlayMenu>
       </View>
       <AtMessage />
     </View>

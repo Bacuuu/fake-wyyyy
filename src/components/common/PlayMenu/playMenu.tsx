@@ -3,7 +3,7 @@ import { View, Text, Image } from '@tarojs/components'
 import { AtSlider } from 'taro-ui'
 import './index.scss'
 import { useEffect, useState } from 'react'
-import { playNewSong, seek, pause, play, unshiftToList } from '@/actions/music'
+import { playNewSong, seek, pause, play } from '@/actions/music'
 import { useSelector, useDispatch } from 'react-redux'
 import { IStoreType } from '@/types/store'
 import { throttle } from 'lodash'
@@ -22,6 +22,40 @@ const playMenu = function (props) {
     }
     dispatch(playNewSong(props.songId, flag))
   }, [props.songId])
+  const audioManage = Taro.getBackgroundAudioManager()
+  audioManage.onTimeUpdate(throttle(() => {
+    setProgressVal(audioManage.currentTime)
+  }, 1000))
+  audioManage.onEnded(() => {
+    const idx = music.musicList.list.findIndex(i => i.id === music.musicInfo.id)
+    switch (music.musicList.playStatus) {
+      // 顺序
+      case 'SX':
+        // 已经是最后一个
+        if (music.musicList.list.length + 1 === idx) {
+          break
+        }
+        const { id } = music.musicList.list[idx + 1]
+        dispatch(playNewSong(id))
+        break;
+      // 随机
+      case 'SJ':
+        const length = music.musicList.list.length
+        let next = idx
+        while (idx === next) {
+          next = Math.ceil(Math.random() * length)
+        }
+        const _id = music.musicList.list[next].id
+        dispatch(playNewSong(_id))
+        break;
+      // 单曲
+      case 'DQ':
+        dispatch(playNewSong(music.musicInfo.id))
+        break;
+      default:
+        break;
+    }
+  })
   // 初始化播放时间，放入redux中进行管理，但是对于播放进度状态并非实时更新
   // 对于正常的播放来说，组件内使用定时器独自进行更新
   // 只有暂停，播放，拖动进度操作时，才会和redux进行同步
@@ -35,19 +69,20 @@ const playMenu = function (props) {
   // 播放状态
   // const [playStatus, setPlayStatus] = useState(false)
   // let interval:any = null
-  useEffect(() => {
-    const audioManage = Taro.getBackgroundAudioManager()
-    audioManage.onTimeUpdate(throttle(() => {
-      setProgressVal(audioManage.currentTime)
-    }, 1000))
-    audioManage.onEnded(() => {
-      // todo 这里当前播放歌曲会被移除
-      const idx = music.musicList.list.findIndex(i => i.id === music.musicInfo.id)
-      console.log(music.musicList.list)
-      const { id } = music.musicList.list[idx + 1]
-      dispatch(playNewSong(id))
-    })
-  }, [])
+  // useEffect(() => {
+  //   const audioManage = Taro.getBackgroundAudioManager()
+  //   audioManage.onTimeUpdate(throttle(() => {
+  //     setProgressVal(audioManage.currentTime)
+  //   }, 1000))
+  //   audioManage.onEnded(() => {
+  //     // todo 这里当前播放歌曲会被移除
+  //     console.log(music)
+  //     // const idx = music.musicList.list.findIndex(i => i.id === music.musicInfo.id)
+  //     // console.log(music)
+  //     // const { id } = music.musicList.list[idx + 1]
+  //     // dispatch(playNewSong(id))
+  //   })
+  // }, [])
   return (
     <View className="playmenu-wrap">
       <View className="progress">
