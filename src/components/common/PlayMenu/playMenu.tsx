@@ -12,7 +12,8 @@ const playMenu = function (props) {
   const playModeList = {
     'SX': require('@/assets/images/shunxubofang2.png'),
     'SJ': require('@/assets/images/suijibofang2.png'),
-    'DQ': require('@/assets/images/danquxunhuan2.png')
+    'DQ': require('@/assets/images/danquxunhuan2.png'),
+    'XH': require('@/assets/images/liebiaoxunhuan2.png')
   }
   const music = useSelector((state:IStoreType) => state.music)
   const dispatch = useDispatch()
@@ -37,7 +38,8 @@ const playMenu = function (props) {
       // 顺序
       case 'SX':
         // 已经是最后一个
-        if (music.musicList.list.length + 1 === idx) {
+        if (music.musicList.list.length - 1 === idx) {
+          dispatch(pause())
           break
         }
         const { id } = music.musicList.list[idx + 1]
@@ -56,6 +58,17 @@ const playMenu = function (props) {
       // 单曲
       case 'DQ':
         dispatch(playNewSong(music.musicInfo.id))
+        break;
+      // 列表循环
+      case 'XH':
+        let id2 = ''
+        // 已经是最后一个
+        if (music.musicList.list.length - 1 === idx) {
+          id2 = music.musicList.list[0].id
+        } else {
+          id2 = music.musicList.list[idx + 1].id
+        }
+        dispatch(playNewSong(id2))
         break;
       default:
         break;

@@ -1,7 +1,7 @@
 import { PLAY, PAUSE, ADD, CLEAN, UPDATE_PLAYING_SONG, UNSHIFT, TOGGLE_PLAY_MODE } from "../constants/music";
 import { IStoreMusicType } from "@/types/store";
 
-const PLAY_MODE_LIST = ['SX', 'SJ', 'DQ']
+const PLAY_MODE_LIST = ['SX', 'SJ', 'DQ', 'XH']
 
 const INITIAL_STATE:IStoreMusicType = {
   // 音乐列表状态管理
@@ -9,7 +9,7 @@ const INITIAL_STATE:IStoreMusicType = {
     // 播放歌曲
     list: [],
     // 播放顺序
-    // 顺序 SX 随机 SJ 单曲 DQ
+    // 顺序 SX 随机 SJ 单曲 DQ 列表循环 XH
     playStatus: 'SX'
   },
   // 当前播放音乐状态
@@ -70,7 +70,7 @@ export default function music (state = INITIAL_STATE, action) {
     // 切换播放模式
     case TOGGLE_PLAY_MODE:
       let index = PLAY_MODE_LIST.indexOf(state.musicList.playStatus)
-      if (index === PLAY_MODE_LIST.length) {
+      if (index === PLAY_MODE_LIST.length - 1) {
         index = 0
       } else {
         index ++

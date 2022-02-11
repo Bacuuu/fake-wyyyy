@@ -20,7 +20,7 @@ interface IMusic {
 type IStoreMusicType = {
   musicList: {
     list: Array<IMusic>,
-    playStatus: 'SX' | 'SJ' | 'DQ'
+    playStatus: 'SX' | 'SJ' | 'DQ' | 'XH'
   },
   musicInfo: {
     playState: boolean,
