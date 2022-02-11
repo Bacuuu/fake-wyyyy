@@ -1,5 +1,8 @@
-import { PLAY, PAUSE, ADD, CLEAN, UPDATE_PLAYING_SONG, UNSHIFT } from "../constants/music";
+import { PLAY, PAUSE, ADD, CLEAN, UPDATE_PLAYING_SONG, UNSHIFT, TOGGLE_PLAY_MODE } from "../constants/music";
 import { IStoreMusicType } from "@/types/store";
+
+const PLAY_MODE_LIST = ['SX', 'SJ', 'DQ']
+
 const INITIAL_STATE:IStoreMusicType = {
   // 音乐列表状态管理
   musicList: {
@@ -62,6 +65,20 @@ export default function music (state = INITIAL_STATE, action) {
         musicInfo: {
           ...state.musicInfo,
           playState: false
+        }
+      })
+    // 切换播放模式
+    case TOGGLE_PLAY_MODE:
+      let index = PLAY_MODE_LIST.indexOf(state.musicList.playStatus)
+      if (index === PLAY_MODE_LIST.length) {
+        index = 0
+      } else {
+        index ++
+      }
+      return Object.assign({}, state, {
+        musicList: {
+          ...state.musicList,
+          playStatus: PLAY_MODE_LIST[index]
         }
       })
     // 添加歌曲

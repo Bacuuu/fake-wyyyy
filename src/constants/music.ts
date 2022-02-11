@@ -10,3 +10,5 @@ export const CLEAN = 'CLEAN'
 export const UPDATE_PLAYING_SONG = 'UPDATE_PLAYING_SONG'
 // 向前添加歌曲
 export const UNSHIFT = 'UNSHIFT'
+// 切换播放模式
+export const TOGGLE_PLAY_MODE = 'TOGGLE_PLAY_MODE'

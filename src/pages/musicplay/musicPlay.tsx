@@ -1,6 +1,5 @@
 import { View, Image } from "@tarojs/components"
-import { useEffect, useState } from "react"
-import { getSongDetail, getLyric } from '@/api/music'
+import { useEffect } from "react"
 import Taro, { useRouter } from "@tarojs/taro"
 import { AtMessage } from "taro-ui"
 import { featureDelayMsg } from '@/util'
@@ -15,12 +14,6 @@ const musicPlay =  function () {
     }
   }
   const router:Irouter = useRouter()
-  // const [songInfo, setSongInfo] = useState({
-  //   id: '',
-  //   name: '',
-  //   picUrl: '',
-  //   authName: ''
-  // })
 
   const music = useSelector((state:IStoreType) => state.music)
   useEffect(() => {

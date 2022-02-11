@@ -1,5 +1,5 @@
 import { getLyric, getPlayUrl, getSongDetail } from '@/api/music'
-import { PLAY, PAUSE, UPDATE_PLAYING_SONG, ADD, UNSHIFT } from '@/constants/music'
+import { PLAY, PAUSE, UPDATE_PLAYING_SONG, ADD, UNSHIFT, TOGGLE_PLAY_MODE } from '@/constants/music'
 import { IMusic } from '@/types/store'
 import { millMinutes2Hms } from '@/util'
 import Taro from '@tarojs/taro'
@@ -43,6 +43,13 @@ export const seek = (params: {dt: number}) => {
       playedTime: millMinutes2Hms(dt * 1000),
       playedDt: dt
     }
+  }
+}
+
+// 切换歌曲播放模式
+export const toggleMode = () => {
+  return {
+    type: TOGGLE_PLAY_MODE
   }
 }
 
