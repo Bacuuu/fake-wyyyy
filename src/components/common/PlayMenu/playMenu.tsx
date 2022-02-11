@@ -82,6 +82,31 @@ const playMenu = function (props) {
     }))
     setProgressVal(event)
   }
+  // 下一曲
+  function next () {
+    const idx = music.musicList.list.findIndex(i => i.id === music.musicInfo.id)
+    let id = ''
+    // 已经是最后一个
+    if (music.musicList.list.length - 1 === idx) {
+      id = music.musicList.list[0].id
+    } else {
+      id = music.musicList.list[idx + 1].id
+    }
+    dispatch(playNewSong(id))
+  }
+  // 上一曲
+  function prev () {
+    const idx = music.musicList.list.findIndex(i => i.id === music.musicInfo.id)
+    let id = ''
+    // 已经是最后一个
+    if (0 === idx) {
+      id = music.musicList.list[music.musicList.list.length - 1].id
+    } else {
+      id = music.musicList.list[idx - 1].id
+    }
+    dispatch(playNewSong(id))
+
+  }
   return (
     <View className="playmenu-wrap">
       <View className="progress">
@@ -91,9 +116,9 @@ const playMenu = function (props) {
       </View>
       <View className="dashboard">
         <Image className="outside" src={playModeList[music.musicList.playStatus]} onClick={() => dispatch(toggleMode())}></Image>
-        <Image className="inside" src={require('@/assets/images/shangyiqu2.png')}></Image>
+        <Image className="inside" onClick={prev} src={require('@/assets/images/shangyiqu2.png')}></Image>
         <Image className="center" onClick={() => music.musicInfo.playState ? dispatch(pause()) : dispatch(play())} src={music.musicInfo.playState ? require('@/assets/images/bofangzhong2.png') : require('@/assets/images/zanting2.png') }></Image>
-        <Image className="inside" src={require('@/assets/images/xiayiqu2.png')}></Image>
+        <Image className="inside" onClick={next}  src={require('@/assets/images/xiayiqu2.png')}></Image>
         <Image className="outside" src={require('@/assets/images/bofangliebiao2.png')}></Image>
       </View>
     </View>
