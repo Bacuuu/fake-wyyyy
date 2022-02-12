@@ -36,3 +36,39 @@
     }
   }
 }
+.playlist-wrap {
+  .header {
+    height: 40px;
+    .clean {
+      margin-right: 8px;
+      float:right;
+    }
+  }
+  .list {
+    .list-item {
+      height: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .info {
+        display: flex;
+        align-items: center;
+        .icon-playing {
+          margin: 0 4px;
+        }
+        .name {
+          display: inline-block;
+          max-width: 160px;
+        }
+        .auth-name {
+          display: inline-block;
+          max-width: 80px;
+        }
+      }
+      .close-icon {
+        margin-right: 8px;
+        float: right;
+      }
+    }
+  }
+}

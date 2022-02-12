@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { AtSlider } from 'taro-ui'
+import { AtSlider, AtFloatLayout } from 'taro-ui'
 import './index.scss'
 import { useEffect, useState } from 'react'
 import { playNewSong, seek, pause, play, toggleMode } from '@/actions/music'
@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { IStoreType } from '@/types/store'
 import { throttle } from 'lodash'
 import { millMinutes2Hms } from '@/util'
+import PlayList from './PlayList'
 const playMenu = function (props) {
   const playModeList = {
     'SX': require('@/assets/images/shunxubofang2.png'),
@@ -29,9 +30,11 @@ const playMenu = function (props) {
     dispatch(playNewSong(props.songId, flag))
   }, [props.songId])
   const audioManage = Taro.getBackgroundAudioManager()
+  // 时间更新
   audioManage.onTimeUpdate(throttle(() => {
     setProgressVal(audioManage.currentTime)
   }, 1000))
+  // 播放结束
   audioManage.onEnded(() => {
     const idx = music.musicList.list.findIndex(i => i.id === music.musicInfo.id)
     switch (music.musicList.playStatus) {
@@ -105,8 +108,9 @@ const playMenu = function (props) {
       id = music.musicList.list[idx - 1].id
     }
     dispatch(playNewSong(id))
-
   }
+  // 播放列表相关逻辑
+  const [isShowPlaylist, toggleShowPlaylist] = useState(false)
   return (
     <View className="playmenu-wrap">
       <View className="progress">
@@ -119,8 +123,11 @@ const playMenu = function (props) {
         <Image className="inside" onClick={prev} src={require('@/assets/images/shangyiqu2.png')}></Image>
         <Image className="center" onClick={() => music.musicInfo.playState ? dispatch(pause()) : dispatch(play())} src={music.musicInfo.playState ? require('@/assets/images/bofangzhong2.png') : require('@/assets/images/zanting2.png') }></Image>
         <Image className="inside" onClick={next}  src={require('@/assets/images/xiayiqu2.png')}></Image>
-        <Image className="outside" src={require('@/assets/images/bofangliebiao2.png')}></Image>
+        <Image className="outside" onClick={() => toggleShowPlaylist(true)} src={require('@/assets/images/bofangliebiao2.png')}></Image>
       </View>
+      <AtFloatLayout isOpened={isShowPlaylist} onClose={() => toggleShowPlaylist(false)}>
+        <PlayList musicList={music.musicList} musicInfo={music.musicInfo}></PlayList>
+      </AtFloatLayout>
     </View>
   )
 }

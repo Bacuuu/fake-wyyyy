@@ -14,7 +14,8 @@ type IStoreUserType = {
 
 interface IMusic {
   id: string,
-  name: string
+  name: string,
+  authName: string
 }
 
 type IStoreMusicType = {

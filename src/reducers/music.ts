@@ -1,4 +1,4 @@
-import { PLAY, PAUSE, ADD, CLEAN, UPDATE_PLAYING_SONG, UNSHIFT, TOGGLE_PLAY_MODE } from "../constants/music";
+import { PLAY, PAUSE, ADD, CLEAN, UPDATE_PLAYING_SONG, UNSHIFT, TOGGLE_PLAY_MODE, DELETE_ONE_IN_PLAYLIST } from "../constants/music";
 import { IStoreMusicType } from "@/types/store";
 
 const PLAY_MODE_LIST = ['SX', 'SJ', 'DQ', 'XH']
@@ -95,6 +95,15 @@ export default function music (state = INITIAL_STATE, action) {
         musicList: {
           ...state.musicList,
           list: [action.payload, ...state.musicList.list]
+        }
+      })
+    // 从播放列表删除
+    case DELETE_ONE_IN_PLAYLIST:
+      const list = state.musicList.list.filter(i => i.id !== action.payload.id)
+      return Object.assign({}, state, {
+        musicList: {
+          ...state.musicList,
+          list
         }
       })
     // 清空播放列表

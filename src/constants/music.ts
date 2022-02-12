@@ -12,3 +12,5 @@ export const UPDATE_PLAYING_SONG = 'UPDATE_PLAYING_SONG'
 export const UNSHIFT = 'UNSHIFT'
 // 切换播放模式
 export const TOGGLE_PLAY_MODE = 'TOGGLE_PLAY_MODE'
+// 从播放列表删除歌曲
+export const DELETE_ONE_IN_PLAYLIST = 'DELETE_ONE_IN_PLAYLIST'

@@ -1,5 +1,5 @@
 import { getLyric, getPlayUrl, getSongDetail } from '@/api/music'
-import { PLAY, PAUSE, UPDATE_PLAYING_SONG, ADD, UNSHIFT, TOGGLE_PLAY_MODE } from '@/constants/music'
+import { PLAY, PAUSE, UPDATE_PLAYING_SONG, ADD, UNSHIFT, TOGGLE_PLAY_MODE, CLEAN, DELETE_ONE_IN_PLAYLIST } from '@/constants/music'
 import { IMusic } from '@/types/store'
 import { millMinutes2Hms } from '@/util'
 import Taro from '@tarojs/taro'
@@ -75,7 +75,8 @@ export const playNewSong = (id:string, flag?:boolean) => {
     // 插入歌曲队列
     flag && dispatch(unshiftToList({
       id,
-      name: al.name
+      name: al.name,
+      authName: ar[0].name
     }))
     dispatch(updatePlayingSong({
       id,
@@ -102,6 +103,21 @@ export const addToList = (params:IMusic) => {
 export const unshiftToList = (params:IMusic) => {
   return {
     type: UNSHIFT,
+    payload: params
+  }
+}
+
+// 清空播放列表
+export const cleanList = () => {
+  return {
+    type: CLEAN
+  }
+}
+
+// 更新播放列表
+export const deleteOneById = (params:{id: string}) => {
+  return {
+    type: DELETE_ONE_IN_PLAYLIST,
     payload: params
   }
 }
