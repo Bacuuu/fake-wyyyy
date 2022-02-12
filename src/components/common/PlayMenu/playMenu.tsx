@@ -35,7 +35,17 @@ const playMenu = function (props) {
     setProgressVal(audioManage.currentTime)
   }, 1000))
   // 播放结束
-  audioManage.onEnded(() => {
+  audioManage.onEnded(() => next())
+  // 初始化播放时间，放入redux中进行管理
+  const [progressVal, setProgressVal] = useState(0)
+  function processChange (event) {
+    dispatch(seek({
+      dt: event
+    }))
+    setProgressVal(event)
+  }
+  // 下一曲
+  function next () {
     const idx = music.musicList.list.findIndex(i => i.id === music.musicInfo.id)
     switch (music.musicList.playStatus) {
       // 顺序
@@ -53,7 +63,7 @@ const playMenu = function (props) {
         const length = music.musicList.list.length
         let next = idx
         while (idx === next) {
-          next = Math.ceil(Math.random() * length)
+          next = Math.floor(Math.random() * length)
         }
         const _id = music.musicList.list[next].id
         dispatch(playNewSong(_id))
@@ -76,26 +86,6 @@ const playMenu = function (props) {
       default:
         break;
     }
-  })
-  // 初始化播放时间，放入redux中进行管理
-  const [progressVal, setProgressVal] = useState(0)
-  function processChange (event) {
-    dispatch(seek({
-      dt: event
-    }))
-    setProgressVal(event)
-  }
-  // 下一曲
-  function next () {
-    const idx = music.musicList.list.findIndex(i => i.id === music.musicInfo.id)
-    let id = ''
-    // 已经是最后一个
-    if (music.musicList.list.length - 1 === idx) {
-      id = music.musicList.list[0].id
-    } else {
-      id = music.musicList.list[idx + 1].id
-    }
-    dispatch(playNewSong(id))
   }
   // 上一曲
   function prev () {
