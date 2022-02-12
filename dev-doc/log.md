@@ -33,3 +33,12 @@ cookies = ["NMTID=00OPYe1Z-NhS6CjOU0znmtsYrU0K4kAAAF5_imWlg; Max-Age=315360000; 
 + 因为一开始打印state后发现是更新的，但是在将state进行stringify后显示在视图中，和控制台中打印的state不一致。以为是reducer中浅拷贝的问题，对比引用没有变化导致没有视图更新。
 + 但是我的值并非对之前的state进行了引用，而是对action传入的payload直接进行了赋值，所以不是reducer的问题。
 + 最终发现是action中进行dispatch时，没有在请求的异步处理中进行调用，导致传入reducer的值是未经过请求更新的，但是由于是引用，最终还是进行了state的变化，但这时候已经不会到reducer中，也就不会进行视图的改变了。
+
+## taroui的tabs中使用全屏组件无效
++ 例如`AtFloatLayout`、`Modal`等，最终自己重新写了个`tabs`组件，位于`/components/common/Mytabs`
+
+## 虚拟列表方案
++ 官方提供[长列表渲染（虚拟列表）](https://taro-docs.jd.com/taro/docs/virtual-list)方案，使用后发现有以下问题
+  + 快速滚动时，白屏几率高
+  + 垂直滚动，无法设置容器竖直方向高度
+  + `itemSize`等参数单位是PX?无法和css高度进行统一
