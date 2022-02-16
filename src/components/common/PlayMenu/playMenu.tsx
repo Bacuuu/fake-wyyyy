@@ -31,9 +31,12 @@ const playMenu = function (props) {
   }, [props.songId])
   const audioManage = Taro.getBackgroundAudioManager()
   // 时间更新
-  audioManage.onTimeUpdate(throttle(() => {
+  // TODO BUG throttle无效
+  const func = throttle(() => {
+    props.onProcessCallback(audioManage.currentTime * 1000)
     setProgressVal(audioManage.currentTime)
-  }, 1000))
+  }, 1000)
+  audioManage.onTimeUpdate(func)
   // 播放结束
   audioManage.onEnded(() => playTool.next(music, dispatch))
   // 初始化播放时间，放入redux中进行管理
