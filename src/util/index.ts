@@ -34,12 +34,20 @@ export function padZero (s:string | number) {
 }
 
 // 毫秒转化为 hh:mm:ss
-export function millMinutes2Hms (time) {
+export function millMinutes2Hms (time, padHour = false) {
   const _time = parseInt(time)
   const dura = dayjs.duration(_time)
-  return time >= 1000 * 60 * 60
+  return (time >= 1000 * 60 * 60 || padHour)
     ? `${padZero(dura.hours())}:${padZero(dura.minutes())}:${padZero(dura.seconds())}`
     : `${padZero(dura.minutes())}:${padZero(dura.seconds())}`
+}
+
+// mm:ss.SSS -> 毫秒
+export function mmssSSS2millMinutes (timeStr:string) {
+  let strArr = timeStr.split(':')
+  const mm = strArr[0]
+  const [ss, SSS] = strArr[1].split('.')
+  return parseInt(mm) * 60 * 60 + 60 * parseInt(ss) + parseInt(SSS)
 }
 
 // 提示功能暂未开发
