@@ -1,10 +1,15 @@
 .play-wrap {
   width: 100%;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
   .play-board {
+    flex: 1;
+    overflow: auto;
     .board {
-      display: inline-block;
+      display: none;
       width: 100%;
+      height:100%;
       .song-dish {
         display: block;
         width: 136px;
@@ -18,17 +23,32 @@
         height: 24px;
         display: flex;
         justify-content: space-around;
-        padding: 0 15%;
+        padding: 20px 15%;
         Image {
           width: 24px;
           height: 24px;
         }
       }
+      .lyric-block {
+        height: 100%;
+        transform: translateY(50%);
+        .lyric-item {
+          display: block;
+          width: 100%;
+          height: 28px;
+          text-align: center;
+        }
+      }
+      // 避免bfc
+      &.dish {
+        overflow: hidden;
+      }
+      &.is-active {
+        display: block;
+      }
     }
   }
   .play-menu {
     width: 100%;
-    position: absolute;
-    bottom: 0;
   }
 }
