@@ -7,7 +7,7 @@ import { playNewSong, seek, pause, play, toggleMode } from '@/actions/music'
 import { useSelector, useDispatch } from 'react-redux'
 import { IStoreType } from '@/types/store'
 import { throttle } from 'lodash'
-import { millMinutes2Hms } from '@/util'
+import { millMinutes2Hms, playTool } from '@/util'
 import PlayList from './PlayList'
 const playMenu = function (props) {
   const playModeList = {
@@ -35,7 +35,7 @@ const playMenu = function (props) {
     setProgressVal(audioManage.currentTime)
   }, 1000))
   // 播放结束
-  audioManage.onEnded(() => next())
+  audioManage.onEnded(() => playTool.next(music, dispatch))
   // 初始化播放时间，放入redux中进行管理
   const [progressVal, setProgressVal] = useState(0)
   function processChange (event) {
@@ -43,61 +43,6 @@ const playMenu = function (props) {
       dt: event
     }))
     setProgressVal(event)
-  }
-  // 下一曲
-  function next () {
-    const idx = music.musicList.list.findIndex(i => i.id === music.musicInfo.id)
-    switch (music.musicList.playStatus) {
-      // 顺序
-      case 'SX':
-        // 已经是最后一个
-        if (music.musicList.list.length - 1 === idx) {
-          dispatch(pause())
-          break
-        }
-        const { id } = music.musicList.list[idx + 1]
-        dispatch(playNewSong(id))
-        break;
-      // 随机
-      case 'SJ':
-        const length = music.musicList.list.length
-        let next = idx
-        while (idx === next) {
-          next = Math.floor(Math.random() * length)
-        }
-        const _id = music.musicList.list[next].id
-        dispatch(playNewSong(_id))
-        break;
-      // 单曲
-      case 'DQ':
-        dispatch(playNewSong(music.musicInfo.id))
-        break;
-      // 列表循环
-      case 'XH':
-        let id2 = ''
-        // 已经是最后一个
-        if (music.musicList.list.length - 1 === idx) {
-          id2 = music.musicList.list[0].id
-        } else {
-          id2 = music.musicList.list[idx + 1].id
-        }
-        dispatch(playNewSong(id2))
-        break;
-      default:
-        break;
-    }
-  }
-  // 上一曲
-  function prev () {
-    const idx = music.musicList.list.findIndex(i => i.id === music.musicInfo.id)
-    let id = ''
-    // 已经是最后一个
-    if (0 === idx) {
-      id = music.musicList.list[music.musicList.list.length - 1].id
-    } else {
-      id = music.musicList.list[idx - 1].id
-    }
-    dispatch(playNewSong(id))
   }
   // 播放列表相关逻辑
   const [isShowPlaylist, toggleShowPlaylist] = useState(false)
@@ -110,9 +55,9 @@ const playMenu = function (props) {
       </View>
       <View className="dashboard">
         <Image className="outside" src={playModeList[music.musicList.playStatus]} onClick={() => dispatch(toggleMode())}></Image>
-        <Image className="inside" onClick={prev} src={require('@/assets/images/shangyiqu2.png')}></Image>
+        <Image className="inside" onClick={() => playTool.prev(music, dispatch)} src={require('@/assets/images/shangyiqu2.png')}></Image>
         <Image className="center" onClick={() => music.musicInfo.playState ? dispatch(pause()) : dispatch(play())} src={music.musicInfo.playState ? require('@/assets/images/bofangzhong2.png') : require('@/assets/images/zanting2.png') }></Image>
-        <Image className="inside" onClick={next}  src={require('@/assets/images/xiayiqu2.png')}></Image>
+        <Image className="inside" onClick={() => playTool.next(music, dispatch)}  src={require('@/assets/images/xiayiqu2.png')}></Image>
         <Image className="outside" onClick={() => toggleShowPlaylist(true)} src={require('@/assets/images/bofangliebiao2.png')}></Image>
       </View>
       <AtFloatLayout isOpened={isShowPlaylist} onClose={() => toggleShowPlaylist(false)}>

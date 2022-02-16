@@ -1,8 +1,8 @@
 import { cleanList, deleteOneById, toggleMode } from "@/actions/music"
-import music from "@/reducers/music"
-import { IStoreMusicType } from "@/types/store"
+import { IStoreMusicType, IStoreType } from "@/types/store"
+import { playTool } from "@/util"
 import { View, Text } from "@tarojs/components"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { AtIcon } from "taro-ui"
 import './index.scss'
 const PlayList = function (props:IStoreMusicType) {
@@ -12,7 +12,15 @@ const PlayList = function (props:IStoreMusicType) {
     'DQ': '单曲播放',
     'XH': '循环播放'
   }
+  const music = useSelector((state:IStoreType) => state.music)
   const dispatch = useDispatch()
+  function deleteOneSong (id) {
+    dispatch(deleteOneById({id}))
+    // 如果id是正在播放的，则播放下一曲
+    if (id === music.musicInfo.id) {
+      playTool.next(music, dispatch)
+    }
+  }
   return (
     <View className="playlist-wrap">
       <View className="header">
@@ -33,7 +41,7 @@ const PlayList = function (props:IStoreMusicType) {
                   <Text> -- </Text>
                   <Text className="auth-name ellipsis">{i.authName}</Text>
                 </View>
-                <AtIcon onClick={() => dispatch(deleteOneById({id: i.id}))} className="close-icon" value='close' size='20' color='#999'></AtIcon>
+                <AtIcon onClick={() => deleteOneSong(i.id)} className="close-icon" value='close' size='20' color='#999'></AtIcon>
               </View>
             )
           })

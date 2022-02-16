@@ -114,7 +114,7 @@ export const cleanList = () => {
   }
 }
 
-// 更新播放列表
+// 从播放列表删除
 export const deleteOneById = (params:{id: string}) => {
   return {
     type: DELETE_ONE_IN_PLAYLIST,

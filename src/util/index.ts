@@ -1,5 +1,8 @@
+import { pause, playNewSong } from '@/actions/music'
+import { IStoreMusicType } from '@/types/store'
 import Taro from '@tarojs/taro'
 import dayjs from 'dayjs'
+import { Dispatch } from 'react'
 // 拦截器中 响应参数合并过滤
 export function filterBeforeMergeResponse (res) {
   if(res.code !== 200) {
@@ -60,5 +63,67 @@ export const Jumper = {
     Taro.navigateTo({
       url: '/pages/sheet/sheetList?id=' + id,
     })
+  }
+}
+
+export const playTool = {
+  /**
+   * 音乐，下一曲
+   * @param music store.music
+   * @param dispatch -> useDispatch()
+   */
+  next: function (music:IStoreMusicType, dispatch:Dispatch<any>) {
+    const idx = music.musicList.list.findIndex(i => i.id === music.musicInfo.id)
+    switch (music.musicList.playStatus) {
+      // 顺序
+      case 'SX':
+        // 已经是最后一个
+        if (music.musicList.list.length - 1 === idx) {
+          dispatch(pause())
+          break
+        }
+        const { id } = music.musicList.list[idx + 1]
+        dispatch(playNewSong(id))
+        break;
+      // 随机
+      case 'SJ':
+        const length = music.musicList.list.length
+        let next = idx
+        while (idx === next) {
+          next = Math.floor(Math.random() * length)
+        }
+        const _id = music.musicList.list[next].id
+        dispatch(playNewSong(_id))
+        break;
+      // 单曲
+      case 'DQ':
+        dispatch(playNewSong(music.musicInfo.id))
+        break;
+      // 列表循环
+      case 'XH':
+        let id2 = ''
+        // 已经是最后一个
+        if (music.musicList.list.length - 1 === idx) {
+          id2 = music.musicList.list[0].id
+        } else {
+          id2 = music.musicList.list[idx + 1].id
+        }
+        dispatch(playNewSong(id2))
+        break;
+      default:
+        break;
+    }
+  },
+  // 上一曲
+    prev: function (music:IStoreMusicType, dispatch:Dispatch<any>) {
+    const idx = music.musicList.list.findIndex(i => i.id === music.musicInfo.id)
+    let id = ''
+    // 已经是最后一个
+    if (0 === idx) {
+      id = music.musicList.list[music.musicList.list.length - 1].id
+    } else {
+      id = music.musicList.list[idx - 1].id
+    }
+    dispatch(playNewSong(id))
   }
 }

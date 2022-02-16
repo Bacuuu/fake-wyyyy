@@ -109,6 +109,19 @@ export default function music (state = INITIAL_STATE, action) {
     // 清空播放列表
     case CLEAN: 
       return Object.assign({}, state, {
+        musicInfo: {
+          playState: false,
+          id: '',
+          url: '',
+          name: '',
+          picUrl: '',
+          authName: '',
+          songLength: '00:00',
+          dt: 0,
+          playedTime: '00:00',
+          playedDt: 0,
+          lyric: ''
+        },
         musicList: {
           ...state.musicList,
           list: []
