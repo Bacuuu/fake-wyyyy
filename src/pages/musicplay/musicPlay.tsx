@@ -2,7 +2,7 @@ import { View, Image, Text } from "@tarojs/components"
 import { useEffect, useState } from "react"
 import Taro, { useRouter } from "@tarojs/taro"
 import { AtMessage } from "taro-ui"
-import { featureDelayMsg, mmssSSS2millMinutes } from '@/util'
+import { binChop, featureDelayMsg, mmssSSS2millMinutes } from '@/util'
 import PlayMenu from '@/components/common/PlayMenu'
 import './musicPlay.scss'
 import { useSelector } from "react-redux"
@@ -16,7 +16,6 @@ const musicPlay =  function () {
   const router:Irouter = useRouter()
 
   const music = useSelector((state:IStoreType) => state.music)
-  const query = Taro.createSelectorQuery()
   useEffect(() => {
     Taro.setNavigationBarTitle({
       title: music.musicInfo.name
@@ -27,10 +26,8 @@ const musicPlay =  function () {
   // 歌词
   // [[timing], [readLyric]]
   const [formatedLyric, setFormatedLyric] = useState([[], []] as [Array<number>, Array<string>])
-  // 歌词模块dom的高度信息
-  const [lyricheight, setLyricheight] = useState(0)
-  // 当前时间HH:mm:ss
-  const [processTime, setProcessTime] = useState('00:00:00')
+  // 当前歌词块信息 处于第几块
+  const [blockIndex, setBlockIndex] = useState(0)
   // 处理歌词
   useEffect(() => {
     const lyricList = music.musicInfo.lyric.split('\n')
@@ -42,26 +39,33 @@ const musicPlay =  function () {
         // 去除 [ ]
         res[0].push(mmssSSS2millMinutes(_time[0].slice(1, -1)))
         res[1].push(i.replace(reg, ''))
-      } else {
-        res[0].push(0)
-        res[1].push(i)
       }
     })
     setFormatedLyric(res)
-    query.select('.play-board')
-    .boundingClientRect()
-    .exec(res => {
-      setLyricheight(res.height)
-    })
   }, [music.musicInfo.lyric])
   // 进度更新回调，拿到毫秒
-  const processCb = function (e) {
-    if(processTime === e) return
-    setProcessTime(e)
-    const index = formatedLyric[0].indexOf(e)
-    if (index !== -1) {
-      console.log(index)
+  const processCb = function (e:number) {
+    // 进行时间比较，确定行数
+    // 降级进行查询,，优先使用上一次的值进行比较，否则再使用二分法进行寻找
+    const len = formatedLyric[0].length
+    // 已经是最后一个
+    if (len === blockIndex) return
+    if (formatedLyric[0][blockIndex] < e) {
+      // 上一次结果递增
+      if (formatedLyric[0][blockIndex + 1] >= e) {
+        setBlockIndex(blockIndex + 1)
+      } else {
+        // 二分查找，后分段
+        const next = binChop(formatedLyric[0], e, blockIndex)
+        setBlockIndex(next)
+      }
+    } else {
+      // 二分查找，前分段
+        const next = binChop(formatedLyric[0], e, 0, blockIndex)
+        setBlockIndex(next)
+        console.log(e, formatedLyric[0][next],formatedLyric[1][next])
     }
+
   }
   // 非实时更新 做不了这个事情
   // useEffect(() => {
@@ -82,11 +86,13 @@ const musicPlay =  function () {
         </View>
         <View
           className={"board lyric " + (displayMode === 'lyric' ? 'is-active' : '')}
+          // style={`padding-top: ${parseInt(Taro.pxTransform(28)) * blockIndex}rpx`}
           onClick={() => setDisplayMode('dish')}>
-          <View className="lyric-block">
-            {formatedLyric[1].map(i => {
+          <View className="lyric-block" style={
+            `transform: translateY(calc(50% - ${parseInt(Taro.pxTransform(28)) * blockIndex}rpx))`}>
+            {formatedLyric[1].map((i, index) => {
               return (
-                <Text className="lyric-item">{i}</Text>
+                <Text className={"lyric-item " + (index === blockIndex ? 'is-current' : '')}>{i}</Text>
               )
             })}
           </View>
