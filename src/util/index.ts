@@ -47,7 +47,7 @@ export function mmssSSS2millMinutes (timeStr:string) {
   let strArr = timeStr.split(':')
   const mm = strArr[0]
   const [ss, SSS] = strArr[1].split('.')
-  return parseInt(mm) * 60 * 60 + 60 * parseInt(ss) + parseInt(SSS)
+  return parseInt(mm) * 60 * 1000 + parseInt(ss) * 1000+ parseInt(SSS)
 }
 
 // 提示功能暂未开发
@@ -57,6 +57,29 @@ export function featureDelayMsg (e) {
     message: '功能暂未开发',
     type: 'info'
   })
+}
+
+// 二分查找，用于歌词查找bock index
+export function binChop (list: Array<number>, target:number, startIndex = 0, endIndex = list.length - 1):number {
+  if (target <= list[startIndex]) return 0
+  if (target >= list[endIndex]) return endIndex
+  let res = -1
+  while (target > list[startIndex] && target < list[endIndex]) {
+    if (endIndex - startIndex <= 1) {
+      res = endIndex
+      break
+    }
+    const midVal = Math.floor((startIndex + endIndex) / 2)
+    if (list[midVal] === target) {
+      res = midVal
+      break
+    } else if (list[midVal] < target) {
+      startIndex = midVal
+    } else {
+      endIndex = midVal
+    }
+  }
+  return res
 }
 
 export const Jumper = {
