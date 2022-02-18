@@ -1,6 +1,6 @@
-import { View, Image, Text } from "@tarojs/components"
+import { View, Image, Text, ScrollView } from "@tarojs/components"
 import { useEffect, useState } from "react"
-import Taro, { useRouter } from "@tarojs/taro"
+import Taro, { useReady, useRouter } from "@tarojs/taro"
 import { AtMessage } from "taro-ui"
 import { binChop, featureDelayMsg, mmssSSS2millMinutes } from '@/util'
 import PlayMenu from '@/components/common/PlayMenu'
@@ -63,10 +63,19 @@ const musicPlay =  function () {
       // 二分查找，前分段
         const next = binChop(formatedLyric[0], e, 0, blockIndex)
         setBlockIndex(next)
-        console.log(e, formatedLyric[0][next],formatedLyric[1][next])
     }
-
   }
+  useEffect(() => {
+    Taro.createSelectorQuery()
+      .select('.lyric-block')
+      .node()
+      .exec((res) => {
+        if (res[0]) {
+          const scrollView = res[0].node;
+          scrollView.scrollIntoView('.is-current')
+        }
+      })
+  }, [blockIndex])
   // 非实时更新 做不了这个事情
   // useEffect(() => {
 
@@ -86,16 +95,18 @@ const musicPlay =  function () {
         </View>
         <View
           className={"board lyric " + (displayMode === 'lyric' ? 'is-active' : '')}
-          // style={`padding-top: ${parseInt(Taro.pxTransform(28)) * blockIndex}rpx`}
           onClick={() => setDisplayMode('dish')}>
-          <View className="lyric-block" style={
-            `transform: translateY(calc(50% - ${parseInt(Taro.pxTransform(28)) * blockIndex}rpx))`}>
+          <ScrollView
+            className="lyric-block"
+            scrollY
+            enhanced
+            scrollWithAnimation>
             {formatedLyric[1].map((i, index) => {
               return (
                 <Text className={"lyric-item " + (index === blockIndex ? 'is-current' : '')}>{i}</Text>
               )
             })}
-          </View>
+          </ScrollView>
         </View>
       </View>
       <View className="play-menu">
