@@ -42,3 +42,8 @@ cookies = ["NMTID=00OPYe1Z-NhS6CjOU0znmtsYrU0K4kAAAF5_imWlg; Max-Age=315360000; 
   + 快速滚动时，白屏几率高
   + 垂直滚动，无法设置容器竖直方向高度
   + `itemSize`等参数单位是PX?无法和css高度进行统一
+
+## 关于歌词滚动
++ 首先尝试纯css方案，通过设置translateY进行偏移，但是导致偏移后的内容无法通过滑动再返回到视图中
++ 使用ScrollView进行滚动，scrollTo方法尝试了很久无效....
++ 使用ScrollView进行滚动，scrollIntoView，但是目前只能让当前歌词位于顶部
