@@ -110,7 +110,7 @@ const musicPlay =  function () {
         </View>
       </View>
       <View className="play-menu">
-        <PlayMenu songId={router.params.songId} onProcessCallback={processCb}></PlayMenu>
+        <PlayMenu songId={router.params.songId} onProcessCallback={processCb} type="normal"></PlayMenu>
       </View>
       <AtMessage />
     </View>
