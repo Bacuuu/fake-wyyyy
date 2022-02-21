@@ -2,11 +2,14 @@ import { View, Image, Text, ScrollView } from "@tarojs/components"
 import { useEffect, useState } from "react"
 import Taro, { useReady, useRouter } from "@tarojs/taro"
 import { AtMessage } from "taro-ui"
-import { binChop, featureDelayMsg, mmssSSS2millMinutes } from '@/util'
+import { binChop, featureDelayMsg, mmssSSS2millMinutes, strongifyStyles } from '@/util'
 import PlayMenu from '@/components/common/PlayMenu'
-import './musicPlay.scss'
+import styles from './musicPlay.module.scss'
 import { useSelector } from "react-redux"
 import { IStoreType } from "@/types/store"
+
+const strongStyles = strongifyStyles(styles)
+
 const musicPlay =  function () {
   interface Irouter {
     params: {
@@ -81,35 +84,35 @@ const musicPlay =  function () {
 
   // }, [music.musicInfo.playedDt])
   return (
-    <View className="play-wrap">
-      <View className="play-board">
+    <View className={styles["play-wrap"]}>
+      <View className={styles["play-board"]}>
         <View
-          className={"board dish " + (displayMode === 'dish' ? 'is-active' : '')}
+          className={strongStyles("board dish " + (displayMode === 'dish' ? 'is-active' : ''))}
           onClick={() => setDisplayMode('lyric')}>
-          <Image className="song-dish" src={music.musicInfo.picUrl} mode="aspectFit"></Image>
-          <View className="operation">
+          <Image className={styles["song-dish"]} src={music.musicInfo.picUrl} mode="aspectFit"></Image>
+          <View className={styles["operation"]}>
             <Image src={require('@/assets/images/shoucang2.png')} onClick={featureDelayMsg}></Image>
             <Image src={require('@/assets/images/pinglun2.png')} onClick={featureDelayMsg}></Image>
             <Image src={require('@/assets/images/xiazai2.png')} onClick={featureDelayMsg}></Image>
           </View>
         </View>
         <View
-          className={"board lyric " + (displayMode === 'lyric' ? 'is-active' : '')}
+          className={strongStyles("board lyric " + (displayMode === 'lyric' ? 'is-active' : ''))}
           onClick={() => setDisplayMode('dish')}>
           <ScrollView
-            className="lyric-block"
+            className={styles["lyric-block"] + ' lyric-block'}
             scrollY
             enhanced
             scrollWithAnimation>
             {formatedLyric[1].map((i, index) => {
               return (
-                <Text className={"lyric-item " + (index === blockIndex ? 'is-current' : '')}>{i}</Text>
+                <Text className={strongStyles("lyric-item " + (index === blockIndex ? 'is-current' : '')) + (index === blockIndex ? ' is-current' : '')}>{i}</Text>
               )
             })}
           </ScrollView>
         </View>
       </View>
-      <View className="play-menu">
+      <View className={styles["play-menu"]}>
         <PlayMenu songId={router.params.songId} onProcessCallback={processCb} type="normal"></PlayMenu>
       </View>
       <AtMessage />

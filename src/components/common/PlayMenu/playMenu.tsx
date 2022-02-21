@@ -1,19 +1,22 @@
 import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { AtSlider, AtFloatLayout, AtIcon } from 'taro-ui'
-import './index.scss'
+import styles from './index.module.scss'
 import { useEffect, useState } from 'react'
 import { playNewSong, seek, pause, play, toggleMode } from '@/actions/music'
 import { useSelector, useDispatch } from 'react-redux'
 import { IStoreType } from '@/types/store'
 import { throttle } from 'lodash'
-import { millMinutes2Hms, playTool } from '@/util'
+import { millMinutes2Hms, playTool, strongifyStyles } from '@/util'
 import PlayList from './PlayList'
 interface IProps {
   songId?: string,
   onProcessCallback?: Function,
   type?: 'mini' | 'normal'
 }
+
+const strongStyles = strongifyStyles(styles)
+
 const playMenu = function (props:IProps) {
   // 默认mini
   props.type = props.type || 'mini'
@@ -58,19 +61,19 @@ const playMenu = function (props:IProps) {
   return (
     props.type === 'mini'
     ?
-      <View className="mini-playmenu">
-        <View className="mini img-wrap">
+      <View className={styles["mini-playmenu"]}>
+        <View className={strongStyles("mini img-wrap")}>
           <Image src={music.musicInfo.picUrl}></Image>
         </View>
-        <View className="mini info">
-          <Text className="name">{music.musicInfo.name}</Text>
-          <Text className="authname"> - {music.musicInfo.authName}</Text>
+        <View className={strongStyles("mini info")}>
+          <Text className={styles["name"]}>{music.musicInfo.name}</Text>
+          <Text className={styles["authname"]}> - {music.musicInfo.authName}</Text>
         </View>
-        <View className="mini operation">
-          <View className="btn-pp" onClick={() => music.musicInfo.playState ? dispatch(pause()) : dispatch(play())}>
+        <View className={strongStyles("mini operation")}>
+          <View className={styles["btn-pp"]} onClick={() => music.musicInfo.playState ? dispatch(pause()) : dispatch(play())}>
             <AtIcon value={music.musicInfo.playState ? 'pause' : 'play'} size='24'></AtIcon>
           </View>
-          <View className="btn-playlist" onClick={() => toggleShowPlaylist(true)}>
+          <View className={styles["btn-playlist"]} onClick={() => toggleShowPlaylist(true)}>
             <AtIcon value='playlist' size='24'></AtIcon>
           </View>
         </View>
@@ -79,18 +82,18 @@ const playMenu = function (props:IProps) {
         </AtFloatLayout>
       </View>
     :
-      <View className="playmenu-wrap">
-        <View className="progress">
+      <View className={styles["playmenu-wrap"]}>
+        <View className={styles["progress"]}>
           <Text>{ millMinutes2Hms(progressVal * 1000) }</Text>
-          <AtSlider className="slider" blockSize={16} max={Math.floor(music.musicInfo.dt / 1000)} value={progressVal} blockColor='rgba(153, 153, 153, 1)' backgroundColor='rgba(153, 153, 153, 1)' activeColor='rgba(244, 157, 158, 1)' onChange={processChange}></AtSlider>
+          <AtSlider className={styles["slider"]} blockSize={16} max={Math.floor(music.musicInfo.dt / 1000)} value={progressVal} blockColor='rgba(153, 153, 153, 1)' backgroundColor='rgba(153, 153, 153, 1)' activeColor='rgba(244, 157, 158, 1)' onChange={processChange}></AtSlider>
           <Text>{music.musicInfo.songLength}</Text>
         </View>
-        <View className="dashboard">
-          <Image className="outside" src={playModeList[music.musicList.playStatus]} onClick={() => dispatch(toggleMode())}></Image>
-          <Image className="inside" onClick={() => playTool.prev(music, dispatch)} src={require('@/assets/images/shangyiqu2.png')}></Image>
-          <Image className="center" onClick={() => music.musicInfo.playState ? dispatch(pause()) : dispatch(play())} src={music.musicInfo.playState ? require('@/assets/images/bofangzhong2.png') : require('@/assets/images/zanting2.png') }></Image>
-          <Image className="inside" onClick={() => playTool.next(music, dispatch)}  src={require('@/assets/images/xiayiqu2.png')}></Image>
-          <Image className="outside" onClick={() => toggleShowPlaylist(true)} src={require('@/assets/images/bofangliebiao2.png')}></Image>
+        <View className={styles["dashboard"]}>
+          <Image className={styles["outside"]} src={playModeList[music.musicList.playStatus]} onClick={() => dispatch(toggleMode())}></Image>
+          <Image className={styles["inside"]} onClick={() => playTool.prev(music, dispatch)} src={require('@/assets/images/shangyiqu2.png')}></Image>
+          <Image className={styles["center"]} onClick={() => music.musicInfo.playState ? dispatch(pause()) : dispatch(play())} src={music.musicInfo.playState ? require('@/assets/images/bofangzhong2.png') : require('@/assets/images/zanting2.png') }></Image>
+          <Image className={styles["inside"]} onClick={() => playTool.next(music, dispatch)}  src={require('@/assets/images/xiayiqu2.png')}></Image>
+          <Image className={styles["outside"]} onClick={() => toggleShowPlaylist(true)} src={require('@/assets/images/bofangliebiao2.png')}></Image>
         </View>
         <AtFloatLayout isOpened={isShowPlaylist} onClose={() => toggleShowPlaylist(false)}>
           <PlayList musicList={music.musicList} musicInfo={music.musicInfo}></PlayList>

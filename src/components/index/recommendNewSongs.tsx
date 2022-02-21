@@ -3,6 +3,7 @@ import { getRecommentNewSongs } from "@/api/indexpage"
 import { View, Text } from "@tarojs/components"
 import { useEffect, useState } from "react"
 import { Jumper } from "@/util"
+import styles from "./recommendGrid.module.scss"
 const recommentNewSongs = function () {
   const jumper = function () {
 
@@ -17,14 +18,14 @@ const recommentNewSongs = function () {
   return (
     <View>
       <Text onClick={jumper}>推荐新歌</Text>
-      <View className="block-grid">
+      <View className={styles["block-grid"]}>
         {
           songs.map((i:any) => {
             return (
-              <View className="block-item" onClick={() => Jumper.playSong(i.id)}>
-                <View className="block-item_img" style={`background-image: url(${i.picUrl})`}>
+              <View className={styles["block-item"]} onClick={() => Jumper.playSong(i.id)}>
+                <View className={styles["block-item_img"]} style={`background-image: url(${i.picUrl})`}>
                 </View>
-                <Text className="block-item_title">{i.name}</Text>
+                <Text className={styles["block-item_title"]}>{i.name}</Text>
               </View>
             )
           })

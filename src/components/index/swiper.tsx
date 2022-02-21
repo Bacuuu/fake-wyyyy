@@ -3,6 +3,7 @@ import { View, Image, Text } from '@tarojs/components'
 import { getIndexpageInfo } from '@/api/indexpage'
 import { Swiper, SwiperItem } from '@tarojs/components'
 import colorVar from '@/constants/colorVar'
+import styles from './swiper.module.scss'
 const swiper = function () {
   const [swiperList, setSwiperList] = useState([])
   useEffect(() => {
@@ -29,7 +30,7 @@ const swiper = function () {
   }
   return (
     <Swiper
-      className="c-swiper"
+      className={styles["c-swiper"]}
       indicatorColor='#999'
       indicatorActiveColor='#333'
       circular
@@ -39,9 +40,9 @@ const swiper = function () {
         swiperList.map((i:any) => {
           return (
             <SwiperItem onClick={() => swiperClick(i)}>
-              <View className="swiper-item">
-                <Image className="item-bg" mode="aspectFit" src={i.pic} />
-                <Text className="item-title" style={`background-color: ${colorVar[i.titleColor]}`}>{i.typeTitle}</Text>
+              <View className={styles["swiper-item"]}>
+                <Image className={styles["item-bg"]} mode="aspectFit" src={i.pic} />
+                <Text className={styles["item-title"]} style={`background-color: ${colorVar[i.titleColor]}`}>{i.typeTitle}</Text>
               </View>
             </SwiperItem>
           )

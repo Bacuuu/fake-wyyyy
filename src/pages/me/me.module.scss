@@ -67,7 +67,7 @@
         height: 70px;
       }
     }
-    .at-button {
+    .button {
       margin-top: 20px;
     }
   }
@@ -85,10 +85,10 @@
     margin: 0 auto;
     display: flex;
     align-items: center;
-    .at-icon {
+    .inner-icon {
       margin: 0 10px;
     }
-    .at-input {
+    .inner-input {
       width: calc(90% - 40px)
     }
     & + .lbf-input {
@@ -105,7 +105,7 @@
     align-items: center;
     color: rgba(102, 102, 102, 1);
     font-size: 12px;
-    .at-button {
+    .btn-login {
       width: 100%;
     }
   }

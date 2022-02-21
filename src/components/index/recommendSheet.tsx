@@ -6,6 +6,7 @@ import { getRecommendSheet } from '@/api/indexpage'
 import { getUserRecommendSheet } from '@/api/user'
 import { useState } from "react"
 import { numberFormatByZh, Jumper } from "@/util"
+import styles from "./recommendGrid.module.scss"
 const recommendSheet = function () {
   const user = useSelector((state:IStoreType) => state.user)
   const [songSheet, setSongSheet] = useState([])
@@ -26,15 +27,15 @@ const recommendSheet = function () {
   return (
     <View>
       <Text>推荐歌单</Text>
-      <View className="block-grid">
+      <View className={styles["block-grid"]}>
         {
           songSheet.map((i:any) => {
             return (
-              <View className="block-item" onClick={() => Jumper.toSheet(i.id)}>
-                <View className="block-item_img" style={`background-image: url(${i.picUrl})`}>
-                  <Text className="block-item_hot">{numberFormatByZh(i.playcount || i.playCount, [5])}</Text>
+              <View className={styles["block-item"]} onClick={() => Jumper.toSheet(i.id)}>
+                <View className={styles["block-item_img"]} style={`background-image: url(${i.picUrl})`}>
+                  <Text className={styles["block-item_hot"]}>{numberFormatByZh(i.playcount || i.playCount, [5])}</Text>
                 </View>
-                <Text className="block-item_title">{i.name}</Text>
+                <Text className={styles["block-item_title"]}>{i.name}</Text>
               </View>
             )
           })

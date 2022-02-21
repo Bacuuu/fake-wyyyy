@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IStoreType } from '@/types/store'
 import { AtInput, AtIcon, AtButton, AtMessage } from 'taro-ui'
 import { login } from '../../actions/user'
-import './me.scss'
+import styles from './me.module.scss'
 
 type IProps = {
   user?: Object
@@ -42,10 +42,11 @@ async function handleLogin () {
 }
 
 return (
-    <View className='lbf-wrap'>
-      <View className="lbf-input">
-        <AtIcon value='iphone-x' size='20' color='#999'></AtIcon>
+    <View className={styles['lbf-wrap']}>
+      <View className={styles["lbf-input"]}>
+        <AtIcon className={styles["inner-icon"]} value='iphone-x' size='20' color='#999'></AtIcon>
         <AtInput
+          className={styles["inner-input"]}
           name="account"
           type="phone"
           border={false}
@@ -54,9 +55,10 @@ return (
           onChange={e => inputChange(e, 'account')}
         />
       </View>
-      <View className="lbf-input">
-        <AtIcon value="lock" size='20' color='#999'></AtIcon>
+      <View className={styles["lbf-input"]}>
+        <AtIcon className={styles["inner-icon"]} value="lock" size='20' color='#999'></AtIcon>
         <AtInput
+          className={styles["inner-input"]}
           name="pwd"
           type="password"
           border={false}
@@ -65,8 +67,8 @@ return (
           onChange={e => inputChange(e, 'pwd')}
         />
       </View>
-      <View className="lbf-btns">
-        <AtButton type="primary" onClick={handleLogin}>登录</AtButton>
+      <View className={styles["lbf-btns"]}>
+        <AtButton className={styles["btn-login"]} type="primary" onClick={handleLogin}>登录</AtButton>
         <Text>重设密码</Text>
       </View>
       <AtMessage></AtMessage>

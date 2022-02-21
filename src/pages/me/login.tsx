@@ -5,7 +5,7 @@ import { IStoreType } from '@/types/store'
 import Taro from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
 import avatar from '@/assets/images/login_avatar.png'
-import './me.scss'
+import styles from './me.module.scss'
 
 type IProps = {
   user?: Object
@@ -22,21 +22,21 @@ function Login (props: IProps) {
     
   }, [])
   return (
-    <View className='login-wrap'>
+    <View className={styles['login-wrap']}>
       {
         hasLogin 
           ? (
-            <View className="has-login">
+            <View className={styles["has-login"]}>
 
             </View>
           )
           : (
-            <View className="to-login">
-              <View className="avatar">
+            <View className={styles["to-login"]}>
+              <View className={styles["avatar"]}>
                 <Image src={avatar}></Image>
               </View>
-              <AtButton type="primary" onClick={loginByPhone}>登陆</AtButton>
-              <AtButton>注册</AtButton>
+              <AtButton className={styles["button"]} type="primary" onClick={loginByPhone}>登陆</AtButton>
+              <AtButton className={styles["button"]}>注册</AtButton>
             </View>
           )
       }

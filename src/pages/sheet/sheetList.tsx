@@ -4,7 +4,7 @@ import { getSheetDetail, getSongsBySheetId, collectSheet } from "@/api/music"
 import { useRouter } from "@tarojs/taro"
 import { numberFormatByZh } from '@/util'
 import { SongsList } from '@/components/common/SongsList'
-import './sheetList.scss'
+import styles from './sheetList.module.scss'
 interface Irouter {
   params: {
     id: string
@@ -79,36 +79,36 @@ const sheetList = function () {
     })
   }, [])
   return (
-    <View className="sheetlist-wrap">
-      <View className="sheetlist-header">
-        <View className="info">
-          <Image className="coverimg" src={baseInfo.coverImgUrl}></Image>
-          <View className="about">
+    <View className={styles["sheetlist-wrap"]}>
+      <View className={styles["sheetlist-header"]}>
+        <View className={styles["info"]}>
+          <Image className={styles["coverimg"]} src={baseInfo.coverImgUrl}></Image>
+          <View className={styles["about"]}>
             <Text>
               {baseInfo.name}
             </Text>
-            <View className="creator">
-              <Image className="creator-avatar" src={baseInfo.creator.avatarUrl}></Image>
+            <View className={styles["creator"]}>
+              <Image className={styles["creator-avatar"]} src={baseInfo.creator.avatarUrl}></Image>
               {baseInfo.creator.nickname}
             </View>
           </View>
         </View>
-        <View className="operation">
-          <View className="operation-item" onClick={collect}>
+        <View className={styles["operation"]}>
+          <View className={styles["operation-item"]} onClick={collect}>
             <Image src={collected ? require('@/assets/images/shoucang-red.png') : require('@/assets/images/shoucang.png')}></Image>
             <Text>{numberFormatByZh(baseInfo.subscribedCount)}</Text>
           </View>
-          <View className="operation-item">
+          <View className={styles["operation-item"]}>
             <Image src={require('@/assets/images/pinglun.png')}></Image>
             <Text>{numberFormatByZh(baseInfo.commentCount)}</Text>
           </View>
-          <View className="operation-item">
+          <View className={styles["operation-item"]}>
             <Image src={require('@/assets/images/fenxiang.png')}></Image>
             <Text>{numberFormatByZh(baseInfo.shareCount)}</Text>
           </View>
         </View>
       </View>
-      <View className="sheetlist-songlist">
+      <View className={styles["sheetlist-songlist"]}>
         <SongsList list={songs}></SongsList>
       </View>
     </View>

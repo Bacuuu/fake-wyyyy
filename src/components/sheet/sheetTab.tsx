@@ -6,7 +6,7 @@ import { useLazyLoad } from "@/hooks"
 import { numberFormatByZh } from '@/util'
 import { AtIcon, AtFloatLayout, AtTag } from "taro-ui"
 import { Jumper } from '@/util'
-import './sheetTab.scss'
+import styles from './sheetTab.module.scss'
 const sheetTab = function () {
   const [sheet, setSheet] = useState([] as Array<Object>)
   const [tags, setTags] = useState([])
@@ -78,33 +78,33 @@ const sheetTab = function () {
     setShowActionSheet(true)
   }
   return (
-    <ScrollView className="tab-content" scrollY onScroll={onScroll}>
-      <View className="sheet-header">
+    <ScrollView className={styles["tab-content"]} scrollY onScroll={onScroll}>
+      <View className={styles["sheet-header"]}>
         <Text>全部歌单</Text>
-        <View className="sheet-header_icon">
+        <View className={styles["sheet-header_icon"]}>
           <AtIcon size="20" value="bullet-list" onClick={showActionSheet}></AtIcon>
         </View>
       </View>
-      <View className="sheet-content">
+      <View className={styles["sheet-content"]}>
       {
         sheet.map((i:any) => {
           return (
-            <View className="sheet-item" onClick={() => clickSheetItem(i.id)}>
-              <View className="sheet-item_bg" style={`background-image: url(${i.coverImgUrl})`}>
-                <Text className="sheet-item_hot"><AtIcon value='play' size='14' color='#FFF'></AtIcon>{numberFormatByZh(i.playCount)}</Text>
-                <Text className="sheet-item_tags">{i.tags.slice(0, 3).join(' | ')}</Text>
+            <View className={styles["sheet-item"]} onClick={() => clickSheetItem(i.id)}>
+              <View className={styles["sheet-item_bg"]} style={`background-image: url(${i.coverImgUrl})`}>
+                <Text className={styles["sheet-item_hot"]}><AtIcon value='play' size='14' color='#FFF'></AtIcon>{numberFormatByZh(i.playCount)}</Text>
+                <Text className={styles["sheet-item_tags"]}>{i.tags.slice(0, 3).join(' | ')}</Text>
               </View>
-              <Text className="sheet-item_title">{i.name}</Text>
+              <Text className={styles["sheet-item_title"]}>{i.name}</Text>
             </View>
           )
         })
       }
       </View>
       <AtFloatLayout isOpened={isShowActionSheet} onClose={() => setShowActionSheet(false)}>
-        <View className="float-tags">
+        <View className={styles["float-tags"]}>
           {tags.map(i => {
             return (
-              <View className="float-tags__item">
+              <View className={styles["float-tags__item"]}>
                 <AtTag name={i} active={checkedTags.includes(i)} onClick={clickTagItem}>{i}</AtTag>
               </View>
             )

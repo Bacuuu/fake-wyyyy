@@ -4,7 +4,7 @@ import { playTool } from "@/util"
 import { View, Text } from "@tarojs/components"
 import { useDispatch, useSelector } from "react-redux"
 import { AtIcon } from "taro-ui"
-import './index.scss'
+import styles from './index.module.scss'
 const PlayList = function (props:IStoreMusicType) {
   const dic = {
     'SX': '顺序播放',
@@ -22,26 +22,26 @@ const PlayList = function (props:IStoreMusicType) {
     }
   }
   return (
-    <View className="playlist-wrap">
-      <View className="header">
+    <View className={styles["playlist-wrap"]}>
+      <View className={styles["header"]}>
         <Text onClick={() => dispatch(toggleMode())}>{dic[props.musicList.playStatus]}</Text>
         <Text>({props.musicList.list.length})</Text>
-        <AtIcon onClick={() => dispatch(cleanList())} className="clean" value='trash' size='20' color='#999'></AtIcon>
+        <AtIcon onClick={() => dispatch(cleanList())} className={styles["clean"]} value='trash' size='20' color='#999'></AtIcon>
       </View>
-      <View className="list">
+      <View className={styles["list"]}>
         {
           props.musicList.list.map(i => {
             return (
-              <View className="list-item">
-                <View className="info">
+              <View className={styles["list-item"]}>
+                <View className={styles["info"]}>
                   {
-                    props.musicInfo.id === i.id && <AtIcon className="icon-playing" value='volume-plus' size='16' color='#999'></AtIcon>
+                    props.musicInfo.id === i.id && <AtIcon className={styles["icon-playing"]} value='volume-plus' size='16' color='#999'></AtIcon>
                   }
-                  <Text className="name ellipsis">{i.name}</Text>
+                  <Text className={styles["name"] + "ellipsis"}>{i.name}</Text>
                   <Text> -- </Text>
-                  <Text className="auth-name ellipsis">{i.authName}</Text>
+                  <Text className={styles["auth-name"] + "ellipsis"}>{i.authName}</Text>
                 </View>
-                <AtIcon onClick={() => deleteOneSong(i.id)} className="close-icon" value='close' size='20' color='#999'></AtIcon>
+                <AtIcon onClick={() => deleteOneSong(i.id)} className={styles["close-icon"]} value='close' size='20' color='#999'></AtIcon>
               </View>
             )
           })

@@ -1,8 +1,10 @@
 import { View } from "@tarojs/components"
 import MytabsItem from '@/components/common/Mytabs/mytabItem'
-import './index.scss'
+import styles from './index.module.scss'
 import { useState } from "react"
+import { strongifyStyles } from "@/util"
 
+const strongStyles = strongifyStyles(styles)
 
 const mytabs = function ({children, tabs, className}) {
   const [tabInner, setTabInner] = useState(childrenFilter())
@@ -23,12 +25,12 @@ const mytabs = function ({children, tabs, className}) {
     }
   }
   return (
-    <View className={`mytabs-wrap ${className}`}>
-      <View className="mytabs-header no-scroll">
+    <View className={strongStyles(`mytabs-wrap ${className}`)}>
+      <View className={styles["mytabs-header"] + " no-scroll"}>
         {
           tabs.map((i, index) => {
             return (
-              <View className={`mytabs-header_item ${activeTab === index ? 'is-active' : ''}`} style={`width:${100 / tabs.length}%`} onClick={() =>tabClick(index)}>
+              <View className={strongStyles(`mytabs-header_item ${activeTab === index ? 'is-active' : ''}`)} style={`width:${100 / tabs.length}%`} onClick={() =>tabClick(index)}>
                 {i}
               </View>
             )
@@ -37,7 +39,7 @@ const mytabs = function ({children, tabs, className}) {
       </View>
       {tabInner.map(i => {
         return (
-          <View className={`mytabs-content ${i.props.index === activeTab ? 'is-active' : '' }`}>
+          <View className={strongStyles(`mytabs-content ${i.props.index === activeTab ? 'is-active' : '' }`)}>
             {i}
           </View>
         )

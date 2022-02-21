@@ -6,7 +6,7 @@ import { IStoreType } from '@/types/store'
 import { AtButton, AtTag, AtList, AtListItem, AtMessage } from 'taro-ui'
 import * as userAction from '@/actions/user'
 import * as api from '@/api/user'
-import './me.scss'
+import styles from './me.module.scss'
 
 type IProps = {
   user?: Object
@@ -106,43 +106,43 @@ function Me (props: IProps) {
   }
 
   return (
-    <View className='me-wrap'>
+    <View className={styles["me-wrap"]}>
       {
         hasLogin 
           ? (
-            <View className="has-login">
-              <View className="user-info">
-                <View className="user-info__top">
-                  <Image className="avatar" src={user?.userInfo?.profile?.avatarUrl} />
-                  <View className="basic-info">
+            <View className={styles["has-login"]}>
+              <View className={styles["user-info"]}>
+                <View className={styles["user-info__top"]}>
+                  <Image className={styles["avatar"]} src={user?.userInfo?.profile?.avatarUrl} />
+                  <View className={styles["basic-info"]}>
                     <View>{user?.userInfo?.profile?.nickname}</View>
                     <AtTag>Lv.{user?.userInfo?.level?.level}</AtTag>
                   </View>
                   <AtButton type='primary' circle={false} className="ding" disabled={hasCheckin} onClick={() => signin()}>{hasCheckin ? '已签到' : '签到'}</AtButton>
                   {/* <AtButton onClick={getuser}>123</AtButton> */}
                 </View>
-                <View className="user-info__bottom">
-                  <View className="bottom-item">
+                <View className={styles["user-info__bottom"]}>
+                  <View className={styles["bottom-item"]}>
                     <Text>动态</Text>
-                    <Text className="bottom-item__val">{user?.userInfo?.profile.eventCount}</Text>
+                    <Text className={styles["bottom-item__val"]}>{user?.userInfo?.profile.eventCount}</Text>
                   </View>
-                  <View className="bottom-item">
+                  <View className={styles["bottom-item"]}>
                     <Text>关注</Text>
-                    <Text className="bottom-item__val">{user?.userInfo?.profile.follows}</Text>
+                    <Text className={styles["bottom-item__val"]}>{user?.userInfo?.profile.follows}</Text>
                   </View>
-                  <View className="bottom-item">
+                  <View className={styles["bottom-item"]}>
                     <Text>粉丝</Text>
-                    <Text className="bottom-item__val">{user?.userInfo?.profile.followeds}</Text>
+                    <Text className={styles["bottom-item__val"]}>{user?.userInfo?.profile.followeds}</Text>
                   </View>
-                  <View className="bottom-item tome">我的资料</View>
+                  <View className={styles["bottom-item tome"]}>我的资料</View>
                 </View>
               </View>
               {menuList()}
-              <AtButton type="primary" className="logout" onClick={() => logout()}>退出登录</AtButton>
+              <AtButton type="primary" className={styles["logout"]} onClick={() => logout()}>退出登录</AtButton>
             </View>
           )
           : (
-            <View className="to-login">
+            <View className={styles["to-login"]}>
               <AtButton onClick={toLogin}>去登陆</AtButton>
             </View>
           )
