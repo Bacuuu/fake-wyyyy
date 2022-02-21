@@ -1,7 +1,7 @@
 # fake-wyyyy
 仿-网易云音乐
 
-taro3 + react 小程序开发学习
+taro3 + react + react-redux 小程序开发学习
 
 ## 参照
 [NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)
@@ -30,8 +30,8 @@ taro3 + react 小程序开发学习
 - [x] 他人的歌单详情
 - [ ] 歌单封面
 - [x] 播放歌曲-封面
-- [ ] 播放歌曲-歌词
-- [ ] 播放列表
+- [x] 播放歌曲-歌词
+- [x] 播放列表
 - [ ] 歌曲评论
 - [ ] 关注
 - [ ] 粉丝
