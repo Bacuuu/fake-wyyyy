@@ -82,6 +82,18 @@ export function binChop (list: Array<number>, target:number, startIndex = 0, end
   return res
 }
 
+/**
+ * 增强css modules的styles
+ * @param styles 当前类名
+ * @returns cssmodules中的类名
+ */
+export const strongifyStyles = function (styles:Object) {
+  return function (classname:string) {
+    const list = classname.trim().split(' ')
+    return list.map(i => styles[i]).join(' ')
+  }
+}
+
 export const Jumper = {
   // 跳转到歌曲播放页面
   playSong: function (id) {
