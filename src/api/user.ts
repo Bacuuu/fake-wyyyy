@@ -41,4 +41,7 @@ export const dailySignin = () => {
 }
 
 // 推荐歌单（登录）
-export const getUserRecommendSheet:any = (params ?:Object) => http.post('/recommend/resource', params)
+export const getUserRecommendSheet = (params ?:Object) => http.post('/recommend/resource', params)
+
+// 获取用户歌单，创建的和收藏的都在里面了
+export const getUserSheet = (params: {uid: number, limit?: number, offset?: number}) => http.post('/user/playlist', params)

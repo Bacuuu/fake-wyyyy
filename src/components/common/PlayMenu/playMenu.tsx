@@ -65,6 +65,7 @@ const playMenu = function (props:IProps) {
         <View className={strongStyles("mini img-wrap")}>
           <Image src={music.musicInfo.picUrl}></Image>
         </View>
+        {/* TODO 字体轮播，ellipsis效果不好 */}
         <View className={strongStyles("mini info")}>
           <Text className={styles["name"] + ' ellipsis'}>{music.musicInfo.name}</Text>
           <Text className={styles["authname"] + ' ellipsis'}> - {music.musicInfo.authName}</Text>
