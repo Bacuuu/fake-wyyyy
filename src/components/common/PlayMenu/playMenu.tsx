@@ -66,8 +66,8 @@ const playMenu = function (props:IProps) {
           <Image src={music.musicInfo.picUrl}></Image>
         </View>
         <View className={strongStyles("mini info")}>
-          <Text className={styles["name"]}>{music.musicInfo.name}</Text>
-          <Text className={styles["authname"]}> - {music.musicInfo.authName}</Text>
+          <Text className={styles["name"] + ' ellipsis'}>{music.musicInfo.name}</Text>
+          <Text className={styles["authname"] + ' ellipsis'}> - {music.musicInfo.authName}</Text>
         </View>
         <View className={strongStyles("mini operation")}>
           <View className={styles["btn-pp"]} onClick={() => music.musicInfo.playState ? dispatch(pause()) : dispatch(play())}>

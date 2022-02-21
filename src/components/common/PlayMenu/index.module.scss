@@ -99,14 +99,18 @@
     &.info {
       flex: 1;
       padding: 0 10px;
+      display: flex;
       .name {
         display: inline-block;
         min-width:30px;
+        max-width: 100px;
         font-size: 18px;
         color: rgb(98, 98, 98);
       }
       .authname {
-  
+        max-width: 60px;
+        display: inline-flex;
+        align-items: center;
       }
     }
     &.operation {
