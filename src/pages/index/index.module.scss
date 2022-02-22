@@ -11,6 +11,9 @@
     border-radius: 22px;
     padding-left: 22px;
     padding-right: 22px;
+    &::after {
+      display: none;
+    }
   }
   .iconfont {
     font-size: 24px;
@@ -19,8 +22,7 @@
 
 
 .header-input-placeholder {
-  text-align: center;
-  color: #505050;
+  color: #2f2f2f;
 }
 .menu {
   display: flex;

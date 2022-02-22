@@ -1,5 +1,6 @@
+import Taro from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
-import { AtInput, AtTabs, AtTabsPane, AtIcon  } from 'taro-ui'
+import { AtInput, AtTabs, AtTabsPane, AtIcon, AtMessage } from 'taro-ui'
 import Tab from '@/components/common/Mytabs'
 import Swiper from '../../components/index/swiper'
 import RecommendSheet from '../../components/index/recommendSheet'
@@ -8,6 +9,7 @@ import SheetTab from '../../components/sheet/sheetTab'
 import PlayMenu from '@/components/common/PlayMenu'
 import styles from './index.module.scss'
 import { useState } from 'react'
+import { featureDelayMsg, Jumper } from '@/util'
 
 type IProps = {
   user?: Object
@@ -16,19 +18,26 @@ function Index (props: IProps) {
   const searchValChange = (val) => {
     console.log(val)
   }
+  const toSearch = function () {
+    Taro.navigateTo({
+      url: '/pages/search/search'
+    })
+  }
   const tabList = ['个性推荐', '歌单', '主播电台', '排行榜']
   const [tabIdx, setTabIdx] = useState(0)
   return (
     <View className={styles["index"]}>
       <View className={styles["header"]}>
-        <View className={ styles["iconfont"] + " iconfont icon-voice"}></View>
+        <View className={ styles["iconfont"] + " iconfont icon-voice"} onClick={featureDelayMsg}></View>
         <AtInput
           className={styles["search-input"]}
           name="search"
+          editable={false}
+          onClick={toSearch}
           onChange={searchValChange}
-          placeholder="搜索音乐、歌词、电台"
-          placeholderClass="header-input-placeholder"></AtInput>
-        <View className={styles["iconfont"] + " iconfont icon-musiclist"}></View>
+          placeholder="搜索音乐、歌单"
+          placeholderClass={styles["header-input-placeholder"]}></AtInput>
+        <View className={styles["iconfont"] + " iconfont icon-musiclist"} onClick={featureDelayMsg}></View>
       </View>
       <Tab.MyTabs className={styles["tabs"]} tabs={tabList}>
         <Tab.MyTabItem index={0}>
@@ -63,6 +72,7 @@ function Index (props: IProps) {
         </Tab.MyTabItem>
       </Tab.MyTabs>
       <PlayMenu></PlayMenu>
+      <AtMessage></AtMessage>
     </View>
   )
 }

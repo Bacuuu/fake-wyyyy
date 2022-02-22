@@ -26,3 +26,12 @@ export const getSongsBySheetId = (params: {id: string}) => http.post('/playlist/
 
 // 收藏/取消收藏歌单
 export const collectSheet = (params: {t: 1 | 2,id: string}) => http.post('/playlist/subscribe', params)
+
+// 获取搜索热词
+export const getSearchHotWords = () => http.post('/search/hot')
+
+// 搜索建议，type=mobile适用
+export const getSearchSuggestion = (params: {keywords: string, type?: 'mobile'}) => http.post('/search/suggest', params)
+
+// 搜索
+export const serach =  (params:{keywords:string, limit?:number, offset?:number, type?:number}) => http.post('/search', params)
