@@ -16,8 +16,6 @@ const search = function () {
   const [tipsMarginTop, setTipsMarginTop] = useState(0)
   // 搜索建议
   const [searchTips, setSearchTips] = useState([])
-  // 禁止搜索建议
-  const [disableSug, setDisableSug] = useState(false)
   useEffect(() => {
     getSearchHotWords().then(r => {
       if (r.result) {
@@ -52,21 +50,18 @@ const search = function () {
       keywords: v,
       type: 'mobile'
     }).then(r => {
-      r.result && setSearchTips(r.result.allMatch.map(i => i.keyword))
+      r.result.allMatch && setSearchTips(r.result.allMatch.map(i => i.keyword))
     })
   }, 300)
   const searchValChange = function (v) {
+    // 发现输入框失焦的时候会触发onChange
+    if (v === searchVal) return
     setSearchVal(v)
-    if (!disableSug) {
-      handleSearchTips(v)
-      return
-    }
-    setDisableSug(false)
+    handleSearchTips(v)
   }
   const handleSearch = function (keyword:string) {
     // 清空搜索建议
     setSearchTips([])
-    setDisableSug(true)
     // 传入搜索值，覆盖
     if (keyword) {
       setSearchVal(keyword)
@@ -97,7 +92,7 @@ const search = function () {
     <View className={styles["search-wrap"]}>
       <View className={styles['search-input'] + ' search-input'}>
         <AtInput
-          name="search"
+          name="search-input"
           value={searchVal}
           focus
           className={styles["input"]}
