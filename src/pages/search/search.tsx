@@ -2,9 +2,9 @@ import { View, Text } from "@tarojs/components"
 import { useEffect, useState } from "react"
 import { AtInput, AtIcon } from "taro-ui"
 import styles from './search.module.scss'
-import Taro, { useReady } from "@tarojs/taro"
+import Taro, { navigateTo, useReady } from "@tarojs/taro"
 import { debounce } from 'lodash'
-import { getSearchHotWords, getSearchSuggestion, serach } from "@/api/music"
+import { getSearchHotWords, getSearchSuggestion } from "@/api/music"
 const search = function () {
   // 搜索输入值
   const [searchVal, setSearchVal] = useState('')
@@ -74,10 +74,8 @@ const search = function () {
       key: 'searchRecord',
       data: set
     })
-    serach({
-      keywords: keyword
-    }).then(r => {
-      console.log(r)
+    navigateTo({
+      url: `/pages/search/searchresult?keyword=${keyword}`
     })
   }
   const removeSearchRecord = function (tag) {

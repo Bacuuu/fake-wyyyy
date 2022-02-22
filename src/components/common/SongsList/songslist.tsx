@@ -11,8 +11,8 @@ const songslist = function (props: {list:Object[]}) {
             <View className={styles["index"]}>{index}</View>
             <View className={styles["item-right"]} onClick={() => Jumper.playSong(i.id)}>
               <View className={styles["info"]}>
-                <Text className={styles["name"] + " ellipsis"}>{i.name}</Text>
-                <Text className={styles["from"] + " ellipsis"}>{i.from}</Text>
+                <Text className={styles["name"] + " ellipsis"}>{i.name || '未知'}</Text>
+                <Text className={styles["from"] + " ellipsis"}>{i.from || '未知'}</Text>
               </View>
               <View className={styles["operation"]}>
                 <Image className={styles["mv"]} onClick={featureDelayMsg} src={require('@/assets/images/mv.png')}></Image>

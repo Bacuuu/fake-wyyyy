@@ -34,4 +34,4 @@ export const getSearchHotWords = () => http.post('/search/hot')
 export const getSearchSuggestion = (params: {keywords: string, type?: 'mobile'}) => http.post('/search/suggest', params)
 
 // 搜索
-export const serach =  (params:{keywords:string, limit?:number, offset?:number, type?:number}) => http.post('/search', params)
+export const doSearch =  (params:{keywords:string, limit?:number, offset?:number, type?:number}) => http.post('/search', params)
