@@ -47,3 +47,7 @@ cookies = ["NMTID=00OPYe1Z-NhS6CjOU0znmtsYrU0K4kAAAF5_imWlg; Max-Age=315360000; 
 + 首先尝试纯css方案，通过设置translateY进行偏移，但是导致偏移后的内容无法通过滑动再返回到视图中
 + 使用ScrollView进行滚动，scrollTo方法尝试了很久无效....
 + 使用ScrollView进行滚动，scrollIntoView，但是目前只能让当前歌词位于顶部
+
+## AtInput 设置focus后开发者工具预览无效
++ 但是真机预览时会自动触发focus的
+
