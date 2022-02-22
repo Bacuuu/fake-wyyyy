@@ -66,21 +66,21 @@ export const playNewSong = (id:string, flag?:boolean) => {
       id
     })
     const url = data[0].url
-    const {al = {}, ar = [{}], dt = 0} = detail.songs[0]
+    const {al = {}, ar = [{}], dt = 0, name} = detail.songs[0]
     Taro.playBackgroundAudio({
       dataUrl: url,
       coverImgUrl: al.picUrl,
-      title: al.name
+      title: name
     })
     // 插入歌曲队列
     flag && dispatch(unshiftToList({
       id,
-      name: al.name,
+      name,
       authName: ar[0].name
     }))
     dispatch(updatePlayingSong({
       id,
-      name: al.name,
+      name,
       picUrl: al.picUrl,
       authName: ar[0].name,
       songLength: millMinutes2Hms(dt),
