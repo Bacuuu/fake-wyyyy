@@ -78,8 +78,9 @@ const search = function () {
       url: `/pages/search/searchresult?keyword=${keyword}`
     })
   }
-  const removeSearchRecord = function (tag) {
-    const newList = searchRecord.filter(i => i !==tag)
+  const removeSearchRecord = function (tag, event) {
+    event[0].stopPropagation()
+    const newList = searchRecord.filter(i => i !== tag)
     setSearchRecord(newList)
     Taro.setStorage({
       key: 'searchRecord',
@@ -127,7 +128,7 @@ const search = function () {
               <View className={styles["record-item"]} onClick={() => handleSearch(i)}>
                 <AtIcon value='clock' color="rgba(153, 153, 153, 1)"></AtIcon>
                 <Text className={styles["record-item__text"]}>{i}</Text>
-                <AtIcon value="close" color="rgba(153, 153, 153, 1)" onClick={() => removeSearchRecord(i)}></AtIcon>
+                <AtIcon value="close" color="rgba(153, 153, 153, 1)" onClick={(e) => removeSearchRecord(i, e)}></AtIcon>
               </View>
             )
           })
