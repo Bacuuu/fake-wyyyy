@@ -1,4 +1,4 @@
-import { cleanList, deleteOneById, toggleMode } from "@/actions/music"
+import { cleanList, deleteOneById, playNewSong, toggleMode } from "@/actions/music"
 import { IStoreMusicType, IStoreType } from "@/types/store"
 import { playTool } from "@/util"
 import { View, Text } from "@tarojs/components"
@@ -14,7 +14,8 @@ const PlayList = function (props:IStoreMusicType) {
   }
   const music = useSelector((state:IStoreType) => state.music)
   const dispatch = useDispatch()
-  function deleteOneSong (id) {
+  function deleteOneSong (id, e) {
+    e[0].stopPropagation()
     dispatch(deleteOneById({id}))
     // 如果id是正在播放的，则播放下一曲
     if (id === music.musicInfo.id) {
@@ -32,7 +33,7 @@ const PlayList = function (props:IStoreMusicType) {
         {
           props.musicList.list.map(i => {
             return (
-              <View className={styles["list-item"]}>
+              <View className={styles["list-item"]} onClick={() => dispatch(playNewSong(i.id))}>
                 <View className={styles["info"]}>
                   {
                     props.musicInfo.id === i.id && <AtIcon className={styles["icon-playing"]} value='volume-plus' size='16' color='#999'></AtIcon>
@@ -41,7 +42,7 @@ const PlayList = function (props:IStoreMusicType) {
                   <Text> -- </Text>
                   <Text className={styles["auth-name"] + "ellipsis"}>{i.authName}</Text>
                 </View>
-                <AtIcon onClick={() => deleteOneSong(i.id)} className={styles["close-icon"]} value='close' size='20' color='#999'></AtIcon>
+                <AtIcon onClick={(e) => deleteOneSong(i.id, e)} className={styles["close-icon"]} value='close' size='20' color='#999'></AtIcon>
               </View>
             )
           })
