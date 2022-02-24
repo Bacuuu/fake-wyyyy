@@ -35,3 +35,25 @@ export const getSearchSuggestion = (params: {keywords: string, type?: 'mobile'})
 
 // 搜索
 export const doSearch =  (params:{keywords:string, limit?:number, offset?:number, type?:number}) => http.post('/search', params)
+
+/**
+ * 顶层评论
+ * @param params 
+ * type: 数字 , 资源类型 , 对应歌曲 , mv, 专辑 , 歌单 , 电台, 视频对应以下类型
+    0: 歌曲
+    1: mv
+    2: 歌单
+    3: 专辑
+    4: 电台
+    5: 视频
+    6: 动态
+
+  * sortType: 排序方式, 1:按推荐排序, 2:按热度排序, 3:按时间排序
+
+  * cursor: 当sortType为 3 时且页数不是第一页时需传入,值为上一条数据的 time
+ * @returns 
+ */
+export const getTopComment = (params:{id:string,type:number,pageNo?:number,pageSize?:number,sortType?:number,cursor?:string}) => http.post('/comment/new', params)
+
+// 楼内评论
+export const getInnerComment = (params:{parentCommentId:string,id:string,type:number}) => http.post('/comment/floor', params)

@@ -10,6 +10,7 @@ export default {
     'pages/musicplay/musicPlay',
     'pages/search/search',
     'pages/search/searchresult',
+    'pages/comment/comment'
   ],
   window: {
     backgroundTextStyle: 'light',

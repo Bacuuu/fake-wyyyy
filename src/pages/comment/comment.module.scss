@@ -1,0 +1,99 @@
+.comment-wrap {
+  .song-info {
+    width: 100%;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    Image {
+      width: 70px;
+      height: 70px;
+      margin: 0 10px;
+    }
+    .info-content {
+      .name {
+        display: block;
+        height: 30px;
+        color: rgba(80, 80, 80, 1);
+        font-size: 13px;
+      }
+      .auth-name {
+        display: block;
+        height: 20px;
+        color: rgba(153, 153, 153, 1);
+        font-size: 10px;
+      }
+    }
+  }
+  .block-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+    background-color: rgba(238, 238, 238, 1);
+    &__text {
+      color: rgba(80, 80, 80, 1);
+      font-size: 12px;
+    }
+    &__sort {
+      .divider {
+        display: inline-block;
+        padding: 0 8px;
+      }
+      .is-current {
+        color: #ff2a2a
+      }
+    }
+  }
+  .comment-list {
+    .comment-block {
+      position: relative;
+      width: 100%;
+      display: flex;
+      .avatar {
+        width: 40px;
+        height: 40px;
+        padding: 10px;
+        Image {
+          width: 100%;
+          height:100%;
+          border-radius: 50%;
+        }
+      }
+      .info {
+        flex: 1;
+        padding: 10px;
+        &-top {
+          height: 25px;
+          line-height: 25px;
+          display: flex;
+          justify-content: space-between;
+          color: rgba(67, 67, 67, 1);
+          font-size: 11px;
+          & > Text {
+            display: inline-block;
+            width: 200px;
+          }
+        }
+        &-middle {
+          height: 14px;
+          color: rgba(128, 128, 128, 1);
+          font-size: 8px;
+        }
+        &-bottom {
+          color: rgba(67, 67, 67, 1);
+          font-size: 12px;
+        }
+      }
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 10px;
+        width: calc(100% - 20px);
+        height: 1px;
+        background-color: #ccc;
+      }
+    }
+  }
+}

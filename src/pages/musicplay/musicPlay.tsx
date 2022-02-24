@@ -1,6 +1,6 @@
 import { View, Image, Text, ScrollView } from "@tarojs/components"
 import { useEffect, useState } from "react"
-import Taro, { useReady, useRouter } from "@tarojs/taro"
+import Taro, { navigateTo, useRouter } from "@tarojs/taro"
 import { AtMessage } from "taro-ui"
 import { binChop, featureDelayMsg, mmssSSS2millMinutes, strongifyStyles } from '@/util'
 import PlayMenu from '@/components/common/PlayMenu'
@@ -83,6 +83,11 @@ const musicPlay =  function () {
   // useEffect(() => {
 
   // }, [music.musicInfo.playedDt])
+  const toComment = function () {
+    navigateTo({
+      url: `/pages/comment/comment?songId=${router.params.songId}`
+    })
+  }
   return (
     <View className={styles["play-wrap"]}>
       <View className={styles["play-board"]}>
@@ -92,7 +97,7 @@ const musicPlay =  function () {
           <Image className={styles["song-dish"]} src={music.musicInfo.picUrl} mode="aspectFit"></Image>
           <View className={styles["operation"]}>
             <Image src={require('@/assets/images/shoucang2.png')} onClick={featureDelayMsg}></Image>
-            <Image src={require('@/assets/images/pinglun2.png')} onClick={featureDelayMsg}></Image>
+            <Image src={require('@/assets/images/pinglun2.png')} onClick={toComment}></Image>
             <Image src={require('@/assets/images/xiazai2.png')} onClick={featureDelayMsg}></Image>
           </View>
         </View>

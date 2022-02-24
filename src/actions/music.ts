@@ -53,7 +53,11 @@ export const toggleMode = () => {
   }
 }
 
-// 根据id播放新的歌曲
+/**
+ * 根据id播放新的歌曲
+ * @param id 歌曲id
+ * @param flag 是否是新歌曲，决定是否插入歌曲列表
+ */
 export const playNewSong = (id:string, flag?:boolean) => {
   return async dispatch => {
     const detail = await getSongDetail({
