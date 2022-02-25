@@ -25,11 +25,10 @@ const changeLoading = (function () {
  */
 function judgeStatusCode (status, errMsg) {
   if (status !== 200) {
-    Taro.atMessage({
-      message: errMsg || '调用服务错误',
-      type: 'error'
-    })
-    throw Error('服务状态错误')
+    throw {
+      statusCode: status,
+      msg: errMsg || '调用服务错误'
+    }
   }
 }
 
@@ -116,7 +115,7 @@ const responseSuccessInterceptor = function (response) {
   Taro.setStorageSync('cookie', mergeCookie(defaultCookie, cookies.join('')))
   // }
   changeLoading('off')
-  judgeStatusCode(statusCode, errMsg)
+  judgeStatusCode(statusCode, response?.data?.msg || errMsg)
   return {
     ...response.data,
     iStatus: true
@@ -129,14 +128,14 @@ const responseSuccessInterceptor = function (response) {
  * @returns 处理后的响应对象
  */
 function responseErrInterceptor(response) {
-  const { statusText } = response
+  const { msg } = response
   Taro.atMessage({
     type: 'error',
-    message: statusText || '调用服务错误'
+    message: msg || '调用服务错误'
   })
   changeLoading('off')
   return {
-    ...response.data,
+    ...response,
     iStatus: false
   }
 }
