@@ -95,6 +95,12 @@ export const strongifyStyles = function (styles:Object) {
 }
 
 export const Jumper = {
+  // 跳转登陆
+  toLogin: function () {
+    Taro.navigateTo({
+      url: '/pages/me/login'
+    })
+  },
   // 跳转到歌曲播放页面
   playSong: function (id) {
     Taro.navigateTo({

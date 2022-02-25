@@ -33,8 +33,8 @@ async function handleLogin () {
       password: pwd
     }))
     setTimeout(() => {
-      Taro.switchTab({
-        url: '/pages/me/me'
+      Taro.navigateBack({
+        delta: 2
       })
     }, 300);
   } catch (err) {

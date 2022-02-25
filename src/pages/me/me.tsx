@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro'
-import { View, Image, Text } from '@tarojs/components'
+import { View, Image, Text, Button } from '@tarojs/components'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IStoreType } from '@/types/store'
@@ -7,6 +7,7 @@ import { AtButton, AtTag, AtList, AtListItem, AtMessage } from 'taro-ui'
 import * as userAction from '@/actions/user'
 import * as api from '@/api/user'
 import styles from './me.module.scss'
+import { Jumper } from '@/util'
 
 type IProps = {
   user?: Object
@@ -73,12 +74,6 @@ function Me (props: IProps) {
     )
   }
 
-  function toLogin () {
-    Taro.navigateTo({
-      url: '/pages/me/login'
-    })
-  }
-
   function signin () {
     api.dailySignin()
       .then(r => {
@@ -143,7 +138,7 @@ function Me (props: IProps) {
           )
           : (
             <View className={styles["to-login"]}>
-              <AtButton onClick={toLogin}>去登陆</AtButton>
+              <Button className={styles["btn"]} onClick={Jumper.toLogin}>去登陆</Button>
             </View>
           )
       }
