@@ -83,7 +83,8 @@ const musicPlay =  function () {
   // useEffect(() => {
 
   // }, [music.musicInfo.playedDt])
-  const toComment = function () {
+  const toComment = function (e) {
+    e.stopPropagation()
     navigateTo({
       url: `/pages/comment/comment?songId=${router.params.songId}`
     })
@@ -97,7 +98,7 @@ const musicPlay =  function () {
           <Image className={styles["song-dish"]} src={music.musicInfo.picUrl} mode="aspectFit"></Image>
           <View className={styles["operation"]}>
             <Image src={require('@/assets/images/shoucang2.png')} onClick={featureDelayMsg}></Image>
-            <Image src={require('@/assets/images/pinglun2.png')} onClick={toComment}></Image>
+            <Image src={require('@/assets/images/pinglun2.png')} onClick={e => toComment(e)}></Image>
             <Image src={require('@/assets/images/xiazai2.png')} onClick={featureDelayMsg}></Image>
           </View>
         </View>

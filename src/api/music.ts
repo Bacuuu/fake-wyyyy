@@ -53,7 +53,27 @@ export const doSearch =  (params:{keywords:string, limit?:number, offset?:number
   * cursor: 当sortType为 3 时且页数不是第一页时需传入,值为上一条数据的 time
  * @returns 
  */
-export const getTopComment = (params:{id:string,type:number,pageNo?:number,pageSize?:number,sortType?:number,cursor?:string}) => http.post('/comment/new', params)
+export const getTopComment = (params:{id:string, type:number, pageNo?:number, pageSize?:number, sortType?:number, cursor?:string}) => http.post('/comment/new', params)
 
 // 楼内评论
-export const getInnerComment = (params:{parentCommentId:string,id:string,type:number}) => http.post('/comment/floor', params)
+export const getInnerComment = (params:{parentCommentId:string, id:string, type:number}) => http.post('/comment/floor', params)
+
+/**
+ * 给评论点赞
+ * @param params 
+ * id : 资源 id, 如歌曲 id,mv id
+ * 
+ * cid : 评论 id
+ * 
+ * t : 是否点赞 , 1 为点赞 ,0 为取消点赞
+ * 
+ * type: 数字 , 资源类型 , 对应歌曲 , mv, 专辑 , 歌单 , 电台, 视频对应以下类型
+    0: 歌曲
+    1: mv
+    2: 歌单
+    3: 专辑
+    4: 电台
+    5: 视频
+    6: 动态
+ */
+export const toggleCommentLike = (params:{id:string, cid:string, t:1 | 0, type:number}) => http.post('/comment/like', params)

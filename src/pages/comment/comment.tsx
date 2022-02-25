@@ -1,8 +1,10 @@
-import { getSongDetail, getTopComment } from "@/api/music"
+import { getSongDetail, getTopComment, toggleCommentLike } from "@/api/music"
+import { strongifyStyles } from "@/util"
 import { View, Text, Image } from "@tarojs/components"
 import { useRouter } from "@tarojs/taro"
 import { useState, useEffect } from "react"
-import { AtInput, AtIcon } from "taro-ui"
+import { AtTextarea, AtIcon, AtMessage, AtButton } from "taro-ui"
+import { cloneDeep } from 'lodash'
 import styles from './comment.module.scss'
 interface Irouter {
   params: {
@@ -26,6 +28,7 @@ interface Icomment {
     showReplyCount: boolean
   }
 }
+const strongyStyles = strongifyStyles(styles)
 const comment = function () {
   const router:Irouter = useRouter()
   const [commentVal, setCommentVal] = useState('')
@@ -81,6 +84,41 @@ const comment = function () {
   const changeSort = function (e) {
     setCommentSort(e)
   }
+  // 评论点赞逻辑
+  const toggleLike = function (info:Icomment) {
+    toggleCommentLike({
+      id: router.params.songId,
+      cid: info.comment.id,
+      t: info.comment.liked ? 0 : 1,
+      type: 0
+    }).then(r => {
+      console.log(r)
+      if (r.code === 200) {
+        setCommentList(e => {
+          const copyVal = cloneDeep(e)
+          const currentIndex = copyVal.findIndex(i => i.comment.id === info.comment.id)
+          if (currentIndex !== -1) {
+            // 拷贝 更换值
+            const copyC = copyVal[currentIndex]
+            if (info.comment.liked) {
+              copyC.comment.liked = false
+              copyC.comment.likedCount --
+            } else {
+              copyC.comment.liked = true
+              copyC.comment.likedCount ++
+            }
+            // 替换值
+            copyVal.splice(currentIndex, 1, copyC)
+          }
+          return copyVal
+        })
+      }
+    })
+  }
+  // 点击回复某人
+  const replySomeone = function (userInfo) {
+    
+  }
   return (
     <View className={styles["comment-wrap"]}>
       <View className={styles["song-info"]}>
@@ -110,13 +148,16 @@ const comment = function () {
                   <View className={styles["info"]}>
                     <View className={styles["info-top"]}>
                       <Text className="ellipsis">{i.user.name}</Text>
-                      <View className={styles["like"]}>
+                      <View className={styles["like"]} onClick={() => toggleLike(i)}>
                         <Text>{i.comment.likedCount || ''}</Text>
                         <AtIcon value="heart-2" size="16" color={i.comment.liked ? 'rgb(255, 42, 42)' : 'rgb(153, 153, 153)'}></AtIcon>
                       </View>
                     </View>
                     <View className={styles["info-middle"]}>{i.comment.timeStr}</View>
                     <View className={styles["info-bottom"]}>{i.comment.content}</View>
+                    <View className={strongyStyles("info-more" + (i.comment.showReplyCount ? "" : " hidden"))}>
+                      {i.comment.replayCount}条回复&gt;
+                    </View>
                   </View>
                 </View>
               )
@@ -125,8 +166,10 @@ const comment = function () {
         </View>
       </View>
       <View className={styles["comment-input"]}>
-        <AtInput name="commentInput" onChange={(e:string) => setCommentVal(e)}></AtInput>
+        <AtTextarea height={40} count={false} fixed className={styles["input-content"]} value={commentVal} onChange={(e:string) => setCommentVal(e)}></AtTextarea>
+        <AtButton type="primary" className={styles["btn-release"]}>发布</AtButton>
       </View>
+      <AtMessage></AtMessage>
     </View>
   )
 }
