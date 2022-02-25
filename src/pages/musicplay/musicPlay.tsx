@@ -112,7 +112,7 @@ const musicPlay =  function () {
             scrollWithAnimation>
             {formatedLyric[1].map((i, index) => {
               return (
-                <Text className={strongStyles("lyric-item " + (index === blockIndex ? 'is-current' : '')) + (index === blockIndex ? ' is-current' : '')}>{i}</Text>
+                <Text className={strongStyles("lyric-item " + (index === blockIndex - 1? 'is-current' : '')) + (index === blockIndex - 1 ? ' is-current' : '')}>{i}</Text>
               )
             })}
           </ScrollView>

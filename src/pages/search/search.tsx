@@ -104,7 +104,7 @@ const search = function () {
         {
           searchTips.map(i => {
             return(
-              <View className={styles["tips-item"]}>
+              <View className={styles["tips-item"]} onClick={() => handleSearch(i)}>
                 <AtIcon value="search" size="16"></AtIcon>
                 <Text className={styles["tips-item__text"]}>{i}</Text>
               </View>
