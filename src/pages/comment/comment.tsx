@@ -1,7 +1,7 @@
-import { getSongDetail, getTopComment, toggleCommentLike } from "@/api/music"
+import { getSongDetail, getTopComment, hackComment, toggleCommentLike } from "@/api/music"
 import { strongifyStyles } from "@/util"
 import { View, Text, Image } from "@tarojs/components"
-import { useRouter } from "@tarojs/taro"
+import Taro, { useRouter } from "@tarojs/taro"
 import { useState, useEffect } from "react"
 import { AtTextarea, AtIcon, AtMessage, AtButton } from "taro-ui"
 import { cloneDeep } from 'lodash'
@@ -28,17 +28,21 @@ interface Icomment {
     showReplyCount: boolean
   }
 }
+type sortTypes = 'byHot' | 'byTime'
 const strongyStyles = strongifyStyles(styles)
 const comment = function () {
   const router:Irouter = useRouter()
   const [commentVal, setCommentVal] = useState('')
+  const [textareaHeight, setTextareaHeight] = useState(30)
+  const [textareaOnFocus, setTextareaOnFocus] = useState(false)
   const [songInfo, setSongInfo] = useState({
     name: '',
     authName: '',
     picUrl: ''
   })
-  const [commentSort, setCommentSort] = useState('byHot')
+  const [commentSort, setCommentSort] = useState('byHot' as sortTypes)
   const [commentList, setCommentList] = useState([] as Array<Icomment>)
+  const [curRplTo, setCurRplTo] = useState({} as Icomment)
   useEffect(() => {
     getSongDetail({
       ids: router.params.songId
@@ -54,7 +58,7 @@ const comment = function () {
     byHot = 2,
     byTime = 3
   }
-  useEffect(() => {
+  const getCommentsBySort = function () {
     getTopComment({
       id: router.params.songId,
       type: 0,
@@ -80,6 +84,9 @@ const comment = function () {
         }
       }))
     })
+  }
+  useEffect(() => {
+    getCommentsBySort()
   }, [commentSort])
   const changeSort = function (e) {
     setCommentSort(e)
@@ -92,7 +99,6 @@ const comment = function () {
       t: info.comment.liked ? 0 : 1,
       type: 0
     }).then(r => {
-      console.log(r)
       if (r.code === 200) {
         setCommentList(e => {
           const copyVal = cloneDeep(e)
@@ -116,8 +122,53 @@ const comment = function () {
     })
   }
   // 点击回复某人
-  const replySomeone = function (userInfo) {
-    
+  const replySomeone = function (comment) {
+    setCurRplTo(comment)
+    setTextareaOnFocus(false)
+    Taro.nextTick(() => {
+      setTextareaOnFocus(true)
+    })
+  }
+  const textareaLineChange = function (e) {
+    setTextareaHeight(e.detail.heightRpx + 10)
+  }
+  const handleSubmitComment = function () {
+    let params = {
+      t: 1,
+      type: 0,
+      id: router.params.songId,
+      content: commentVal,
+      commentId: ''
+    }
+    let afterCommentCb = () => {
+      // 已经是按照时间排序
+      if (commentSort === 'byTime') {
+        getCommentsBySort()
+      } else {
+        setCommentSort('byTime')
+      }
+    }
+    // 是回复某人
+    if (curRplTo.user) {
+      params.t = 2
+      params.commentId = curRplTo.comment.id
+      afterCommentCb = () => {
+        setCommentList(comments => {
+          const _comments = cloneDeep(comments)
+          const index = _comments.findIndex(i => i.comment.id === curRplTo.comment.id)
+          _comments[index].comment.replayCount ++ 
+          return _comments
+        })
+      }
+    }
+    hackComment(params).then(r => {
+      if (r.code === 200) {
+        afterCommentCb()
+        setCommentVal('')
+      } else {
+        // 提示
+      }
+    })
   }
   return (
     <View className={styles["comment-wrap"]}>
@@ -141,7 +192,7 @@ const comment = function () {
           {
             commentList.map(i => {
               return (
-                <View className={styles["comment-block"]}>
+                <View className={styles["comment-block"]} onClick={() =>replySomeone(i)}>
                   <View className={styles["avatar"]}>
                     <Image src={i.user.picUrl}></Image>
                   </View>
@@ -166,8 +217,27 @@ const comment = function () {
         </View>
       </View>
       <View className={styles["comment-input"]}>
-        <AtTextarea height={40} count={false} fixed className={styles["input-content"]} value={commentVal} onChange={(e:string) => setCommentVal(e)}></AtTextarea>
-        <AtButton type="primary" className={styles["btn-release"]}>发布</AtButton>
+        {
+          curRplTo.user &&
+          <View className={styles["reply-to"]}>
+              <Text>回复 </Text>
+              <Text> {curRplTo?.user?.name}</Text>
+              <View className={styles["icon-close"]} onClick={() => setCurRplTo({} as Icomment)}>x</View>
+            </View>
+        }
+        <View className={styles["reply-content"]}>
+          <AtTextarea
+            height={textareaHeight}
+            count={false}
+            fixed
+            focus={textareaOnFocus}
+            autoFocus={textareaOnFocus}
+            className={styles["input-content"]}
+            value={commentVal}
+            onChange={(e:string) => setCommentVal(e)}
+            onLinechange={e => textareaLineChange(e)}></AtTextarea>
+          <AtButton type="primary" className={styles["btn-release"]} onClick={handleSubmitComment}>发布</AtButton>
+        </View>
       </View>
       <AtMessage></AtMessage>
     </View>

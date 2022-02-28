@@ -77,3 +77,16 @@ export const getInnerComment = (params:{parentCommentId:string, id:string, type:
     6: 动态
  */
 export const toggleCommentLike = (params:{id:string, cid:string, t:1 | 0, type:number}) => http.post('/comment/like', params)
+
+// 增加/删除评论
+/**
+ * 
+ * @param params 
+ * t 0 删除 1 发送, 2 回复
+ * type 0: 歌曲 1: mv 2: 歌单 3: 专辑 4: 电台 5: 视频 6: 动态
+ * id:对应资源 id
+ * content 要发送的内容
+ * commentId 回复的评论 id (回复评论时必填)
+ * @returns 
+ */
+export const hackComment = (params:{t:number, type:number, id:string, content:string, commentId?:string}) => http.post('/comment', params)

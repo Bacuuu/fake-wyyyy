@@ -112,17 +112,41 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 44px;
-    display: flex;
     background: white;
     padding: 10px;
     box-sizing: border-box;
-    .input-content {
-      flex: 1;
-      margin-right: 6px;
+    box-shadow: 0 0 4px 0 #ccc;
+    .reply-to {
+      width: fit-content;
+      height: 24px;
+      background-color: rgb(212, 212, 212);
+      border-radius: 10px;
+      color: rgb(100, 100, 100);
+      display: flex;
+      align-items: center;
+      padding: 0 6px;
+      margin-bottom: 4px;
+      .icon-close {
+        width: 16px;
+        height: 16px;
+        margin-left: 6px;
+        background-color: rgb(167, 167, 167);
+        color: rgb(73, 73, 73);
+        border-radius: 50%;
+        line-height: 12px;
+        text-align: center;
+      }
     }
-    .btn-release {
-      
+    .reply-content {
+      display: flex;
+      align-items: flex-end;
+      .input-content {
+        flex: 1;
+        margin-right: 6px;
+      }
+      .btn-release {
+        
+      }
     }
   }
 }
