@@ -7,7 +7,7 @@ import { playNewSong, seek, pause, play, toggleMode } from '@/actions/music'
 import { useSelector, useDispatch } from 'react-redux'
 import { IStoreType } from '@/types/store'
 import { throttle } from 'lodash'
-import { millMinutes2Hms, playTool, strongifyStyles } from '@/util'
+import { Jumper, millMinutes2Hms, playTool, strongifyStyles } from '@/util'
 import PlayList from './PlayList'
 interface IProps {
   songId?: string,
@@ -30,7 +30,7 @@ const playMenu = function (props:IProps) {
   const dispatch = useDispatch()
   // 根据歌曲id初始化播放
   useEffect(() => {
-    if (!props.songId) return
+    if (!props.songId || props.songId === music.musicInfo.id) return
     const ids = music.musicList.list.map(i => i.id)
     let flag = false
     // 不存在
@@ -62,11 +62,11 @@ const playMenu = function (props:IProps) {
     props.type === 'mini'
     ?
       <View className={styles["mini-playmenu"]}>
-        <View className={strongStyles("mini img-wrap")}>
+        <View className={strongStyles("mini img-wrap")} onClick={() => Jumper.playSong(music.musicInfo.id)}>
           <Image src={music.musicInfo.picUrl}></Image>
         </View>
         {/* TODO 字体轮播，ellipsis效果不好 */}
-        <View className={strongStyles("mini info")}>
+        <View className={strongStyles("mini info")} onClick={() => Jumper.playSong(music.musicInfo.id)}>
           <Text className={styles["name"] + ' ellipsis'}>{music.musicInfo.name}</Text>
           <Text className={styles["authname"] + ' ellipsis'}> - {music.musicInfo.authName}</Text>
         </View>

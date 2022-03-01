@@ -98,9 +98,11 @@
       }
     }
     &.info {
+      height: 100%;
       flex: 1;
       padding: 0 10px;
       display: flex;
+      align-items: center;
       .name {
         display: inline-block;
         min-width:30px;
