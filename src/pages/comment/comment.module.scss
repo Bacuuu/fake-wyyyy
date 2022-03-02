@@ -77,7 +77,7 @@
           }
           & > Text {
             display: inline-block;
-            width: 200px;
+            width: 180px;
           }
         }
         &-middle {
@@ -92,9 +92,6 @@
         &-more {
           font-size: 10px;
           color: #0458af;
-          &.hidden {
-            display: none;
-          }
         }
       }
       &::after {

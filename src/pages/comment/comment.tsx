@@ -1,11 +1,11 @@
-import { getSongDetail, getTopComment, hackComment, toggleCommentLike } from "@/api/music"
-import { strongifyStyles } from "@/util"
+import { getFloorComment, getSongDetail, getTopComment, hackComment, toggleCommentLike } from "@/api/music"
 import { View, Text, Image } from "@tarojs/components"
 import Taro, { useRouter } from "@tarojs/taro"
 import { useState, useEffect } from "react"
-import { AtTextarea, AtIcon, AtMessage, AtButton } from "taro-ui"
+import { AtTextarea, AtIcon, AtMessage, AtButton, AtFloatLayout } from "taro-ui"
 import { cloneDeep } from 'lodash'
 import styles from './comment.module.scss'
+import { Jumper, numberFormatByZh } from "@/util"
 interface Irouter {
   params: {
     songId: string
@@ -29,7 +29,6 @@ interface Icomment {
   }
 }
 type sortTypes = 'byHot' | 'byTime'
-const strongyStyles = strongifyStyles(styles)
 const comment = function () {
   const router:Irouter = useRouter()
   const [commentVal, setCommentVal] = useState('')
@@ -43,6 +42,7 @@ const comment = function () {
   const [commentSort, setCommentSort] = useState('byHot' as sortTypes)
   const [commentList, setCommentList] = useState([] as Array<Icomment>)
   const [curRplTo, setCurRplTo] = useState({} as Icomment)
+  const [showFloorComment, setShowFloorComment] = useState(false)
   useEffect(() => {
     getSongDetail({
       ids: router.params.songId
@@ -129,9 +129,11 @@ const comment = function () {
       setTextareaOnFocus(true)
     })
   }
+  // 行数改变
   const textareaLineChange = function (e) {
     setTextareaHeight(e.detail.heightRpx + 10)
   }
+  // 提交评论
   const handleSubmitComment = function () {
     let params = {
       t: 1,
@@ -167,8 +169,57 @@ const comment = function () {
         setCommentVal('')
       } else {
         // 提示
+        Taro.atMessage({
+          type: 'warning',
+          message: r.msg
+        })
       }
     })
+  }
+  // 查看楼内评论
+  const handleShowFloorComment = function (e, params:{
+    commentId: string,
+    sourceId: string,
+    sourceType: number
+  }) {
+    e.stopPropagation()
+    getFloorComment({
+      parentCommentId: params.commentId,
+      id: params.sourceId,
+      type: params.sourceType
+    })
+    setShowFloorComment(true)
+  }
+  const SingleComment = function(i) {
+    return (
+      <View className={styles["comment-block"]} onClick={() =>replySomeone(i)}>
+      <View className={styles["avatar"]}>
+        <Image src={i.user.picUrl}></Image>
+      </View>
+      <View className={styles["info"]}>
+        <View className={styles["info-top"]}>
+          <Text className="ellipsis">{i.user.name}</Text>
+          <View className={styles["like"]} onClick={() => toggleLike(i)}>
+            <Text>{numberFormatByZh(i.comment.likedCount) === '0' ? '' : numberFormatByZh(i.comment.likedCount)}</Text>
+            <AtIcon value="heart-2" size="16" color={i.comment.liked ? 'rgb(255, 42, 42)' : 'rgb(153, 153, 153)'}></AtIcon>
+          </View>
+        </View>
+        <View className={styles["info-middle"]}>{i.comment.timeStr}</View>
+        <View className={styles["info-bottom"]}>{i.comment.content}</View>
+        {
+          i.comment.showReplyCount ? 
+          <View className={styles["info-more"]} onClick={(e) => handleShowFloorComment(e, {
+            commentId:i.comment.id,
+            sourceId: router.params.songId,
+            sourceType: 0
+            })}>
+            {i.comment.replayCount}条回复&gt;
+          </View> :
+          ''
+        }
+      </View>
+    </View>
+    )
   }
   return (
     <View className={styles["comment-wrap"]}>
@@ -192,25 +243,7 @@ const comment = function () {
           {
             commentList.map(i => {
               return (
-                <View className={styles["comment-block"]} onClick={() =>replySomeone(i)}>
-                  <View className={styles["avatar"]}>
-                    <Image src={i.user.picUrl}></Image>
-                  </View>
-                  <View className={styles["info"]}>
-                    <View className={styles["info-top"]}>
-                      <Text className="ellipsis">{i.user.name}</Text>
-                      <View className={styles["like"]} onClick={() => toggleLike(i)}>
-                        <Text>{i.comment.likedCount || ''}</Text>
-                        <AtIcon value="heart-2" size="16" color={i.comment.liked ? 'rgb(255, 42, 42)' : 'rgb(153, 153, 153)'}></AtIcon>
-                      </View>
-                    </View>
-                    <View className={styles["info-middle"]}>{i.comment.timeStr}</View>
-                    <View className={styles["info-bottom"]}>{i.comment.content}</View>
-                    <View className={strongyStyles("info-more" + (i.comment.showReplyCount ? "" : " hidden"))}>
-                      {i.comment.replayCount}条回复&gt;
-                    </View>
-                  </View>
-                </View>
+                SingleComment(i)
               )
             })
           }
@@ -240,6 +273,9 @@ const comment = function () {
         </View>
       </View>
       <AtMessage></AtMessage>
+      <AtFloatLayout className="custom-at at-floatlayout-high" isOpened={showFloorComment} onClose={() => setShowFloorComment(false)}>
+
+      </AtFloatLayout>
     </View>
   )
 }

@@ -56,7 +56,7 @@ export const doSearch =  (params:{keywords:string, limit?:number, offset?:number
 export const getTopComment = (params:{id:string, type:number, pageNo?:number, pageSize?:number, sortType?:number, cursor?:string}) => http.post('/comment/new', params)
 
 // 楼内评论
-export const getInnerComment = (params:{parentCommentId:string, id:string, type:number}) => http.post('/comment/floor', params)
+export const getFloorComment = (params:{parentCommentId:string, id:string, type:number | string}) => http.post('/comment/floor', params)
 
 /**
  * 给评论点赞
