@@ -1,0 +1,16 @@
+.custom-at {
+  &.at-floatlayout-high {
+    .at-float-layout__container {
+      min-height: 80vh;
+      max-height: 80vh;
+      .layout-body {
+        min-height: 78vh;
+        max-height: 78vh;
+        .layout-body__content {
+          min-height: 78vh;
+          max-height: 78vh;
+        }
+      }
+    }
+  }
+}

@@ -6,6 +6,7 @@ import { AtMessage } from 'taro-ui'
 import '@/assets/css/taro-ui.css'
 import '@/assets/iconfont.css'
 import './app.scss'
+import './overwrite.scss'
 import dayjs from 'dayjs'
 import Duration from 'dayjs/plugin/Duration'
 dayjs.extend(Duration)
