@@ -115,6 +115,14 @@ export const Jumper = {
   }
 }
 
+// url参数字符串化
+const urlStringify = function (params) {
+  let str = ''
+  for(let i in params) {
+    str += `${i}=${params[i]}&`
+  }
+  return str.slice(0, -1)
+}
 export const playTool = {
   /**
    * 音乐，下一曲
