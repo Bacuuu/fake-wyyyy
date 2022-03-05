@@ -25,7 +25,13 @@ interface Icomment {
     likedCount: number,
     liked: boolean,
     replayCount: number,
-    showReplyCount: boolean
+    showReplyCount: boolean,
+    beReplied?: null | {
+      userName: string,
+      userId: number,
+      commentId: string,
+      commentContent: string
+    }
   }
 }
 type sortTypes = 'byHot' | 'byTime'
@@ -43,6 +49,7 @@ const comment = function () {
   const [commentList, setCommentList] = useState([] as Array<Icomment>)
   const [curRplTo, setCurRplTo] = useState({} as Icomment)
   const [showFloorComment, setShowFloorComment] = useState(false)
+  const [floorComments, setFloorComments] = useState([] as Array<Icomment>)
   useEffect(() => {
     getSongDetail({
       ids: router.params.songId
@@ -58,6 +65,35 @@ const comment = function () {
     byHot = 2,
     byTime = 3
   }
+  // 评论格式转化 接口数据 -> Icomment
+  const commentTransfer = function (e):Icomment {
+    const beReplied = Array.isArray(e.beReplied) && e.beReplied.length
+        ? {
+            userId: e.beReplied[0].user.userId,
+            userName:e.beReplied[0].user.nickname,
+            commentId: e.beReplied[0].beRepliedCommentId,
+            commentContent: e.beReplied[0].content,
+          }
+        : null
+    return {
+      user: {
+        id: e.user.userId,
+        name: e.user.nickname,
+        picUrl: e.user.avatarUrl
+      },
+      comment: {
+        id: e.commentId,
+        content: e.content,
+        displayTime: e.needDisplayTime,
+        timeStr: e.timeStr,
+        likedCount: e.likedCount,
+        liked: e.liked,
+        replayCount: e?.showFloorComment?.replyCount || 0,
+        showReplyCount: e?.showFloorComment?.showReplyCount || false,
+        beReplied
+      }
+    }
+  }
   const getCommentsBySort = function () {
     getTopComment({
       id: router.params.songId,
@@ -65,23 +101,7 @@ const comment = function () {
       sortType: sortDic[commentSort]
     }).then(r => {
       setCommentList(r.data.comments.map(i => {
-        return {
-          user: {
-            id: i.user.userId,
-            name: i.user.nickname,
-            picUrl: i.user.avatarUrl
-          },
-          comment: {
-            id: i.commentId,
-            content: i.content,
-            displayTime: i.needDisplayTime,
-            timeStr: i.timeStr,
-            likedCount: i.likedCount,
-            liked: i.liked,
-            replayCount: i.showFloorComment.replyCount,
-            showReplyCount: i.showFloorComment.showReplyCount
-          }
-        }
+        return commentTransfer(i)
       }))
     })
   }
@@ -187,35 +207,49 @@ const comment = function () {
       parentCommentId: params.commentId,
       id: params.sourceId,
       type: params.sourceType
+    }).then(r => {
+      if (r.data) {
+        setFloorComments(Array.prototype.concat.call([], commentTransfer(r.data.ownerComment), r.data.comments.map(i => commentTransfer(i))))
+      }
     })
     setShowFloorComment(true)
   }
-  const SingleComment = function(i) {
+  const SingleComment = function(props:{info: Icomment}) {
     return (
-      <View className={styles["comment-block"]} onClick={() =>replySomeone(i)}>
+      <View className={styles["comment-block"]} onClick={() =>replySomeone(props.info)}>
       <View className={styles["avatar"]}>
-        <Image src={i.user.picUrl}></Image>
+        <Image src={props.info.user.picUrl}></Image>
       </View>
       <View className={styles["info"]}>
         <View className={styles["info-top"]}>
-          <Text className="ellipsis">{i.user.name}</Text>
-          <View className={styles["like"]} onClick={() => toggleLike(i)}>
-            <Text>{numberFormatByZh(i.comment.likedCount) === '0' ? '' : numberFormatByZh(i.comment.likedCount)}</Text>
-            <AtIcon value="heart-2" size="16" color={i.comment.liked ? 'rgb(255, 42, 42)' : 'rgb(153, 153, 153)'}></AtIcon>
+          <Text className="ellipsis">{props.info.user.name}</Text>
+          <View className={styles["like"]} onClick={() => toggleLike(props.info)}>
+            <Text>{numberFormatByZh(props.info.comment.likedCount) === '0' ? '' : numberFormatByZh(props.info.comment.likedCount)}</Text>
+            <AtIcon value="heart-2" size="16" color={props.info.comment.liked ? 'rgb(255, 42, 42)' : 'rgb(153, 153, 153)'}></AtIcon>
           </View>
         </View>
-        <View className={styles["info-middle"]}>{i.comment.timeStr}</View>
-        <View className={styles["info-bottom"]}>{i.comment.content}</View>
+        <View className={styles["info-middle"]}>{props.info.comment.timeStr}</View>
+        <View className={styles["info-bottom"]}>{props.info.comment.content}</View>
         {
-          i.comment.showReplyCount ? 
+          props.info.comment.showReplyCount ? 
           <View className={styles["info-more"]} onClick={(e) => handleShowFloorComment(e, {
-            commentId:i.comment.id,
+            commentId:props.info.comment.id,
             sourceId: router.params.songId,
             sourceType: 0
             })}>
-            {i.comment.replayCount}条回复&gt;
+            {props.info.comment.replayCount}条回复&gt;
           </View> :
           ''
+        }
+        {
+          // 数据样式及判断
+          // 符合展示回复的评论的情况
+          floorComments.length && props.info.comment.beReplied && props.info.comment.beReplied.commentId !== floorComments[0].comment.id
+          ? <View className={styles["floor-comment"]}>
+              <Text className={styles["user"]}>@{props.info.comment.beReplied.userName}</Text>
+              <Text>：{props.info.comment.beReplied.commentContent}</Text>
+            </View>
+          : ''
         }
       </View>
     </View>
@@ -243,7 +277,7 @@ const comment = function () {
           {
             commentList.map(i => {
               return (
-                SingleComment(i)
+                <SingleComment info={i}></SingleComment>
               )
             })
           }
@@ -274,7 +308,15 @@ const comment = function () {
       </View>
       <AtMessage></AtMessage>
       <AtFloatLayout className="custom-at at-floatlayout-high" isOpened={showFloorComment} onClose={() => setShowFloorComment(false)}>
-
+        <View className={styles["floor-comment__wrap"]}>
+        {
+        floorComments.length
+          ? floorComments.map(i => {
+            return <SingleComment info={i}></SingleComment>
+          })
+          : ''
+        }
+        </View>
       </AtFloatLayout>
     </View>
   )
