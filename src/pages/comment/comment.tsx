@@ -239,44 +239,52 @@ const comment = function () {
     })
     setShowFloorComment(true)
   }
-  const SingleComment = memo(function(props:{info: Icomment}) {
+  const CommentListComp = (function(props:{commentList: Array<Icomment>}) {
       return (
-        <View className={styles["comment-block"]} onClick={() => replySomeone(props.info)}>
-          <View className={styles["avatar"]}>
-            <Image src={props.info.user.picUrl}></Image>
-          </View>
-          <View className={styles["info"]}>
-            <View className={styles["info-top"]}>
-              <Text className="ellipsis">{props.info.user.name}</Text>
-              <View className={styles["like"]} onClick={e => toggleLike(e, props.info)}>
-                <Text>{numberFormatByZh(props.info.comment.likedCount) === '0' ? '' : numberFormatByZh(props.info.comment.likedCount)}</Text>
-                <AtIcon value="heart-2" size="16" color={props.info.comment.liked ? 'rgb(255, 42, 42)' : 'rgb(153, 153, 153)'}></AtIcon>
-              </View>
+        <View>
+          {
+        props.commentList.map(info => {
+          return (
+            <View className={styles["comment-block"]} onClick={() => replySomeone(info)}>
+            <View className={styles["avatar"]}>
+              <Image src={info.user.picUrl}></Image>
             </View>
-            <View className={styles["info-middle"]}>{props.info.comment.timeStr}</View>
-            <View className={styles["info-bottom"]}>{props.info.comment.content}</View>
-            {
-              props.info.comment.showReplyCount ? 
-              <View className={styles["info-more"]} onClick={(e) => handleShowFloorComment(e, {
-                commentId:props.info.comment.id,
-                sourceId: router.params.songId,
-                sourceType: 0
-                })}>
-                {props.info.comment.replayCount}条回复&gt;
-              </View> :
-              ''
-            }
-            {
-              // 数据样式及判断
-              // 符合展示回复的评论的情况
-              floorComments.length && props.info.comment.beReplied && props.info.comment.beReplied.commentId !== floorComments[0].comment.id
-              ? <View className={styles["floor-comment"]}>
-                  <Text className={styles["user"]}>@{props.info.comment.beReplied.userName}</Text>
-                  <Text>：{props.info.comment.beReplied.commentContent}</Text>
+            <View className={styles["info"]}>
+              <View className={styles["info-top"]}>
+                <Text className="ellipsis">{info.user.name}</Text>
+                <View className={styles["like"]} onClick={e => toggleLike(e, info)}>
+                  <Text>{numberFormatByZh(info.comment.likedCount) === '0' ? '' : numberFormatByZh(info.comment.likedCount)}</Text>
+                  <AtIcon value="heart-2" size="16" color={info.comment.liked ? 'rgb(255, 42, 42)' : 'rgb(153, 153, 153)'}></AtIcon>
                 </View>
-              : ''
-            }
+              </View>
+              <View className={styles["info-middle"]}>{info.comment.timeStr}</View>
+              <View className={styles["info-bottom"]}>{info.comment.content}</View>
+              {
+                info.comment.showReplyCount ? 
+                <View className={styles["info-more"]} onClick={(e) => handleShowFloorComment(e, {
+                  commentId:info.comment.id,
+                  sourceId: router.params.songId,
+                  sourceType: 0
+                  })}>
+                  {info.comment.replayCount}条回复&gt;
+                </View> :
+                ''
+              }
+              {
+                // 数据样式及判断
+                // 符合展示回复的评论的情况
+                floorComments.length && info.comment.beReplied && info.comment.beReplied.commentId !== floorComments[0].comment.id
+                ? <View className={styles["floor-comment"]}>
+                    <Text className={styles["user"]}>@{info.comment.beReplied.userName}</Text>
+                    <Text>：{info.comment.beReplied.commentContent}</Text>
+                  </View>
+                : ''
+              }
+            </View>
           </View>
+          )
+        })
+          }
         </View>
       )
     })
@@ -300,11 +308,7 @@ const comment = function () {
         </View>
         <View className={styles["comment-list"]}>
           {
-            commentList.map(i => {
-              return (
-                <SingleComment info={i}></SingleComment>
-              )
-            })
+            <CommentListComp commentList={commentList}></commentListComp>
           }
         </View>
       </View>
@@ -336,9 +340,7 @@ const comment = function () {
         <View className={styles["floor-comment__wrap"] + ' no-scroll'}>
         {
           floorComments.length
-            ? floorComments.map(i => {
-              return <SingleComment info={i}></SingleComment>
-            })
+            ? <CommentListComp commentList={floorComments}></CommentListComp>
             : ''
         }
         </View>
