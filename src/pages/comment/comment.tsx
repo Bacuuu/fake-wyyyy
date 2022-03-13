@@ -1,7 +1,7 @@
 import { getFloorComment, getSongDetail, getTopComment, hackComment, toggleCommentLike } from "@/api/music"
 import { View, Text, Image } from "@tarojs/components"
 import Taro, { useRouter } from "@tarojs/taro"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { AtTextarea, AtIcon, AtMessage, AtButton, AtFloatLayout } from "taro-ui"
 import { cloneDeep } from 'lodash'
 import styles from './comment.module.scss'
@@ -55,12 +55,15 @@ const comment = function () {
       ids: router.params.songId
     }).then(r => {
       setSongInfo({
-        name: r.songs[0].al.name,
+        name: r.songs[0].name,
         authName: r.songs[0].ar[0].name,
         picUrl: r.songs[0].al.picUrl
       })
     })
   }, [])
+  useEffect(() => {
+    setCurRplTo({} as Icomment)
+  }, [showFloorComment])
   enum sortDic {
     byHot = 2,
     byTime = 3
@@ -112,7 +115,10 @@ const comment = function () {
     setCommentSort(e)
   }
   // 评论点赞逻辑
-  const toggleLike = function (info:Icomment) {
+  const toggleLike = function (e, info:Icomment) {
+    e.stopPropagation()
+    // 确定是楼内还是普通
+    const updateCommentListFunc = showFloorComment ? setFloorComments : setCommentList
     toggleCommentLike({
       id: router.params.songId,
       cid: info.comment.id,
@@ -120,7 +126,7 @@ const comment = function () {
       type: 0
     }).then(r => {
       if (r.code === 200) {
-        setCommentList(e => {
+        updateCommentListFunc(e => {
           const copyVal = cloneDeep(e)
           const currentIndex = copyVal.findIndex(i => i.comment.id === info.comment.id)
           if (currentIndex !== -1) {
@@ -216,14 +222,14 @@ const comment = function () {
   }
   const SingleComment = function(props:{info: Icomment}) {
     return (
-      <View className={styles["comment-block"]} onClick={() =>replySomeone(props.info)}>
+    <View className={styles["comment-block"]} onClick={() => replySomeone(props.info)}>
       <View className={styles["avatar"]}>
         <Image src={props.info.user.picUrl}></Image>
       </View>
       <View className={styles["info"]}>
         <View className={styles["info-top"]}>
           <Text className="ellipsis">{props.info.user.name}</Text>
-          <View className={styles["like"]} onClick={() => toggleLike(props.info)}>
+          <View className={styles["like"]} onClick={e => toggleLike(e, props.info)}>
             <Text>{numberFormatByZh(props.info.comment.likedCount) === '0' ? '' : numberFormatByZh(props.info.comment.likedCount)}</Text>
             <AtIcon value="heart-2" size="16" color={props.info.comment.liked ? 'rgb(255, 42, 42)' : 'rgb(153, 153, 153)'}></AtIcon>
           </View>
@@ -275,11 +281,13 @@ const comment = function () {
         </View>
         <View className={styles["comment-list"]}>
           {
-            commentList.map(i => {
-              return (
-                <SingleComment info={i}></SingleComment>
-              )
-            })
+            useMemo(()=> {
+              return commentList.map(i => {
+                return (
+                  <SingleComment info={i}></SingleComment>
+                )
+              })
+            }, [commentList])
           }
         </View>
       </View>
@@ -308,13 +316,15 @@ const comment = function () {
       </View>
       <AtMessage></AtMessage>
       <AtFloatLayout className="custom-at at-floatlayout-high" isOpened={showFloorComment} onClose={() => setShowFloorComment(false)}>
-        <View className={styles["floor-comment__wrap"]}>
+        <View className={styles["floor-comment__wrap"] + ' no-scroll'}>
         {
-        floorComments.length
-          ? floorComments.map(i => {
-            return <SingleComment info={i}></SingleComment>
-          })
-          : ''
+          useMemo(() => {
+            return floorComments.length
+              ? floorComments.map(i => {
+                return <SingleComment info={i}></SingleComment>
+              })
+              : ''
+          }, [floorComments])
         }
         </View>
       </AtFloatLayout>
