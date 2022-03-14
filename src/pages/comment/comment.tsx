@@ -308,7 +308,7 @@ const comment = function () {
         </View>
         <View className={styles["comment-list"]}>
           {
-            <CommentListComp commentList={commentList}></commentListComp>
+            <CommentListComp commentList={commentList}></CommentListComp>
           }
         </View>
       </View>
